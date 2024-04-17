@@ -14,7 +14,7 @@ type Controllers struct {
 	controllers.BaseControllers
 }
 
-//CreateVideoContribution 发布视频和编辑视频
+//CreateVideoContribution 
 func (c Controllers) CreateVideoContribution(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.CreateVideoContributionReceiveStruct)); err == nil {
@@ -23,7 +23,7 @@ func (c Controllers) CreateVideoContribution(ctx *gin.Context) {
 	}
 }
 
-//UpdateVideoContribution 编辑视频
+//UpdateVideoContribution 
 func (c Controllers) UpdateVideoContribution(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.UpdateVideoContributionReceiveStruct)); err == nil {
@@ -32,7 +32,7 @@ func (c Controllers) UpdateVideoContribution(ctx *gin.Context) {
 	}
 }
 
-// GetVideoContributionByID  根据id获取视频信息
+// GetVideoContributionByID  
 func (c Controllers) GetVideoContributionByID(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetVideoContributionByIDReceiveStruct)); err == nil {
@@ -42,11 +42,11 @@ func (c Controllers) GetVideoContributionByID(ctx *gin.Context) {
 
 }
 
-// SendVideoBarrage  发送视频弹幕
+// SendVideoBarrage  
 func (c Controllers) SendVideoBarrage(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	SendVideoBarrageReceive := new(receive.SendVideoBarrageReceiveStruct)
-	//使用ShouldBindBodyWith解决重复bind问题
+	//Solving duplicate binds with ShouldBindBodyWith
 	if err := ctx.ShouldBindBodyWith(SendVideoBarrageReceive, binding.JSON); err == nil {
 		results, err := contribution.SendVideoBarrage(SendVideoBarrageReceive, uid)
 		if err != nil {
@@ -59,7 +59,7 @@ func (c Controllers) SendVideoBarrage(ctx *gin.Context) {
 	}
 }
 
-// GetVideoBarrage  获取视频弹幕 (播放器）
+// GetVideoBarrage  
 func (c Controllers) GetVideoBarrage(ctx *gin.Context) {
 	GetVideoBarrageReceive := new(receive.GetVideoBarrageReceiveStruct)
 	GetVideoBarrageReceive.ID = ctx.Query("id")
@@ -72,7 +72,7 @@ func (c Controllers) GetVideoBarrage(ctx *gin.Context) {
 
 }
 
-// GetVideoBarrageList  获取视频弹幕展示
+// GetVideoBarrageList  
 func (c Controllers) GetVideoBarrageList(ctx *gin.Context) {
 	GetVideoBarrageReceive := new(receive.GetVideoBarrageListReceiveStruct)
 	GetVideoBarrageReceive.ID = ctx.Query("id")
@@ -84,7 +84,7 @@ func (c Controllers) GetVideoBarrageList(ctx *gin.Context) {
 	response.BarrageSuccess(ctx, results)
 }
 
-//VideoPostComment 视频评论
+//VideoPostComment 
 func (c Controllers) VideoPostComment(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.VideosPostCommentReceiveStruct)); err == nil {
@@ -93,7 +93,7 @@ func (c Controllers) VideoPostComment(ctx *gin.Context) {
 	}
 }
 
-//GetVideoComment 获取视频评论
+//GetVideoComment 
 func (c Controllers) GetVideoComment(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetVideoCommentReceiveStruct)); err == nil {
 		results, err := contribution.GetVideoComment(rec)
@@ -101,7 +101,7 @@ func (c Controllers) GetVideoComment(ctx *gin.Context) {
 	}
 }
 
-//GetVideoManagementList 创作中心获取视频稿件列表
+//GetVideoManagementList 
 func (c Controllers) GetVideoManagementList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetVideoManagementListReceiveStruct)); err == nil {
@@ -110,7 +110,7 @@ func (c Controllers) GetVideoManagementList(ctx *gin.Context) {
 	}
 }
 
-//DeleteVideoByID 删除视频根据id
+//DeleteVideoByID 
 func (c Controllers) DeleteVideoByID(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DeleteVideoByIDReceiveStruct)); err == nil {
@@ -119,7 +119,7 @@ func (c Controllers) DeleteVideoByID(ctx *gin.Context) {
 	}
 }
 
-//LikeVideo 给视频点赞
+//LikeVideo 
 func (c Controllers) LikeVideo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.LikeVideoReceiveStruct)); err == nil {

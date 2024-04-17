@@ -13,7 +13,7 @@ func init() {
 	go func() {
 		err := Start()
 		if err != nil {
-			global.Logger.Error("开启直播服务失败")
+			global.Logger.Error("Failed to turn on live service")
 		}
 	}()
 }
@@ -23,24 +23,24 @@ func Start() error {
 	path = path + `\Config\live\`
 	global.Logger.Info(path)
 	cmd := exec.Command("cmd.exe", "/c", "start "+path+"live-go.exe")
-	//获取输出对象，可以从该对象中读取输出结果
+	//Get the output object from which you can read the output results
 	if stdio, err := cmd.StdoutPipe(); err != nil {
 		return err
 		log.Fatal(err)
 	} else {
-		// 保证关闭输出流
+		// Guaranteed shutdown of output streams
 		defer func(stdio io.ReadCloser) {
 			err := stdio.Close()
 			if err != nil {
 
 			}
 		}(stdio)
-		// 运行命令
+		// Run command
 		if err := cmd.Start(); err != nil {
 			log.Fatal(err)
 		}
 		if _, err := ioutil.ReadAll(stdio); err != nil {
-			// 读取输出结果
+			// Read the output
 			log.Fatal(err)
 			return err
 		} else {

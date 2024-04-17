@@ -28,9 +28,9 @@ type UserInfoResponseStruct struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-//UserInfoResponse  生成返回用用户信息结构体
+//UserInfoResponse  Generate a return user information structure
 func UserInfoResponse(us *users.User, token string) UserInfoResponseStruct {
-	//判断用户是否为微信用户进行图片处理
+	//Determine whether the user is a WeChat user for image processing
 	photo, _ := conversion.FormattingJsonSrc(us.Photo)
 	return UserInfoResponseStruct{
 		ID:        us.ID,
@@ -50,7 +50,7 @@ type UserSetInfoResponseStruct struct {
 	Signature string    `json:"signature"`
 }
 
-//UserSetInfoResponse  设置用户信息返回结果
+//UserSetInfoResponse  Set user information return result
 func UserSetInfoResponse(us *users.User) UserSetInfoResponseStruct {
 	return UserSetInfoResponseStruct{
 		ID:        us.ID,
@@ -67,7 +67,7 @@ type GetLiveDataResponseStruct struct {
 	Title string `json:"title"`
 }
 
-//GetLiveDataResponse 响应设置信息
+//GetLiveDataResponse Responding to setup information
 func GetLiveDataResponse(li *liveInfo.LiveInfo) (data any, err error) {
 	src, errs := conversion.FormattingJsonSrc(li.Img)
 	if errs != nil {
@@ -89,7 +89,7 @@ type GetSpaceIndividualResponseStruct struct {
 	VermicelliNum *int64 `json:"vermicelli_num"`
 }
 
-//GetSpaceIndividualResponse 获取空间信息
+//GetSpaceIndividualResponse 
 func GetSpaceIndividualResponse(us *users.User, isAttention bool, attentionNum *int64, vermicelliNum *int64) (data any, err error) {
 	photo, _ := conversion.FormattingJsonSrc(us.Photo)
 	return GetSpaceIndividualResponseStruct{
@@ -142,9 +142,9 @@ type GetReleaseInformationResponseStruct struct {
 	ArticleList ReleaseInformationArticleInfoList `json:"articleList"`
 }
 
-//GetReleaseInformationResponse 获取视频专栏发布信息
+//GetReleaseInformationResponse 
 func GetReleaseInformationResponse(videoList *video.VideosContributionList, articleList *article.ArticlesContributionList) (data interface{}, err error) {
-	//处理视频
+	//Processing video
 	vl := make(ReleaseInformationVideoInfoList, 0)
 	for _, lk := range *videoList {
 		cover, _ := conversion.FormattingJsonSrc(lk.Cover)
@@ -165,12 +165,12 @@ func GetReleaseInformationResponse(videoList *video.VideosContributionList, arti
 		})
 	}
 
-	//处理专栏
+	//Processing columns
 	al := make(ReleaseInformationArticleInfoList, 0)
 	for _, v := range *articleList {
 		coverSrc, _ := conversion.FormattingJsonSrc(v.Cover)
 
-		//正则替换首文内容
+		//Regular replacement of first text
 		reg := regexp2.MustCompile(`<(\S*?)[^>]*>.*?|<.*? />`, 0)
 		match, _ := reg.Replace(v.Content, "", -1, -1)
 		matchRune := []rune(match)
@@ -180,7 +180,7 @@ func GetReleaseInformationResponse(videoList *video.VideosContributionList, arti
 			v.Content = match
 		}
 
-		//只显示两个标签
+		//Show only two labels
 		label := conversion.StringConversionMap(v.Label)
 		if len(label) >= 2 {
 			label = label[:1]
@@ -331,7 +331,7 @@ func GetFavoritesListByFavoriteVideoResponse(al *favorites.FavoriteList, ids []u
 		coverInfo := new(common.Img)
 		err = json.Unmarshal(v.Cover, coverInfo)
 		cover, _ := conversion.FormattingJsonSrc(v.Cover)
-		//判断是否已选
+		//Determine if it has been selected
 		selected := false
 		for _, vv := range ids {
 			if vv == v.ID {
@@ -376,7 +376,7 @@ type GetFavoriteVideoListResponseStruct struct {
 }
 
 func GetFavoriteVideoListResponse(cl *collect.CollectsList) (data interface{}, err error) {
-	//处理视频
+	//Processing video
 	vl := make(GetFavoriteVideoList, 0)
 	for _, ck := range *cl {
 		lk := ck.VideoInfo
@@ -421,19 +421,19 @@ func GetRecordListResponse(rl *record.RecordsList) (data interface{}, err error)
 			photo, _ = conversion.FormattingJsonSrc(v.VideoInfo.UserInfo.Photo)
 			title = v.VideoInfo.Title
 			username = v.VideoInfo.UserInfo.Username
-			tp = "视频"
+			tp = "video"
 		} else if v.Type == "article" {
 			cover, _ = conversion.FormattingJsonSrc(v.ArticleInfo.Cover)
 			photo, _ = conversion.FormattingJsonSrc(v.ArticleInfo.UserInfo.Photo)
 			title = v.ArticleInfo.Title
 			username = v.ArticleInfo.UserInfo.Username
-			tp = "专栏"
+			tp = "column"
 		} else {
 			cover, _ = conversion.FormattingJsonSrc(v.Userinfo.LiveInfo.Img)
 			photo, _ = conversion.FormattingJsonSrc(v.Userinfo.Photo)
 			title = v.Userinfo.LiveInfo.Title
 			username = v.Userinfo.Username
-			tp = "直播"
+			tp = "live"
 		}
 		list = append(list, GetRecordListItem{
 			ID:        v.ID,
@@ -470,7 +470,7 @@ func GetNoticeListResponse(nl *notice.NoticesList) (data interface{}, err error)
 		var cover string
 		var title string
 
-		//判断类型确定标题和封面
+		//Judgement type to determine title and cover
 		switch v.Type {
 		case notice.VideoComment:
 			cover, _ = conversion.FormattingJsonSrc(v.VideoInfo.Cover)

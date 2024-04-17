@@ -10,37 +10,37 @@ import (
 	"strconv"
 )
 
-// NoticeSocket  通知socket
+// NoticeSocket  
 func (us UserControllers) NoticeSocket(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	conn, _ := ctx.Get("conn")
 	ws := conn.(*websocket.Conn)
 	err := noticeSocket.CreateNoticeSocket(uid, ws)
 	if err != nil {
-		response.ErrorWs(ws, "创建通知socket失败")
+		response.ErrorWs(ws, "Failed to create notification socket")
 	}
 }
 
-// ChatSocket  聊天socket
+// ChatSocket   
 func (us UserControllers) ChatSocket(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	conn, _ := ctx.Get("conn")
 	ws := conn.(*websocket.Conn)
 	err := chatSocket.CreateChatSocket(uid, ws)
 	if err != nil {
-		response.ErrorWs(ws, "创建聊天socket失败")
+		response.ErrorWs(ws, "Failed to create chat socket")
 	}
 }
 
 func (us UserControllers) ChatByUserSocket(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	conn, _ := ctx.Get("conn")
-	//判断是否创建视频socket房间
+	//Determine if a video socket room is created
 	tidQuery, _ := strconv.Atoi(ctx.Query("tid"))
 	tid := uint(tidQuery)
 	ws := conn.(*websocket.Conn)
 	err := chatByUserSocket.CreateChatByUserSocket(uid, tid, ws)
 	if err != nil {
-		response.ErrorWs(ws, "创建用户聊天socket失败")
+		response.ErrorWs(ws, "Failed to create user chat socket")
 	}
 }

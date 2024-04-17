@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// WxAuthorizationReceiveStruct 微信登入接口数据结构体
+// WxAuthorizationReceiveStruct 
 type WxAuthorizationReceiveStruct struct {
 	AvatarUrl string `json:"avatarUrl" binding:"required"`
 	Code      string `json:"code" binding:"required"`
@@ -13,7 +13,7 @@ type WxAuthorizationReceiveStruct struct {
 	NickName  string `json:"nickName" binding:"required"`
 }
 
-// RegisterReceiveStruct 用户注册
+// RegisterReceiveStruct 
 type RegisterReceiveStruct struct {
 	UserName         string `json:"username" binding:"required"`
 	Password         string `json:"password" binding:"required"`
@@ -21,18 +21,18 @@ type RegisterReceiveStruct struct {
 	VerificationCode string `json:"verificationCode" binding:"required"`
 }
 
-//LoginReceiveStruct 用户登入
+//LoginReceiveStruct 
 type LoginReceiveStruct struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
-//SendEmailVerCodeReceiveStruct 邮箱验证码
+//SendEmailVerCodeReceiveStruct 
 type SendEmailVerCodeReceiveStruct struct {
 	Email string `json:"email" binding:"required,email"`
 }
 
-// ForgetReceiveStruct 用户找回密码
+// ForgetReceiveStruct 
 type ForgetReceiveStruct struct {
 	Password         string `json:"password" binding:"required"`
 	Email            string `json:"email" binding:"required,email"`
@@ -42,7 +42,7 @@ type DetermineNameExistsStruct struct {
 	Username string `json:"username" binding:"required"`
 }
 
-//SetUserInfoReceiveStruct 设置用户信息
+//SetUserInfoReceiveStruct 
 type SetUserInfoReceiveStruct struct {
 	Username  string    `json:"username" binding:"required"`
 	Gender    *int      `json:"gender" binding:"required"`
@@ -51,13 +51,13 @@ type SetUserInfoReceiveStruct struct {
 	Signature string    `json:"signature" binding:"required"`
 }
 
-//UpdateAvatarStruct 更新头像
+//UpdateAvatarStruct 
 type UpdateAvatarStruct struct {
 	ImgUrl string `json:"imgUrl" binding:"required"`
 	Tp     string `json:"type" binding:"required"`
 }
 
-//SaveLiveDataReceiveStruct 设置直播信息
+//SaveLiveDataReceiveStruct 
 type SaveLiveDataReceiveStruct struct {
 	Tp     string `json:"type" binding:"required"`
 	ImgUrl string `json:"imgUrl" binding:"required"`

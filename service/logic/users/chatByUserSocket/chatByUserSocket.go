@@ -15,7 +15,7 @@ import (
 )
 
 type Engine struct {
-	//视频房间
+	//video room
 	UserMapChannel map[uint]*UserChannel
 
 	Register     chan *UserChannel
@@ -27,7 +27,7 @@ type ChanInfo struct {
 	Data interface{}
 }
 
-//UserChannel 用户信息
+//UserChannel 
 type UserChannel struct {
 	UserInfo *userModel.User
 	Tid      uint
@@ -41,32 +41,32 @@ var Severe = &Engine{
 	Cancellation:   make(chan *UserChannel, 10),
 }
 
-// Start 启动服务
+// Start 
 func (e *Engine) Start() {
 	for {
 		select {
-		//注册事件
+		//registered event
 		case registerMsg := <-e.Register:
-			//添加成员
+			//Add Member
 			e.UserMapChannel[registerMsg.UserInfo.ID] = registerMsg
-			//清空未读消息
+			//Clear unread messages
 			cl := new(chatList.ChatsListInfo)
 			err := cl.UnreadEmpty(registerMsg.UserInfo.ID, registerMsg.Tid)
-			//添加在线记录
+			//Add Online Record
 			if _, ok := chatSocket.Severe.UserMapChannel[registerMsg.UserInfo.ID]; ok {
-				//聊天对象在线
+				//Chatting with someone online
 				chatSocket.Severe.UserMapChannel[registerMsg.UserInfo.ID].ChatList[registerMsg.Tid] = registerMsg.Socket
 			}
 			if err != nil {
-				global.Logger.Error("uid %d tid %d 清空未读消息数量失败", registerMsg.UserInfo.ID, registerMsg.Tid)
+				global.Logger.Error("uid %d tid %d Failed to clear the number of unread messages", registerMsg.UserInfo.ID, registerMsg.Tid)
 			}
 
 		case cancellationMsg := <-e.Cancellation:
-			//删除成员
+			//Delete member
 			delete(e.UserMapChannel, cancellationMsg.UserInfo.ID)
-			//删除在线记录
+			//Delete Online Record
 			if _, ok := chatSocket.Severe.UserMapChannel[cancellationMsg.UserInfo.ID]; ok {
-				//聊天对象在线
+				//Chatting with someone online
 				delete(chatSocket.Severe.UserMapChannel[cancellationMsg.UserInfo.ID].ChatList, cancellationMsg.Tid)
 			}
 		}
@@ -74,9 +74,9 @@ func (e *Engine) Start() {
 }
 
 func CreateChatByUserSocket(uid uint, tid uint, conn *websocket.Conn) (err error) {
-	//创建UserChannel
+	//Creating a UserChannel
 	userChannel := new(UserChannel)
-	//绑定ws
+	//Binding ws
 	userChannel.Socket = conn
 	user := &userModel.User{}
 	user.Find(uid)
@@ -91,7 +91,7 @@ func CreateChatByUserSocket(uid uint, tid uint, conn *websocket.Conn) (err error
 	return nil
 }
 
-//Writer 监听写入数据
+//Writer Listening for write data
 func (lre *UserChannel) Writer() {
 	for {
 		select {
@@ -101,9 +101,9 @@ func (lre *UserChannel) Writer() {
 	}
 }
 
-//Read 读取数据
+//Read retrieve data
 func (lre *UserChannel) Read() {
-	//链接断开进行离线
+	//Link broken for offline
 	defer func() {
 		Severe.Cancellation <- lre
 		err := lre.Socket.Close()
@@ -111,9 +111,9 @@ func (lre *UserChannel) Read() {
 			return
 		}
 	}()
-	//监听业务通道
+	//Listening to business channels
 	for {
-		//检查通达ping通
+		//Checking for Tonda ping passes
 		lre.Socket.PongHandler()
 		_, text, err := lre.Socket.ReadMessage()
 		if err != nil {
@@ -121,7 +121,7 @@ func (lre *UserChannel) Read() {
 		}
 		info := new(receive.Receive)
 		if err = json.Unmarshal(text, info); err != nil {
-			response.ErrorWs(lre.Socket, "消息格式错误")
+			response.ErrorWs(lre.Socket, "Message formatting error")
 		}
 		switch info.Type {
 		case "sendChatMsgText":
@@ -131,11 +131,11 @@ func (lre *UserChannel) Read() {
 }
 
 func (lre *UserChannel) NoticeMessage(tp string) {
-	//获取未读消息
+	//Get unread messages
 	nl := new(notice.Notice)
 	num := nl.GetUnreadNum(lre.UserInfo.ID)
 	if num == nil {
-		global.Logger.Error("通知id为%d用户未读消息失败", lre.UserInfo.ID)
+		global.Logger.Error("The notification id is%d User unread message failure", lre.UserInfo.ID)
 	}
 	lre.MsgList <- ChanInfo{
 		Type: consts.NoticeSocketTypeMessage,

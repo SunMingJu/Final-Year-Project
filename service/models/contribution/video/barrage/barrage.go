@@ -27,7 +27,7 @@ func (Barrage) TableName() string {
 	return "lv_video_contribution_barrage"
 }
 
-//VideoInfo 临时加一个video模型解决依赖循环
+//VideoInfo Temporarily add a video model to solve the dependency loop
 type VideoInfo struct {
 	common.PublicModel
 	Uid   uint           `json:"uid" gorm:"uid"`
@@ -48,7 +48,7 @@ func (b *Barrage) Create() bool {
 	return true
 }
 
-//GetVideoBarrageByID 查询视频弹幕
+//GetVideoBarrageByID Enquire about video pop-ups
 func (bl *BarragesList) GetVideoBarrageByID(id uint) bool {
 	err := global.Db.Where("video_id", id).Find(&bl).Error
 	if err != nil {

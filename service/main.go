@@ -13,9 +13,9 @@ import (
 )
 
 func main() {
-	//检查直播服务
+	//Inspection of live streaming services
 	testing.LiveSeverTesting()
-	//开启直播和视频socket
+	//Enable live streaming and video sockets
 	go liveSocket.Severe.Start()
 	go videoSocket.Severe.Start()
 	go noticeSocket.Severe.Start()

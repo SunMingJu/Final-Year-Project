@@ -17,7 +17,7 @@ func (LiveInfo) TableName() string {
 	return "lv_live_info"
 }
 
-//Update 更新数据
+//Update 
 func (li *LiveInfo) Update() bool {
 	err := global.Db.Where("uid", li.Uid).Updates(&li).Error
 	if err != nil {
@@ -26,7 +26,7 @@ func (li *LiveInfo) Update() bool {
 	return true
 }
 
-//Create 添加数据
+//Create 
 func (li *LiveInfo) Create() bool {
 	err := global.Db.Create(&li).Error
 	if err != nil {
@@ -44,7 +44,7 @@ func (li *LiveInfo) UpdateInfo() bool {
 	}
 }
 
-//IsExistByField 根据字段判断用户是否存在
+//IsExistByField 
 func (li *LiveInfo) IsExistByField(field string, value any) bool {
 	err := global.Db.Where(field, value).Find(&li).Error
 	if err != nil {

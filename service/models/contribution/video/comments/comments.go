@@ -27,7 +27,7 @@ func (Comment) TableName() string {
 	return "lv_video_contribution_comments"
 }
 
-//VideoInfo 临时加一个video模型解决依赖循环
+//VideoInfo Temporarily add a video model to solve the dependency loop
 type VideoInfo struct {
 	common.PublicModel
 	Uid   uint           `json:"uid" gorm:"uid"`
@@ -40,12 +40,12 @@ func (VideoInfo) TableName() string {
 	return "lv_video_contribution"
 }
 
-//Find 根据id 查询
+//Find Query by id
 func (c *Comment) Find(id uint) {
 	_ = global.Db.Where("id", id).Find(&c).Error
 }
 
-//Create 添加数据
+//Create Add Data
 func (c *Comment) Create() bool {
 	err := global.Db.Transaction(func(tx *gorm.DB) error {
 		videoInfo := new(VideoInfo)
@@ -57,11 +57,11 @@ func (c *Comment) Create() bool {
 		if err != nil {
 			return err
 		}
-		//消息通知
+		//message notification
 		if videoInfo.Uid == c.Uid {
 			return nil
 		}
-		//添加消息通知
+		//Add Message Notification
 		ne := new(notice.Notice)
 		err = ne.AddNotice(videoInfo.Uid, c.Uid, videoInfo.ID, notice.VideoComment, c.Context)
 		if err != nil {
@@ -76,7 +76,7 @@ func (c *Comment) Create() bool {
 	return true
 }
 
-//GetCommentFirstID 获取最顶层的评论id
+//GetCommentFirstID 
 func (c *Comment) GetCommentFirstID() uint {
 	_ = global.Db.Where("id", c.ID).Find(&c).Error
 	if c.CommentID != 0 {
@@ -86,7 +86,7 @@ func (c *Comment) GetCommentFirstID() uint {
 	return c.ID
 }
 
-//GetCommentUserID 获取评论id的user
+//GetCommentUserID 
 func (c *Comment) GetCommentUserID() uint {
 	_ = global.Db.Where("id", c.ID).Find(&c).Error
 	return c.Uid

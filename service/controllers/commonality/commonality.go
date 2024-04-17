@@ -11,27 +11,27 @@ type Controllers struct {
 	controllers.BaseControllers
 }
 
-//OssSTS 获取oss sts
+//OssSTS 
 func (c *Controllers) OssSTS(ctx *gin.Context) {
 	results, err := commonality.OssSTS()
 	c.Response(ctx, results, err)
 }
 
-//Upload  文件上传
+//Upload 
 func (c *Controllers) Upload(ctx *gin.Context) {
 	file, _ := ctx.FormFile("file")
 	results, err := commonality.Upload(file, ctx)
 	c.Response(ctx, results, err)
 }
 
-//UploadSlice  文件分片上传
+//UploadSlice  
 func (c *Controllers) UploadSlice(ctx *gin.Context) {
 	file, _ := ctx.FormFile("file")
 	results, err := commonality.UploadSlice(file, ctx)
 	c.Response(ctx, results, err)
 }
 
-//UploadCheck 验证文件是否已经上传
+//UploadCheck 
 func (c *Controllers) UploadCheck(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.UploadCheckStruct)); err == nil {
 		results, err := commonality.UploadCheck(rec)
@@ -39,7 +39,7 @@ func (c *Controllers) UploadCheck(ctx *gin.Context) {
 	}
 }
 
-//UploadMerge 合并分片上传保存
+//UploadMerge 
 func (c *Controllers) UploadMerge(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.UploadMergeStruct)); err == nil {
 		results, err := commonality.UploadMerge(rec)
@@ -47,7 +47,7 @@ func (c *Controllers) UploadMerge(ctx *gin.Context) {
 	}
 }
 
-//UploadingMethod 获取上传文件配置
+//UploadingMethod 
 func (c *Controllers) UploadingMethod(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.UploadingMethodStruct)); err == nil {
 		results, err := commonality.UploadingMethod(rec)
@@ -55,7 +55,7 @@ func (c *Controllers) UploadingMethod(ctx *gin.Context) {
 	}
 }
 
-//UploadingDir 获取上传文件保存地址
+//UploadingDir 
 func (c *Controllers) UploadingDir(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.UploadingDirStruct)); err == nil {
 		results, err := commonality.UploadingDir(rec)
@@ -63,7 +63,7 @@ func (c *Controllers) UploadingDir(ctx *gin.Context) {
 	}
 }
 
-//GetFullPathOfImage 获取图片完整路径
+//GetFullPathOfImage 
 func (c *Controllers) GetFullPathOfImage(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetFullPathOfImageMethodStruct)); err == nil {
 		results, err := commonality.GetFullPathOfImage(rec)
@@ -71,7 +71,7 @@ func (c *Controllers) GetFullPathOfImage(ctx *gin.Context) {
 	}
 }
 
-//Search 搜索接口
+//Search 
 func (c *Controllers) Search(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.SearchStruct)); err == nil {

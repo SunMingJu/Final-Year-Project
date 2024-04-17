@@ -11,7 +11,7 @@ type LoginControllers struct {
 	controllers.BaseControllers
 }
 
-//WxAuthorization 微信快捷登入
+//WxAuthorization 
 func (lg LoginControllers) WxAuthorization(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.WxAuthorizationReceiveStruct)); err == nil {
 		results, err := users.WxAuthorization(rec)
@@ -19,7 +19,7 @@ func (lg LoginControllers) WxAuthorization(ctx *gin.Context) {
 	}
 }
 
-//Login 登入
+//Login 
 func (lg LoginControllers) Login(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.LoginReceiveStruct)); err == nil {
 		results, err := users.Login(rec)
@@ -27,7 +27,7 @@ func (lg LoginControllers) Login(ctx *gin.Context) {
 	}
 }
 
-//Register 注册
+//Register 
 func (lg LoginControllers) Register(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.RegisterReceiveStruct)); err == nil {
 		results, err := users.Register(rec)
@@ -35,7 +35,7 @@ func (lg LoginControllers) Register(ctx *gin.Context) {
 	}
 }
 
-//SendEmailVerCode 获取验证码(注册)
+//SendEmailVerCode)
 func (lg LoginControllers) SendEmailVerCode(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.SendEmailVerCodeReceiveStruct)); err == nil {
 		results, err := users.SendEmailVerCode(rec)
@@ -43,7 +43,7 @@ func (lg LoginControllers) SendEmailVerCode(ctx *gin.Context) {
 	}
 }
 
-//SendEmailVerCodeByForget 获取邮箱验证码(忘记密码)
+//SendEmailVerCodeByForget 
 func (lg LoginControllers) SendEmailVerCodeByForget(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.SendEmailVerCodeReceiveStruct)); err == nil {
 		results, err := users.SendEmailVerCodeByForget(rec)
@@ -51,7 +51,7 @@ func (lg LoginControllers) SendEmailVerCodeByForget(ctx *gin.Context) {
 	}
 }
 
-//Forget 找回密码
+//Forget 
 func (lg LoginControllers) Forget(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.ForgetReceiveStruct)); err == nil {
 		results, err := users.Forget(rec)

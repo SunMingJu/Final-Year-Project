@@ -27,7 +27,7 @@ type ChanInfo struct {
 	Data interface{}
 }
 
-//UserChannel 用户信息
+//UserChannel 
 type UserChannel struct {
 	UserInfo *userModel.User
 	Socket   *websocket.Conn
@@ -41,37 +41,37 @@ var Severe = &Engine{
 	Cancellation:   make(chan *UserChannel, 10),
 }
 
-// Start 启动服务
+// Start 
 func (e *Engine) Start() {
 	for {
 		select {
-		//注册事件
+		//registered event
 		case registerMsg := <-e.Register:
-			//添加成员
+			//Add Member
 			e.UserMapChannel[registerMsg.UserInfo.ID] = registerMsg
-			//进行未读消息通知
+			//Perform unread message notification
 			cl := new(chatList.ChatsListInfo)
 			unreadNum := cl.GetUnreadNumber(registerMsg.UserInfo.ID)
 			if *unreadNum > 0 {
-				//存在未读消息 直接推送聊天列表和记录
+				//Unread Messages Direct Push Chat List and Records
 				list, err := userLogic.GetChatList(registerMsg.UserInfo.ID)
 				if err != nil {
-					fmt.Println("查询错误")
+					fmt.Println("enquiry error")
 					return
 				}
 				response.SuccessWs(registerMsg.Socket, consts.ChatOnlineUnreadNotice, list)
 			}
 		case cancellationMsg := <-e.Cancellation:
-			//删除成员
+			//Delete member
 			delete(e.UserMapChannel, cancellationMsg.UserInfo.ID)
 		}
 	}
 }
 
 func CreateChatSocket(uid uint, conn *websocket.Conn) (err error) {
-	//创建UserChannel
+	//Creating a UserChannel
 	userChannel := new(UserChannel)
-	//绑定ws
+	//Binding ws
 	userChannel.Socket = conn
 	user := &userModel.User{}
 	user.Find(uid)
@@ -87,7 +87,7 @@ func CreateChatSocket(uid uint, conn *websocket.Conn) (err error) {
 
 }
 
-//Writer 监听写入数据
+//Writer Listening for write data
 func (lre *UserChannel) Writer() {
 	for {
 		select {
@@ -97,9 +97,9 @@ func (lre *UserChannel) Writer() {
 	}
 }
 
-//Read 读取数据
+//Read 
 func (lre *UserChannel) Read() {
-	//链接断开进行离线
+	//Link broken for offline
 	defer func() {
 		Severe.Cancellation <- lre
 		err := lre.Socket.Close()
@@ -107,9 +107,9 @@ func (lre *UserChannel) Read() {
 			return
 		}
 	}()
-	//监听业务通道
+	//Listening to business channels
 	for {
-		//检查通达ping通
+		//Checking for Tonda ping passes
 		lre.Socket.PongHandler()
 		_, text, err := lre.Socket.ReadMessage()
 		if err != nil {
@@ -117,7 +117,7 @@ func (lre *UserChannel) Read() {
 		}
 		info := new(receive.Receive)
 		if err = json.Unmarshal(text, info); err != nil {
-			response.ErrorWs(lre.Socket, "消息格式错误")
+			response.ErrorWs(lre.Socket, "Message formatting error")
 		}
 		switch info.Type {
 
@@ -126,11 +126,11 @@ func (lre *UserChannel) Read() {
 }
 
 func (lre *UserChannel) NoticeMessage(tp string) {
-	//获取未读消息
+	//Get unread messages
 	nl := new(notice.Notice)
 	num := nl.GetUnreadNum(lre.UserInfo.ID)
 	if num == nil {
-		global.Logger.Error("通知id为%d用户未读消息失败", lre.UserInfo.ID)
+		global.Logger.Error("The notification id is%d User unread message failure", lre.UserInfo.ID)
 	}
 	lre.MsgList <- ChanInfo{
 		Type: consts.NoticeSocketTypeMessage,

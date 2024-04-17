@@ -15,10 +15,10 @@ import (
 )
 
 func GetLiveRoom(uid uint) (results interface{}, err error) {
-	//请求直播服务器
+	//Request Live Server
 	url := global.Config.LiveConfig.Agreement + "://" + global.Config.LiveConfig.IP + ":" + global.Config.LiveConfig.Api + "/control/get?room="
 	url = url + strconv.Itoa(int(uid))
-	// 创建http get请求
+	// Create http get request
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -29,14 +29,14 @@ func GetLiveRoom(uid uint) (results interface{}, err error) {
 
 		}
 	}(resp.Body)
-	// 解析http请求中body 数据到我们定义的结构体中
+	// Parses the body data from the http request into the structure we defined.
 	ReqGetRoom := new(receive.ReqGetRoom)
 	decoder := json.NewDecoder(resp.Body)
 	if err := decoder.Decode(ReqGetRoom); err != nil {
 		return nil, err
 	}
 	if ReqGetRoom.Status != 200 {
-		return nil, fmt.Errorf("获取直播地址失败")
+		return nil, fmt.Errorf("Failed to get live address")
 	}
 	return response.GetLiveRoomResponse("rtmp://"+global.Config.LiveConfig.IP+":"+global.Config.LiveConfig.RTMP+"/live", ReqGetRoom.Data), nil
 }
@@ -47,18 +47,18 @@ func GetLiveRoomInfo(data *receive.GetLiveRoomInfoReceiveStruct, uid uint) (resu
 	flv := global.Config.LiveConfig.Agreement + "://" + global.Config.LiveConfig.IP + ":" + global.Config.LiveConfig.FLV + "/live/" + strconv.Itoa(int(data.RoomID)) + ".flv"
 
 	if uid > 0 {
-		//添加历史记录
+		//Add History
 		rd := new(record.Record)
 		err = rd.AddLiveRecord(uid, data.RoomID)
 		if err != nil {
-			return nil, fmt.Errorf("添加历史记录失败")
+			return nil, fmt.Errorf("Failed to add history")
 		}
 	}
 	return response.GetLiveRoomInfoResponse(userInfo, flv), nil
 }
 
 func GetBeLiveList() (results interface{}, err error) {
-	//取开通播放用户id
+	//Takes the id of the user who opens the playlist.
 	url := global.Config.LiveConfig.Agreement + "://" + global.Config.LiveConfig.IP + ":" + global.Config.LiveConfig.Api + "/stat/livestat"
 	resp, err := http.Get(url)
 	if err != nil {
@@ -70,16 +70,16 @@ func GetBeLiveList() (results interface{}, err error) {
 
 		}
 	}(resp.Body)
-	// 解析http请求中body 数据到我们定义的结构体中
+	// Parses the body data from the http request into the structure we defined.
 	livestat := new(receive.LivestatRes)
 	decoder := json.NewDecoder(resp.Body)
 	if err := decoder.Decode(livestat); err != nil {
-		return nil, fmt.Errorf("解析失败")
+		return nil, fmt.Errorf("parsing failure")
 	}
 	if livestat.Status != 200 {
-		return nil, fmt.Errorf("获取直播列表失败")
+		return nil, fmt.Errorf("Failed to get live list")
 	}
-	//获取live中正在值得列表
+	//Get the list of active values in live
 	keys := make([]uint, 0)
 	for _, kv := range livestat.Data.Publishers {
 		ka := strings.Split(kv.Key, "live/")
@@ -90,7 +90,7 @@ func GetBeLiveList() (results interface{}, err error) {
 	if len(keys) > 0 {
 		err = userList.GetBeLiveList(keys)
 		if err != nil {
-			return nil, fmt.Errorf("查询失败")
+			return nil, fmt.Errorf("Enquiry Failure")
 		}
 	}
 	return response.GetBeLiveListResponse(userList), nil

@@ -13,35 +13,35 @@ import (
 
 func LogMiddleWare() gin.HandlerFunc {
 	var (
-		logFilePath = "./runtime/log" //文件存储路径
+		logFilePath = "./runtime/log" //File storage path
 		logFileName = "system.log"
 	)
-	// 日志文件
+	// log file
 	fileName := path.Join(logFilePath, logFileName)
-	// 写入文件
+	// write to a file
 	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
-		fmt.Println("打开/写入文件失败", err)
+		fmt.Println("Failure to open/write file", err)
 		return nil
 	}
-	// 实例化
+	// instantiated
 	logger := logrus.New()
-	// 日志级别
+	// Log level
 	logger.SetLevel(logrus.DebugLevel)
-	// 设置输出
+	// Setting the output
 	logger.Out = file
-	// 设置 rotate logs,实现文件分割
+	// Set rotate logs to split files.
 	logWriter, err := rotateLogs.New(
-		// 分割后的文件名称
+		// Split file name
 		fileName+".%Y%m%d.log",
-		// 生成软链，指向最新日志文件
+		// Generate a soft link to the latest log file
 		rotateLogs.WithLinkName(fileName),
-		// 设置最大保存时间(7天)
-		rotateLogs.WithMaxAge(7*24*time.Hour), //以hour为单位的整数
-		// 设置日志切割时间间隔(1天)
+		// Setting the maximum retention time (7 days)
+		rotateLogs.WithMaxAge(7*24*time.Hour), //Integer in hours
+		// Set log cutting interval (1 day)
 		rotateLogs.WithRotationTime(1*time.Hour),
 	)
-	// hook机制的设置
+	// Setting up the hook mechanism
 	writerMap := lfshook.WriterMap{
 		logrus.InfoLevel:  logWriter,
 		logrus.FatalLevel: logWriter,
@@ -50,21 +50,21 @@ func LogMiddleWare() gin.HandlerFunc {
 		logrus.ErrorLevel: logWriter,
 		logrus.PanicLevel: logWriter,
 	}
-	//给loggers添加hook
+	//Adding a hook to loggers
 	logger.AddHook(lfshook.NewHook(writerMap, &logrus.JSONFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",
 	}))
 	return func(c *gin.Context) {
 		c.Next()
-		//请求方式
+		//request method
 		method := c.Request.Method
-		//请求路由
+		//Request Routing
 		reqUrl := c.Request.RequestURI
-		//状态码
+		//status code
 		statusCode := c.Writer.Status()
-		//请求ip
+		//Request ip
 		clientIP := c.ClientIP()
-		// 打印日志
+		// Print Log
 		logger.WithFields(logrus.Fields{
 			"status_code": statusCode,
 			"client_ip":   clientIP,

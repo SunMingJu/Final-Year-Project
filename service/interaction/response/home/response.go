@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-//首页轮播图
+//Home Rotator
 type rotographInfo struct {
 	Title string `json:"title"`
 	Cover string `json:"cover"`
@@ -17,7 +17,7 @@ type rotographInfo struct {
 }
 type rotographInfoList []rotographInfo
 
-//VideoInfo 首页视频
+//VideoInfo 
 type VideoInfo struct {
 	ID            uint      `json:"id"`
 	Uid           uint      `json:"uid" `
@@ -41,7 +41,7 @@ type GetHomeInfoResponse struct {
 }
 
 func (r *GetHomeInfoResponse) Response(rotographList *rotograph.List, videoList *video.VideosContributionList) {
-	//处理轮播图
+	//Handling rotating charts
 	rl := make(rotographInfoList, 0)
 	for _, rk := range *rotographList {
 		cover, _ := conversion.FormattingJsonSrc(rk.Cover)
@@ -55,7 +55,7 @@ func (r *GetHomeInfoResponse) Response(rotographList *rotograph.List, videoList 
 		rl = append(rl, info)
 	}
 	r.Rotograph = rl
-	//处理视频
+	//Processing video
 	vl := make(videoInfoList, 0)
 	for _, lk := range *videoList {
 		cover, _ := conversion.FormattingJsonSrc(lk.Cover)

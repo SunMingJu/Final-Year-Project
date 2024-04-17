@@ -16,7 +16,7 @@ func (UploadMethod) TableName() string {
 	return "lv_upload_method"
 }
 
-//IsExistByField 根据字段判断用户是否存在
+//IsExistByField Determine if a user exists based on a field
 func (um *UploadMethod) IsExistByField(field string, value any) bool {
 	err := global.Db.Where(field, value).Find(&um).Error
 	if err != nil {

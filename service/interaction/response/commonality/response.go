@@ -29,7 +29,7 @@ func UploadingDirResponse(dir string) interface{} {
 	}
 }
 
-//VideoInfo 首页视频
+//VideoInfo 
 type VideoInfo struct {
 	ID            uint      `json:"id"`
 	Uid           uint      `json:"uid" `
@@ -48,7 +48,7 @@ type VideoInfo struct {
 type videoInfoList []VideoInfo
 
 func SearchVideoResponse(videoList *video.VideosContributionList) (interface{}, error) {
-	//处理视频
+	//Processing video
 	vl := make(videoInfoList, 0)
 	for _, lk := range *videoList {
 		cover, _ := conversion.FormattingJsonSrc(lk.Cover)

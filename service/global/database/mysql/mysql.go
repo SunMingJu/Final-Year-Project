@@ -11,16 +11,16 @@ func ReturnsInstance() *gorm.DB {
 	var err error
 
 	var mysqlConfig = config.Config.SqlConfig
-	// 创建链接
+	// Create a link
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true&loc=Local", mysqlConfig.User, mysqlConfig.Password, mysqlConfig.IP, mysqlConfig.Port, mysqlConfig.Database)
 	Db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		//Logger: logger.Default.LogMode(logger.Info), 打印所有sql
+		//Logger: logger.Default.LogMode(logger.Info), Print all sql
 	})
 	if err != nil {
-		fmt.Printf("数据库链接错误- %v \n", err)
+		fmt.Printf("Database link error - %v \n", err)
 	}
 	if Db.Error != nil {
-		fmt.Printf("数据库错误- %v \n", Db.Error)
+		fmt.Printf("Database error - %v \n", Db.Error)
 	}
 	return Db
 }

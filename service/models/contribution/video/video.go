@@ -38,7 +38,7 @@ func (VideosContribution) TableName() string {
 	return "lv_video_contribution"
 }
 
-//Create 添加数据
+//Create 
 func (vc *VideosContribution) Create() bool {
 	err := global.Db.Create(&vc).Error
 	if err != nil {
@@ -47,7 +47,7 @@ func (vc *VideosContribution) Create() bool {
 	return true
 }
 
-//Delete 删除数据
+//Delete 
 func (vc *VideosContribution) Delete(id uint, uid uint) bool {
 	if global.Db.Where("id", id).Find(&vc).Error != nil {
 		return false
@@ -61,7 +61,7 @@ func (vc *VideosContribution) Delete(id uint, uid uint) bool {
 	return true
 }
 
-//Update 更新数据
+//Update 
 func (vc *VideosContribution) Update(info map[string]interface{}) bool {
 	err := global.Db.Model(vc).Updates(info).Error
 	if err != nil {
@@ -70,14 +70,14 @@ func (vc *VideosContribution) Update(info map[string]interface{}) bool {
 	return true
 }
 
-//FindByID 根据查询
+//FindByID 
 func (vc *VideosContribution) FindByID(id uint) error {
 	return global.Db.Where("id", id).Preload("Likes").Preload("Comments", func(db *gorm.DB) *gorm.DB {
 		return db.Preload("UserInfo").Order("created_at desc")
 	}).Preload("Barrage").Preload("UserInfo").Order("created_at desc").Find(&vc).Error
 }
 
-//GetVideoComments 获取评论
+//GetVideoComments 
 func (vc *VideosContribution) GetVideoComments(ID uint, info common.PageInfo) bool {
 	err := global.Db.Where("id", ID).Preload("Likes").Preload("Comments", func(db *gorm.DB) *gorm.DB {
 		return db.Preload("UserInfo").Order("created_at desc").Limit(info.Size).Offset((info.Page - 1) * info.Size)
@@ -88,17 +88,17 @@ func (vc *VideosContribution) GetVideoComments(ID uint, info common.PageInfo) bo
 	return true
 }
 
-//Watch 添加播放
+//Watch 
 func (vc *VideosContribution) Watch(id uint) error {
 	return global.Db.Model(vc).Where("id", id).Updates(map[string]interface{}{"heat": gorm.Expr("Heat  + ?", 1)}).Error
 }
 
-//GetVideoListBySpace 获取个人空间视频列表
+//GetVideoListBySpace 
 func (vl *VideosContributionList) GetVideoListBySpace(id uint) error {
 	return global.Db.Where("uid", id).Preload("Likes").Preload("Comments").Preload("Barrage").Order("created_at desc").Find(&vl).Error
 }
 
-//GetDiscussVideoCommentList 获取个人发布的视频和评论信息
+//GetDiscussVideoCommentList 
 func (vl *VideosContributionList) GetDiscussVideoCommentList(id uint) error {
 	return global.Db.Where("uid", id).Preload("Comments").Find(&vl).Error
 }
@@ -107,7 +107,6 @@ func (vl *VideosContributionList) GetVideoManagementList(info common.PageInfo, u
 	return global.Db.Where("uid", uid).Preload("Likes").Preload("Comments").Preload("Barrage").Limit(info.Size).Offset((info.Page - 1) * info.Size).Order("created_at desc").Find(&vl).Error
 }
 func (vl *VideosContributionList) GetHoneVideoList(info common.PageInfo) error {
-	//首页加载13个铺满后续15个
 	var offset int
 	if info.Page == 1 {
 		info.Size = 11
@@ -118,7 +117,7 @@ func (vl *VideosContributionList) GetHoneVideoList(info common.PageInfo) error {
 	return global.Db.Preload("Likes").Preload("Comments").Preload("Barrage").Preload("UserInfo").Limit(info.Size).Offset(offset).Order("created_at desc").Find(&vl).Error
 }
 
-//GetRecommendList 获取推荐视频
+//GetRecommendList 
 func (vl *VideosContributionList) GetRecommendList() error {
 	return global.Db.Preload("Likes").Preload("Comments").Preload("Barrage").Preload("UserInfo").Order("created_at desc").Limit(7).Find(&vl).Error
 }

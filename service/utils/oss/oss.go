@@ -17,16 +17,14 @@ import (
 	"time"
 )
 
-// 请填写您的AccessKeyId。
+
 var accessKeyId = global.Config.AliyunOss.AccessKeyId
 
-// 请填写您的AccessKeySecret。
+
 var accessKeySecret = global.Config.AliyunOss.AccessKeySecret
 
-// host的格式为 bucket-name.endpoint ，请替换为您的真实信息。
 var host = global.Config.AliyunOss.Host
 
-// callbackUrl为 上传回调服务器的URL，请将下面的IP和Port配置为您自己的真实信息。
 var callbackUrl = global.Config.AliyunOss.CallbackUrl
 
 var roleArn = global.Config.AliyunOss.RoleArn
@@ -37,7 +35,7 @@ var durationSeconds = global.Config.AliyunOss.DurationSeconds
 
 var endpoint = global.Config.AliyunOss.Endpoint
 
-// 用户上传文件时指定的前缀。
+
 //var uploadDir string = "upload/img/user/liveCover/"
 var expireTime int64 = 30
 
@@ -62,13 +60,12 @@ type PolicyToken struct {
 }
 
 func GetPolicyToken(_interface string) (results interface{}, err error) {
-	//获取当前接口对于的储存路径
 	method := new(uploadMethod.UploadMethod)
 	if !method.IsExistByField("interface", _interface) {
-		return nil, fmt.Errorf("上传接口不存在")
+		return nil, fmt.Errorf("Upload interface does not exist")
 	}
 	if len(method.Path) == 0 {
-		return nil, fmt.Errorf("请联系管理员设置接口保存路径")
+		return nil, fmt.Errorf("Please contact the administrator to set the interface save path")
 	}
 	uploadDir := method.Path
 	now := time.Now().Unix()
@@ -125,12 +122,9 @@ func GetPolicyToken(_interface string) (results interface{}, err error) {
 ///**
 func CreateClient(accessKeyId *string, accessKeySecret *string) (_result *sts20150401.Client, _err error) {
 	config := &openapi.Config{
-		// 必填，您的 AccessKey ID
 		AccessKeyId: accessKeyId,
-		// 必填，您的 AccessKey Secret
 		AccessKeySecret: accessKeySecret,
 	}
-	// 访问的域名
 	config.Endpoint = tea.String(endpoint)
 	_result = &sts20150401.Client{}
 	_result, _err = sts20150401.NewClient(config)
@@ -152,13 +146,12 @@ func GteStsInfo() (*sts20150401.AssumeRoleResponseBodyCredentials, error) {
 		if r := tea.Recover(recover()); r != nil {
 		}
 	}()
-	// 复制代码运行请自行打印 API 的返回值
 	res, err := client.AssumeRoleWithOptions(assumeRoleRequest, runtime)
 	if err != nil {
 		return nil, err
 	}
 	if *res.StatusCode != 200 {
-		return nil, fmt.Errorf("错误的状态码: %d", res.StatusCode)
+		return nil, fmt.Errorf("error status code: %d", res.StatusCode)
 	}
 	return res.Body.Credentials, nil
 }

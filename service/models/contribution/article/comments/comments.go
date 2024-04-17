@@ -40,12 +40,12 @@ func (Article) TableName() string {
 	return "lv_article_contribution"
 }
 
-//Find 根据id 查询
+//Find Query by id
 func (c *Comment) Find(id uint) {
 	_ = global.Db.Where("id", id).Find(&c).Error
 }
 
-//Create 添加数据
+//Create Add Data
 func (c *Comment) Create() bool {
 
 	err := global.Db.Transaction(func(tx *gorm.DB) error {
@@ -58,11 +58,11 @@ func (c *Comment) Create() bool {
 		if err != nil {
 			return err
 		}
-		//消息通知
+		//message notification
 		if articleInfo.Uid == c.Uid {
 			return nil
 		}
-		//添加消息通知
+		//Add Message Notification
 		ne := new(notice.Notice)
 		err = ne.AddNotice(articleInfo.Uid, c.Uid, articleInfo.ID, notice.ArticleComment, c.Context)
 		if err != nil {
@@ -77,7 +77,7 @@ func (c *Comment) Create() bool {
 	return true
 }
 
-//GetCommentFirstID 获取最顶层的评论id
+//GetCommentFirstID Get the topmost comment id
 func (c *Comment) GetCommentFirstID() uint {
 	_ = global.Db.Where("id", c.ID).Find(&c).Error
 	if c.CommentID != 0 {
@@ -87,7 +87,7 @@ func (c *Comment) GetCommentFirstID() uint {
 	return c.ID
 }
 
-//GetCommentUserID 获取评论id的user
+//GetCommentUserID Get user with comment id
 func (c *Comment) GetCommentUserID() uint {
 	_ = global.Db.Where("id", c.ID).Find(&c).Error
 	return c.Uid

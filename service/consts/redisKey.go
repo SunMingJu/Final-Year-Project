@@ -2,21 +2,21 @@ package consts
 
 const (
 	/*
-		RegEmailVerCode	注册验证码
-		RegEmailVerCodeByForget 找回密码验证码
+		RegEmailVerCode	
+		RegEmailVerCodeByForget Retrieve password verification code
 	*/
 	RegEmailVerCode                       = "regEmailVerCode"
 	RegEmailVerCodeByForget               = "regEmailVerCodeByForget"
 	EmailVerificationCodeByChangePassword = "emailVerificationCodeByChangePassword"
 
 	/*
-		RegEmailVerCode	注册验证码
-		RegEmailVerCodeByForget 找回密码验证码
+		RegEmailVerCode	Registration Verification Code
+		RegEmailVerCodeByForget Retrieve password verification code
 	*/
 	LiveRoomHistoricalBarrage = "liveRoomHistoricalBarrage_"
 
-	//LiveRoom 直播房间
+	//LiveRoom broadcasting room
 	LiveRoom = "liveRoom_"
-	//VideoWatchByID 观看视频
+	//VideoWatchByID Watch the video
 	VideoWatchByID = "videoWatchBy_"
 )

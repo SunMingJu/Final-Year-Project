@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//CreateArticleContribution 发布专栏
+//CreateArticleContribution 
 func (c Controllers) CreateArticleContribution(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.CreateArticleContributionReceiveStruct)); err == nil {
@@ -16,7 +16,7 @@ func (c Controllers) CreateArticleContribution(ctx *gin.Context) {
 	}
 }
 
-//UpdateArticleContribution 更新专栏
+//UpdateArticleContribution 
 func (c Controllers) UpdateArticleContribution(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.UpdateArticleContributionReceiveStruct)); err == nil {
@@ -25,7 +25,7 @@ func (c Controllers) UpdateArticleContribution(ctx *gin.Context) {
 	}
 }
 
-//DeleteArticleByID 删除专栏
+//DeleteArticleByID 
 func (c Controllers) DeleteArticleByID(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DeleteArticleByIDReceiveStruct)); err == nil {
@@ -34,7 +34,7 @@ func (c Controllers) DeleteArticleByID(ctx *gin.Context) {
 	}
 }
 
-//GetArticleContributionList 首页查询专栏
+//GetArticleContributionList 
 func (c Controllers) GetArticleContributionList(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetArticleContributionListReceiveStruct)); err == nil {
 		results, err := contribution.GetArticleContributionList(rec)
@@ -42,7 +42,7 @@ func (c Controllers) GetArticleContributionList(ctx *gin.Context) {
 	}
 }
 
-//GetArticleContributionListByUser 查询用户发布的专栏
+//GetArticleContributionListByUser 
 func (c Controllers) GetArticleContributionListByUser(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetArticleContributionListByUserReceiveStruct)); err == nil {
 		results, err := contribution.GetArticleContributionListByUser(rec)
@@ -50,7 +50,7 @@ func (c Controllers) GetArticleContributionListByUser(ctx *gin.Context) {
 	}
 }
 
-//GetArticleContributionByID 查询专栏信息根据ID
+//GetArticleContributionByID 
 func (c Controllers) GetArticleContributionByID(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetArticleContributionByIDReceiveStruct)); err == nil {
@@ -59,7 +59,7 @@ func (c Controllers) GetArticleContributionByID(ctx *gin.Context) {
 	}
 }
 
-//ArticlePostComment 发布评论
+//ArticlePostComment 
 func (c Controllers) ArticlePostComment(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.ArticlesPostCommentReceiveStruct)); err == nil {
@@ -68,7 +68,7 @@ func (c Controllers) ArticlePostComment(ctx *gin.Context) {
 	}
 }
 
-//GetArticleComment 获取文章评论
+//GetArticleComment 
 func (c Controllers) GetArticleComment(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetArticleCommentReceiveStruct)); err == nil {
 		results, err := contribution.GetArticleComment(rec)
@@ -76,19 +76,19 @@ func (c Controllers) GetArticleComment(ctx *gin.Context) {
 	}
 }
 
-//GetArticleClassificationList 获取视频分类
+//GetArticleClassificationList 
 func (c Controllers) GetArticleClassificationList(ctx *gin.Context) {
 	results, err := contribution.GetArticleClassificationList()
 	c.Response(ctx, results, err)
 }
 
-//GetArticleTotalInfo 获取文章相关总和信息
+//GetArticleTotalInfo 
 func (c Controllers) GetArticleTotalInfo(ctx *gin.Context) {
 	results, err := contribution.GetArticleTotalInfo()
 	c.Response(ctx, results, err)
 }
 
-//GetArticleManagementList 创作中心获取专栏稿件列表
+//GetArticleManagementList 
 func (c Controllers) GetArticleManagementList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetArticleManagementListReceiveStruct)); err == nil {

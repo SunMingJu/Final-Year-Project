@@ -26,12 +26,12 @@ func (Record) TableName() string {
 	return "lv_users_record"
 }
 
-//ClearRecord 清空历史记录
+//ClearRecord 
 func (r *Record) ClearRecord(uid uint) error {
 	return global.Db.Where("uid", uid).Delete(r).Error
 }
 
-//DeleteRecordByID 删除历史记录根据id
+//DeleteRecordByID 
 func (r *Record) DeleteRecordByID(id uint, uid uint) error {
 	err := global.Db.Where("id", id).Find(r).Error
 	if err != nil {
@@ -49,13 +49,13 @@ func (r *Record) AddVideoRecord(uid uint, to uint) error {
 		return err
 	}
 	if r.ID <= 0 {
-		//创建记录
+		//create record
 		r.Uid = uid
 		r.Type = "video"
 		r.ToId = to
 		return global.Db.Create(r).Error
 	} else {
-		//更新记录
+		//update record
 		return global.Db.Where("id", r.ID).Updates(r).Error
 	}
 }
@@ -65,13 +65,13 @@ func (r *Record) AddArticleRecord(uid uint, to uint) error {
 		return err
 	}
 	if r.ID <= 0 {
-		//创建记录
+		//create record
 		r.Uid = uid
 		r.Type = "article"
 		r.ToId = to
 		return global.Db.Create(r).Error
 	} else {
-		//更新记录
+		//update record
 		return global.Db.Where("id", r.ID).Updates(r).Error
 	}
 }
@@ -82,13 +82,13 @@ func (r *Record) AddLiveRecord(uid uint, to uint) error {
 		return err
 	}
 	if r.ID <= 0 {
-		//创建记录
+		//create record
 		r.Uid = uid
 		r.Type = "live"
 		r.ToId = to
 		return global.Db.Create(r).Error
 	} else {
-		//更新记录
+		//update record
 		return global.Db.Where("id", r.ID).Updates(r).Error
 	}
 }

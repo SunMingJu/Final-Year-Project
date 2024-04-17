@@ -23,10 +23,10 @@ type Notice struct {
 }
 
 var (
-	VideoComment   = "videoComment"   //视频评论
-	VideoLike      = "videoLike"      //视频点赞
-	ArticleComment = "articleComment" //文章评论
-	ArticleLike    = "articleLike"    //文章点赞
+	VideoComment   = "videoComment"   
+	VideoLike      = "videoLike"      
+	ArticleComment = "articleComment" 
+	ArticleLike    = "articleLike"    
 
 )
 
@@ -36,7 +36,7 @@ func (Notice) TableName() string {
 	return "lv_users_notice"
 }
 
-//VideoInfo 临时加一个video模型解决依赖循环
+//VideoInfo 
 type VideoInfo struct {
 	common.PublicModel
 	Uid   uint           `json:"uid" gorm:"uid"`

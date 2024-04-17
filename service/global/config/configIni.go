@@ -16,7 +16,7 @@ type ConfigStruct struct {
 }
 
 func init() {
-	//避免全局重复导包
+	//Avoiding global duplication of package guides
 	ReturnsInstance()
 }
 
@@ -70,43 +70,43 @@ func ReturnsInstance() *ConfigStruct {
 	Config.SqlConfig = &SqlConfigStruct{}
 	cfg, err = ini.Load("config/config.ini")
 	if err != nil {
-		fmt.Printf("配置文件不存在,请检查环境: %v \n", err)
+		fmt.Printf("Configuration file does not exist, please check the environment. %v \n", err)
 		os.Exit(1)
 	}
 
 	err = cfg.Section("mysql").MapTo(Config.SqlConfig)
 	if err != nil {
-		fmt.Printf("Mysql读取配置文件错误: %v \n", err)
+		fmt.Printf("Mysql Read Configuration File Error. %v \n", err)
 		os.Exit(1)
 	}
 	Config.RConfig = &RConfigStruct{}
 	err = cfg.Section("redis").MapTo(Config.RConfig)
 	if err != nil {
-		fmt.Printf("Redis读取配置文件错误: %v \n", err)
+		fmt.Printf("Redis Read Configuration File Error. %v \n", err)
 		os.Exit(1)
 	}
 	Config.ProjectConfig = &ProjectConfigStruct{}
 	err = cfg.Section("project").MapTo(Config.ProjectConfig)
 	if err != nil {
-		fmt.Printf("Project读取配置文件错误: %v \n", err)
+		fmt.Printf("Project read configuration file error. %v \n", err)
 		os.Exit(1)
 	}
 
 	Config.LiveConfig = &LiveConfigStruct{}
 	err = cfg.Section("live").MapTo(Config.LiveConfig)
 	if err != nil {
-		fmt.Printf("Live读取配置文件错误: %v \n", err)
+		fmt.Printf("Live read configuration file error. %v \n", err)
 		os.Exit(1)
 	}
 
 	Config.AliyunOss = &AliyunOss{}
 	err = cfg.Section("aliyunOss").MapTo(Config.AliyunOss)
 	if err != nil {
-		fmt.Printf("Live读取配置文件错误: %v \n", err)
+		fmt.Printf("Live read configuration file error. %v \n", err)
 		os.Exit(1)
 	}
 
-	//判断是否为正式环境
+	//Determining whether it is a formal environment
 	if Config.ProjectConfig.UrlStates {
 		Config.ProjectUrl = Config.ProjectConfig.Url
 	} else {

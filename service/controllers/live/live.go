@@ -11,14 +11,14 @@ type LivesControllers struct {
 	controllers.BaseControllers
 }
 
-//GetLiveRoom 获取直播房间
+//GetLiveRoom 
 func (lv LivesControllers) GetLiveRoom(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := live.GetLiveRoom(uid)
 	lv.Response(ctx, results, err)
 }
 
-//GetLiveRoomInfo 获取直播房间信息
+//GetLiveRoomInfo 
 func (lv LivesControllers) GetLiveRoomInfo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetLiveRoomInfoReceiveStruct)); err == nil {
@@ -27,7 +27,7 @@ func (lv LivesControllers) GetLiveRoomInfo(ctx *gin.Context) {
 	}
 }
 
-//GetBeLiveList 获取正在直播的用户
+//GetBeLiveList 
 func (lv LivesControllers) GetBeLiveList(ctx *gin.Context) {
 	results, err := live.GetBeLiveList()
 	lv.Response(ctx, results, err)

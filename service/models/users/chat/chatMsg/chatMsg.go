@@ -29,12 +29,12 @@ func (Msg) TableName() string {
 
 func (m *Msg) AddMessage() error {
 	err := global.Db.Transaction(func(tx *gorm.DB) error {
-		//添加记录
+		//Add Record
 		err := tx.Create(m).Error
 		if err != nil {
-			return fmt.Errorf("添加聊天记录失败")
+			return fmt.Errorf("Failed to add chat log")
 		}
-		//聊天列表内添加记录
+		//Adding records to the chat list
 		uci := &chatList.ChatsListInfo{
 			Uid:         m.Uid,
 			Tid:         m.Tid,
@@ -43,7 +43,7 @@ func (m *Msg) AddMessage() error {
 		}
 		err = uci.AddChat()
 		if err != nil {
-			return fmt.Errorf("添加聊天列表记录失败")
+			return fmt.Errorf("Failed to add chat list record")
 		}
 		tci := &chatList.ChatsListInfo{
 			Uid:         m.Tid,
@@ -53,21 +53,21 @@ func (m *Msg) AddMessage() error {
 		}
 		err = tci.AddChat()
 		if err != nil {
-			return fmt.Errorf("添加聊天列表记录失败")
+			return fmt.Errorf("Failed to add chat list record")
 		}
 		return nil
 	})
 	return err
 }
 
-//FindList 获取列表
+//FindList Get List
 func (ml *MsgList) FindList(uid uint, tid uint) error {
 	ids := make([]uint, 0)
 	ids = append(ids, uid, tid)
 	return global.Db.Where("uid", ids).Where("tid", ids).Preload("UInfo").Preload("TInfo").Order("created_at desc").Limit(30).Find(ml).Error
 }
 
-//GetLastMessage 获取发送的最后一条消息
+//GetLastMessage 
 func (m *Msg) GetLastMessage(uid uint, tid uint) error {
 	err := global.Db.Where("uid = ? or  tid  = ? and tid = ? or tid = ? ", uid, uid, tid, tid).Order("created_at desc").Find(m).Error
 	if err != nil {
@@ -76,12 +76,12 @@ func (m *Msg) GetLastMessage(uid uint, tid uint) error {
 	return nil
 }
 
-//FindByID 根据id查询
+//FindByID 
 func (m *Msg) FindByID(id uint) error {
 	return global.Db.Where("id", id).Preload("UInfo").Preload("TInfo").Find(m).Error
 }
 
-//FindHistoryMsg 查询历史记录消息
+//FindHistoryMsg 
 func (ml *MsgList) FindHistoryMsg(uid, tid uint, lastTime time.Time) error {
 	ids := make([]uint, 0)
 	ids = append(ids, uid, tid)

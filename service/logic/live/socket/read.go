@@ -7,9 +7,9 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-//Read 读取数据
+//Read read data
 func (lre LiveRoomEvent) Read() {
-	//链接断开进行离线
+	//Link broken for offline
 	defer func() {
 		Severe.Cancellation <- lre
 		err := lre.Channel.Socket.Close()
@@ -17,11 +17,11 @@ func (lre LiveRoomEvent) Read() {
 			return
 		}
 	}()
-	//监听业务通道
+	//Listening to business channels
 
-	//消息读取
+	//Message reading
 	for {
-		//检查通达ping通
+		//Checking for Tonda ping passes
 		lre.Channel.Socket.PongHandler()
 		_, text, err := lre.Channel.Socket.ReadMessage()
 		if err != nil {
@@ -31,7 +31,7 @@ func (lre LiveRoomEvent) Read() {
 		if err := proto.Unmarshal(text, data); err != nil {
 			response.ErrorWsProto(lre.Channel.Socket, "消息格式错误")
 		}
-		//得到标准格式进行转发
+		//Get standard format for forwarding
 		err = getTypeCorrespondingFunc(lre, data)
 		if err != nil {
 			response.ErrorWsProto(lre.Channel.Socket, err.Error())

@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	//Temporary 文件文件存续位置
+	//Temporary Location of document files
 	Temporary = "assets/tmp/"
 )
 
@@ -31,19 +31,19 @@ func OssSTS() (results interface{}, err error) {
 	}
 	res, err := response.GteStsInfo(info)
 	if err != nil {
-		return nil, fmt.Errorf("响应失败")
+		return nil, fmt.Errorf("Response Failure")
 	}
 	return res, nil
 }
 
 func Upload(file *multipart.FileHeader, ctx *gin.Context) (results interface{}, err error) {
-	//如果文件大小超过maxMemory,则使用临时文件来存储multipart/form中文件数据
+	//If the file size exceeds maxMemory, a temporary file is used to store the file data in multipart/form.
 	err = ctx.Request.ParseMultipartForm(128)
 	if err != nil {
 		return
 	}
 	mForm := ctx.Request.MultipartForm
-	//上传文件明
+	//Uploading documents name
 	var fileName string
 	fileName = strings.Join(mForm.Value["name"], fileName)
 	var fileInterface string
@@ -51,10 +51,10 @@ func Upload(file *multipart.FileHeader, ctx *gin.Context) (results interface{}, 
 
 	method := new(uploadMethod.UploadMethod)
 	if !method.IsExistByField("interface", fileInterface) {
-		return nil, fmt.Errorf("上传接口不存在")
+		return nil, fmt.Errorf("Upload interface does not exist")
 	}
 	if len(method.Path) == 0 {
-		return nil, fmt.Errorf("请联系管理员设置接口保存路径")
+		return nil, fmt.Errorf("Please contact the administrator to set the interface save path")
 	}
 	//取出文件
 	index := strings.LastIndex(file.Filename, ".")
@@ -62,31 +62,31 @@ func Upload(file *multipart.FileHeader, ctx *gin.Context) (results interface{}, 
 	switch suffix {
 	case ".jpg", ".jpeg", ".png", ".ico", ".gif", ".wbmp", ".bmp", ".svg", ".webp", ".mp4":
 	default:
-		return nil, fmt.Errorf("非法后缀！")
+		return nil, fmt.Errorf("Illegal suffixes!")
 	}
 	if !location.IsDir(method.Path) {
 		if err = os.MkdirAll(method.Path, 077); err != nil {
-			return nil, fmt.Errorf("创建保存路径失败")
+			return nil, fmt.Errorf("Failed to create save path")
 		}
 	}
 	dst := method.Path + "/" + fileName
 	err = ctx.SaveUploadedFile(file, dst)
 	if err != nil {
 		global.Logger.Warn("update headPortrait err")
-		return nil, fmt.Errorf("上传失败")
+		return nil, fmt.Errorf("Upload Failed")
 	} else {
 		return dst, nil
 	}
 }
 
 func UploadSlice(file *multipart.FileHeader, ctx *gin.Context) (results interface{}, err error) {
-	//如果文件大小超过maxMemory,则使用临时文件来存储multipart/form中文件数据
+	//If the file size exceeds maxMemory, a temporary file is used to store the file data in multipart/form.
 	err = ctx.Request.ParseMultipartForm(128)
 	if err != nil {
 		return
 	}
 	mForm := ctx.Request.MultipartForm
-	//上传文件明
+	//Uploading documents name
 	var fileName string
 	fileName = strings.Join(mForm.Value["name"], fileName)
 	var fileInterface string
@@ -94,21 +94,21 @@ func UploadSlice(file *multipart.FileHeader, ctx *gin.Context) (results interfac
 
 	method := new(uploadMethod.UploadMethod)
 	if !method.IsExistByField("interface", fileInterface) {
-		return nil, fmt.Errorf("上传接口不存在")
+		return nil, fmt.Errorf("Upload interface does not exist")
 	}
 	if len(method.Path) == 0 {
-		return nil, fmt.Errorf("请联系管理员设置接口保存路径")
+		return nil, fmt.Errorf("Please contact the administrator to set the interface save path")
 	}
 	if !location.IsDir(Temporary) {
 		if err = os.MkdirAll(Temporary, 077); err != nil {
-			return nil, fmt.Errorf("创建保存路径失败")
+			return nil, fmt.Errorf("Failed to create save path")
 		}
 	}
 	dst := Temporary + "/" + fileName
 	err = ctx.SaveUploadedFile(file, dst)
 	if err != nil {
 		global.Logger.Warn("Possible cause of the fragment upload failure: ", err)
-		return nil, fmt.Errorf("上传失败")
+		return nil, fmt.Errorf("Upload Failed")
 	} else {
 		return dst, nil
 	}
@@ -117,15 +117,15 @@ func UploadSlice(file *multipart.FileHeader, ctx *gin.Context) (results interfac
 func UploadCheck(data *receive.UploadCheckStruct) (results interface{}, err error) {
 	method := new(uploadMethod.UploadMethod)
 	if !method.IsExistByField("interface", data.Interface) {
-		return nil, fmt.Errorf("未配置上传方法")
+		return nil, fmt.Errorf("Upload method not configured")
 	}
 	list := make(receive.UploadSliceList, 0)
 	path := method.Path + "/" + data.FileMd5
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
-		//文件已存在
+		//File already exists
 		return response.UploadCheckResponse(true, list, path)
 	}
-	//取出未上传的分片
+	//Taking out unuploaded slices
 	for _, v := range data.SliceList {
 		if _, err := os.Stat(Temporary + "/" + v.Hash); os.IsNotExist(err) {
 			list = append(list, receive.UploadSliceInfo{
@@ -140,16 +140,16 @@ func UploadCheck(data *receive.UploadCheckStruct) (results interface{}, err erro
 func UploadMerge(data *receive.UploadMergeStruct) (results interface{}, err error) {
 	method := new(uploadMethod.UploadMethod)
 	if !method.IsExistByField("interface", data.Interface) {
-		return nil, fmt.Errorf("未配置上传方法")
+		return nil, fmt.Errorf("Upload method not configured")
 	}
 	dst := method.Path + "/" + data.FileName
 	list := make(receive.UploadSliceList, 0)
 	path := method.Path + "/" + data.FileName
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
-		//文件已存在直接返回
+		//File already exists directly return
 		return dst, nil
 	}
-	//取出未上传的分片
+	//Taking out unuploaded slices
 	for _, v := range data.SliceList {
 		if _, err := os.Stat(Temporary + "/" + v.Hash); os.IsNotExist(err) {
 			list = append(list, receive.UploadSliceInfo{
@@ -159,22 +159,22 @@ func UploadMerge(data *receive.UploadMergeStruct) (results interface{}, err erro
 		}
 	}
 	if len(list) > 0 {
-		return nil, fmt.Errorf("分片未全部上传")
+		return nil, fmt.Errorf("Segmentation not fully uploaded")
 	}
-	//进行合并操作
+	//Perform a merge operation
 	cf, err := os.Create(dst)
 	defer func(f *os.File) {
 		if err := f.Close(); err != nil {
-			global.Logger.Errorf("合并操作释放内存失败 %d", err)
+			global.Logger.Errorf("Failure to free memory for merge operation %d", err)
 		}
 	}(cf)
 	if err != nil {
-		return nil, fmt.Errorf("保存失败")
+		return nil, fmt.Errorf("fail to save")
 	}
 	fileInfo, err := os.OpenFile(dst, os.O_APPEND, os.ModeSetuid)
 	defer func(fileInfo *os.File) {
 		if err := fileInfo.Close(); err != nil {
-			global.Logger.Errorf("关闭资源 err : %d", err)
+			global.Logger.Errorf("Closure of resources err : %d", err)
 		}
 	}(fileInfo)
 	//合并操作
@@ -188,14 +188,14 @@ func UploadMerge(data *receive.UploadMergeStruct) (results interface{}, err erro
 			fmt.Println(err)
 		}
 		if _, err := fileInfo.Write(b); err != nil {
-			global.Logger.Errorf("合并分片追加错误 err : %d", err)
+			global.Logger.Errorf("Merge slice append error err : %d", err)
 		}
 		// 关闭分片
 		if err := tmpFile.Close(); err != nil {
-			global.Logger.Errorf("关闭分片错误 err : %d", err)
+			global.Logger.Errorf("Close Split Error err : %d", err)
 		}
 		if err := os.Remove(tmpFile.Name()); err != nil {
-			global.Logger.Errorf("合并操作删除临时分片失败 err : %d", err)
+			global.Logger.Errorf("Merge operation to delete temporary slice failed err : %d", err)
 		}
 	}
 	return dst, nil
@@ -206,7 +206,7 @@ func UploadingMethod(data *receive.UploadingMethodStruct) (results interface{}, 
 	if method.IsExistByField("interface", data.Method) {
 		return response.UploadingMethodResponse(method.Method), nil
 	} else {
-		return nil, fmt.Errorf("未配置上传方法")
+		return nil, fmt.Errorf("Upload method not configured")
 	}
 }
 
@@ -215,7 +215,7 @@ func UploadingDir(data *receive.UploadingDirStruct) (results interface{}, err er
 	if method.IsExistByField("interface", data.Interface) {
 		return response.UploadingDirResponse(method.Path), nil
 	} else {
-		return nil, fmt.Errorf("未配置上传方法")
+		return nil, fmt.Errorf("Upload method not configured")
 	}
 }
 
@@ -230,15 +230,15 @@ func GetFullPathOfImage(data *receive.GetFullPathOfImageMethodStruct) (results i
 func Search(data *receive.SearchStruct, uid uint) (results interface{}, err error) {
 	switch data.Type {
 	case "video":
-		//视频搜索
+		//Video serach
 		list := new(video.VideosContributionList)
 		err = list.Search(data.PageInfo)
 		if err != nil {
-			return nil, fmt.Errorf("查询失败")
+			return nil, fmt.Errorf("Enquiry Failure")
 		}
 		res, err := response.SearchVideoResponse(list)
 		if err != nil {
-			return nil, fmt.Errorf("响应失败")
+			return nil, fmt.Errorf("Response Failure")
 		}
 		return res, nil
 		break
@@ -246,15 +246,15 @@ func Search(data *receive.SearchStruct, uid uint) (results interface{}, err erro
 		list := new(users.UserList)
 		err := list.Search(data.PageInfo)
 		if err != nil {
-			return nil, fmt.Errorf("查询失败")
+			return nil, fmt.Errorf("Enquiry Failure")
 		}
 		aids := make([]uint, 0)
 		if uid != 0 {
-			//用户登入情况下
+			//In case of user login
 			al := new(attention.AttentionsList)
 			err = al.GetAttentionList(uid)
 			if err != nil {
-				return nil, fmt.Errorf("获取关注列表失败")
+				return nil, fmt.Errorf("Failed to get follow list")
 			}
 			for _, v := range *al {
 				aids = append(aids, v.AttentionID)
@@ -264,7 +264,7 @@ func Search(data *receive.SearchStruct, uid uint) (results interface{}, err erro
 		return res, nil
 		break
 	default:
-		return nil, fmt.Errorf("未匹配的类型")
+		return nil, fmt.Errorf("Unmatched types")
 	}
 	return
 }

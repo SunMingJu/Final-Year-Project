@@ -10,7 +10,7 @@ import (
 type BaseControllers struct {
 }
 
-//Response 控制器响应输出
+//Response 
 func (c BaseControllers) Response(ctx *gin.Context, results interface{}, err error) {
 	if err != nil {
 		response.Error(ctx, err.Error())
@@ -19,7 +19,7 @@ func (c BaseControllers) Response(ctx *gin.Context, results interface{}, err err
 	response.Success(ctx, results)
 }
 
-//ShouldBind 结构体方法无法使用泛型
+//ShouldBind 
 func ShouldBind[T interface{}](ctx *gin.Context, data T) (t T, err error) {
 	if err := ctx.ShouldBind(data); err != nil {
 		fmt.Println(err)

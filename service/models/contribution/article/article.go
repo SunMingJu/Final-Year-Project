@@ -27,7 +27,7 @@ type ArticlesContribution struct {
 	IsComments         int8           `json:"is_comments" gorm:"is_comments"`
 	Heat               int            `json:"heat" gorm:"heat"`
 
-	//光联表
+	//optical union table
 
 	UserInfo       users.User                    `json:"user_info" gorm:"foreignKey:Uid"`
 	Likes          like.LikesList                `json:"likes" gorm:"foreignKey:ArticleID" `
@@ -41,7 +41,7 @@ func (ArticlesContribution) TableName() string {
 	return "lv_article_contribution"
 }
 
-//Create 添加数据
+//Create Add Data
 func (vc *ArticlesContribution) Create() bool {
 	err := global.Db.Create(&vc).Error
 	if err != nil {
@@ -50,7 +50,7 @@ func (vc *ArticlesContribution) Create() bool {
 	return true
 }
 
-//GetList 查询数据类型
+//GetList Query Data Type
 func (l *ArticlesContributionList) GetList(info common.PageInfo) bool {
 	err := global.Db.Preload("Likes").Preload("Classification").Preload("UserInfo").Preload("Comments").Limit(info.Size).Offset((info.Page - 1) * info.Size).Order("created_at desc").Find(l).Error
 	if err != nil {
@@ -67,7 +67,7 @@ func (vc *ArticlesContribution) Update(info map[string]interface{}) bool {
 	return true
 }
 
-//GetListByUid 查询单个用户
+//GetListByUid 查single user
 func (l *ArticlesContributionList) GetListByUid(uid uint) bool {
 	err := global.Db.Where("uid", uid).Preload("Likes").Preload("Classification").Preload("Comments").Order("created_at desc").Find(l).Error
 	if err != nil {
@@ -76,7 +76,7 @@ func (l *ArticlesContributionList) GetListByUid(uid uint) bool {
 	return true
 }
 
-//GetAllCount 查询所有文章数量
+//GetAllCount Query the number of all articles
 func (l *ArticlesContributionList) GetAllCount(cu *int64) bool {
 	err := global.Db.Find(l).Count(cu).Error
 	if err != nil {
@@ -85,7 +85,7 @@ func (l *ArticlesContributionList) GetAllCount(cu *int64) bool {
 	return true
 }
 
-//GetInfoByID 查询单个文章
+//GetInfoByID Search for individual articles
 func (vc *ArticlesContribution) GetInfoByID(ID uint) bool {
 	err := global.Db.Where("id", ID).Preload("Likes").Preload("UserInfo").Preload("Classification").Preload("Comments", func(db *gorm.DB) *gorm.DB {
 		return db.Preload("UserInfo").Order("created_at desc")
@@ -96,7 +96,7 @@ func (vc *ArticlesContribution) GetInfoByID(ID uint) bool {
 	return true
 }
 
-//GetArticleComments 获取评论
+//GetArticleComments Get Comments
 func (vc *ArticlesContribution) GetArticleComments(ID uint, info common.PageInfo) bool {
 	err := global.Db.Where("id", ID).Preload("Likes").Preload("Classification").Preload("Comments", func(db *gorm.DB) *gorm.DB {
 		return db.Preload("UserInfo").Order("created_at desc").Limit(info.Size).Offset((info.Page - 1) * info.Size)
@@ -107,7 +107,7 @@ func (vc *ArticlesContribution) GetArticleComments(ID uint, info common.PageInfo
 	return true
 }
 
-//GetArticleBySpace 获取个人空间专栏列表
+//GetArticleBySpace 
 func (l *ArticlesContributionList) GetArticleBySpace(id uint) error {
 	err := global.Db.Where("uid", id).Preload("Likes").Preload("Classification").Preload("Comments").Order("created_at desc").Find(l).Error
 	if err != nil {
@@ -116,7 +116,7 @@ func (l *ArticlesContributionList) GetArticleBySpace(id uint) error {
 	return nil
 }
 
-//GetArticleManagementList 创作空间获取个人发布专栏
+//GetArticleManagementList 
 func (l *ArticlesContributionList) GetArticleManagementList(info common.PageInfo, id uint) error {
 	err := global.Db.Where("uid", id).Preload("Likes").Preload("Classification").Preload("Comments").Limit(info.Size).Offset((info.Page - 1) * info.Size).Order("created_at desc").Find(l).Error
 	if err != nil {
@@ -140,7 +140,7 @@ func (vc *ArticlesContribution) Delete(id uint, uid uint) bool {
 	return true
 }
 
-//GetDiscussArticleCommentList 创作空间获取个人发布专栏
+//GetDiscussArticleCommentList 
 func (l *ArticlesContributionList) GetDiscussArticleCommentList(id uint) error {
 	err := global.Db.Where("uid", id).Preload("Comments").Find(&l).Error
 	return err

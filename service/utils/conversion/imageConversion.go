@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-//FormattingSrc 图片处理相关
+//FormattingSrc 
 func FormattingSrc(src string) string {
 	api := global.Config.ProjectUrl
 	return fmt.Sprintf("%s/%s", api, src)
@@ -26,7 +26,7 @@ func FormattingJsonSrc(str []byte) (url string, err error) {
 	return path, nil
 }
 
-//SwitchIngStorageFun 根据类型拼接路径
+//SwitchIngStorageFun 
 func SwitchIngStorageFun(tp string, path string) (url string, err error) {
 	prefix, err := SwitchTypeAsUrlPrefix(tp)
 	if err != nil {
@@ -35,7 +35,7 @@ func SwitchIngStorageFun(tp string, path string) (url string, err error) {
 	return fmt.Sprintf("%s/%s", prefix, path), nil
 }
 
-//SwitchTypeAsUrlPrefix 取url前缀
+//SwitchTypeAsUrlPrefix 
 func SwitchTypeAsUrlPrefix(tp string) (url string, err error) {
 	switch tp {
 	case "local":

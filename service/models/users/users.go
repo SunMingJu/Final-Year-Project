@@ -33,7 +33,7 @@ func (User) TableName() string {
 	return "lv_users"
 }
 
-//Update 更新数据
+//Update 
 func (us *User) Update() bool {
 	err := global.Db.Where("id", us.ID).Updates(&us).Error
 	if err != nil {
@@ -42,7 +42,7 @@ func (us *User) Update() bool {
 	return true
 }
 
-//UpdatePureZero 更新数据存在0值
+//UpdatePureZero 
 func (us *User) UpdatePureZero(user map[string]interface{}) bool {
 	err := global.Db.Model(&us).Where("id", us.ID).Updates(user).Error
 	if err != nil {
@@ -51,7 +51,7 @@ func (us *User) UpdatePureZero(user map[string]interface{}) bool {
 	return true
 }
 
-//Create 添加数据
+//Create 
 func (us *User) Create() bool {
 	err := global.Db.Create(&us).Error
 	if err != nil {
@@ -60,7 +60,7 @@ func (us *User) Create() bool {
 	return true
 }
 
-//IsExistByField 根据字段判断用户是否存在
+//IsExistByField 
 func (us *User) IsExistByField(field string, value any) bool {
 	err := global.Db.Where(field, value).Find(&us).Error
 	if err != nil {
@@ -72,7 +72,7 @@ func (us *User) IsExistByField(field string, value any) bool {
 	return true
 }
 
-//IfPasswordCorrect 判断密码
+//IfPasswordCorrect 
 func (us *User) IfPasswordCorrect(password string) bool {
 	passwordImport := fmt.Sprintf("%s%s%s", us.Salt, password, us.Salt)
 	passwordImport = fmt.Sprintf("%x", md5.Sum([]byte(passwordImport)))
@@ -82,12 +82,12 @@ func (us *User) IfPasswordCorrect(password string) bool {
 	return true
 }
 
-//Find 根据id 查询
+//Find  
 func (us *User) Find(id uint) {
 	_ = global.Db.Where("id", id).Find(&us).Error
 }
 
-//FindLiveInfo 查询直播信息
+//FindLiveInfo 
 func (us *User) FindLiveInfo(id uint) {
 	_ = global.Db.Where("id", id).Preload("LiveInfo").Find(&us).Error
 }

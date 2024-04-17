@@ -8,14 +8,14 @@ import (
 )
 
 func GetHomeInfo(data *receive.GetHomeInfoReceiveStruct) (results interface{}, err error) {
-	//获取主页轮播图
+	//Get homepage rotator
 	rotographList := new(rotograph.List)
 	err = rotographList.GetAll()
 	if err != nil {
 		return nil, err
 	}
 
-	//获取主页推荐视频
+	//Get homepage testimonials
 	videoList := new(video.VideosContributionList)
 	err = videoList.GetHoneVideoList(data.PageInfo)
 

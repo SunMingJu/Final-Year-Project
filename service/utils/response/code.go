@@ -20,19 +20,19 @@ const (
 )
 
 var msgFlags = map[MyCode]string{
-	CodeDefault:       "请求成功",
+	CodeDefault:       "Request successful",
 	CodeSuccess:       "success",
-	CodeInvalidParams: "请求参数错误",
-	CodeServerBusy:    "服务繁忙",
-	CodeNoData:        "没有数据",
+	CodeInvalidParams: "Request parameter error",
+	CodeServerBusy:    "bustling",
+	CodeNoData:        "No data",
 
-	CodeInvalidToken:      "无效的Token",
-	CodeInvalidAuthFormat: "认证格式有误",
-	CodeNotLogin:          "未登录",
+	CodeInvalidToken:      "Invalid Token",
+	CodeInvalidAuthFormat: "Authentication format is incorrect",
+	CodeNotLogin:          "not logged in",
 
-	CodeTypeError: "类型错误",
+	CodeTypeError: "type error",
 
-	CodePasswordMistake: "密码错误",
+	CodePasswordMistake: "incorrect password",
 }
 
 func (c MyCode) Msg() string {

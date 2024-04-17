@@ -40,11 +40,11 @@ func (l *Likes) Like(uid uint, videoID uint, videoUid uint) error {
 			if err != nil {
 				return err
 			}
-			//点赞自己作品不进行通知
+			//No notification for liking your own work
 			if videoUid == uid {
 				return nil
 			}
-			//删除消息通知
+			//Delete Message Notification
 			ne := new(notice.Notice)
 			err = ne.Delete(videoUid, uid, videoID, notice.VideoLike)
 			if err != nil {
@@ -57,18 +57,18 @@ func (l *Likes) Like(uid uint, videoID uint, videoUid uint) error {
 			if err != nil {
 				return err
 			}
-			//点赞自己作品不进行通知
+			//No notification for liking your own work
 			if videoUid == uid {
 				return nil
 			}
-			//添加消息通知
+			//Add Message Notification
 			ne := new(notice.Notice)
 			err = ne.AddNotice(videoUid, uid, videoID, notice.VideoLike, "赞了您的作品")
 			if err != nil {
 				return err
 			}
 		}
-		// 返回 nil 提交事务
+		// Return nil Commit transaction
 		return nil
 	})
 	if err != nil {

@@ -14,7 +14,7 @@ import (
 
 func sendChatMsgText(ler *UserChannel, uid uint, tid uint, info *receive.Receive) {
 
-	//添加消息记录
+	//Add Message Log
 	cm := chatMsg.Msg{
 		Uid:     uid,
 		Tid:     tid,
@@ -23,27 +23,27 @@ func sendChatMsgText(ler *UserChannel, uid uint, tid uint, info *receive.Receive
 	}
 	err := cm.AddMessage()
 	if err != nil {
-		response.ErrorWs(ler.Socket, "发送失败")
+		response.ErrorWs(ler.Socket, "Send Failure")
 		return
 	}
-	//消息查询
+	//Message Enquiry
 	msgInfo := new(chatMsg.Msg)
 	err = msgInfo.FindByID(cm.ID)
 	if err != nil {
-		response.ErrorWs(ler.Socket, "发送消息失败")
+		response.ErrorWs(ler.Socket, "Failed to send message")
 		return
 	}
 	photo, _ := conversion.FormattingJsonSrc(msgInfo.UInfo.Photo)
 
-	//给自己发消息不推送
+	//Messaging yourself without pushing
 	if uid == tid {
 		return
 	}
 
 	if _, ok := chatSocket.Severe.UserMapChannel[tid]; ok {
-		//在线情况
+		//Online situation
 		if _, ok := chatSocket.Severe.UserMapChannel[tid].ChatList[uid]; ok {
-			//在与自己聊天窗口 (直接进行推送)
+			//In the chat window with yourself (direct push)
 			response.SuccessWs(chatSocket.Severe.UserMapChannel[tid].ChatList[uid], consts.ChatSendTextMsg, socket.ChatSendTextMsgStruct{
 				ID:        msgInfo.ID,
 				Uid:       msgInfo.Uid,
@@ -56,7 +56,7 @@ func sendChatMsgText(ler *UserChannel, uid uint, tid uint, info *receive.Receive
 			})
 			return
 		} else {
-			//添加未读记录
+			//Adding unread records
 			cl := new(chatList.ChatsListInfo)
 			err := cl.UnreadAutocorrection(tid, uid)
 			if err != nil {
@@ -64,7 +64,7 @@ func sendChatMsgText(ler *UserChannel, uid uint, tid uint, info *receive.Receive
 			}
 			ci := new(chatList.ChatsListInfo)
 			_ = ci.FindByID(uid, tid)
-			//推送主socket
+			//Push the main socket
 			response.SuccessWs(chatSocket.Severe.UserMapChannel[tid].Socket, consts.ChatUnreadNotice, socket.ChatUnreadNoticeStruct{
 				Uid:         uid,
 				Tid:         tid,
@@ -83,11 +83,11 @@ func sendChatMsgText(ler *UserChannel, uid uint, tid uint, info *receive.Receive
 			})
 		}
 	} else {
-		//不在线
+		//offline
 		cl := new(chatList.ChatsListInfo)
 		err := cl.UnreadAutocorrection(tid, uid)
 		if err != nil {
-			global.Logger.Error("uid %d tid %d 消息记录自增未读消息数量失败", tid, uid)
+			global.Logger.Error("uid %d tid %d Failed to increment the number of unread messages in the message log", tid, uid)
 		}
 	}
 }

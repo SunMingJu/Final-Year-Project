@@ -4,9 +4,9 @@ import "path"
 
 type AppConfigStruct struct {
 	ImagePath struct {
-		SystemHeadPortrait string //系统头像路径
-		//UserHeadPortrait   string //用户头像路径
-		//LiveCover          string //直播封面
+		SystemHeadPortrait string //System Avatar Path
+		//UserHeadPortrait   string //User avatar path
+		//LiveCover          string //Live Cover
 	}
 }
 

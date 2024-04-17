@@ -13,7 +13,7 @@ type DataWs struct {
 	Code    MyCode      `json:"code"`
 	Type    string      `json:"type,omitempty"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"` // omitempty当data为空时,不展示这个字段
+	Data    interface{} `json:"data,omitempty"` 
 }
 
 func NotLoginWs(ws *websocket.Conn, msg string) {

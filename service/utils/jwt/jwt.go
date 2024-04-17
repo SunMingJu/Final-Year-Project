@@ -8,29 +8,29 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-// Hotkey 密钥
+// Hotkey 
 var Hotkey = []byte("G0-store")
 
-// SaltStr  密码盐的随机字符串
+// SaltStr  
 var SaltStr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-//Claims  TOKEN 的结构体
+//Claims  
 type Claims struct {
 	UserID uint
 	jwt.StandardClaims
 }
 
-// NextToken 登录以后签发jwt
+// NextToken 
 func NextToken(uid uint) string {
 	fmt.Printf("传入JWT的id:%v/n", uid)
 	expireTime := time.Now().Add(7 * 24 * time.Hour)
 	claims := &Claims{
 		UserID: uid,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expireTime.Unix(), //过期时间
+			ExpiresAt: expireTime.Unix(), 
 			IssuedAt:  time.Now().Unix(),
-			Issuer:    "root",       // 签名颁发者
-			Subject:   "user token", //签名主题
+			Issuer:    "root",       
+			Subject:   "user token", 
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -42,7 +42,7 @@ func NextToken(uid uint) string {
 	return tokenString
 }
 
-// ParseToken 解析 Token
+// ParseToken 
 func ParseToken(tokenStr string) (*Claims, error) {
 	token, err := jwt.ParseWithClaims(tokenStr, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return Hotkey, nil

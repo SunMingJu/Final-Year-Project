@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-//Info 视频信息
+//video info
 type Info struct {
 	ID             uint             `json:"id"`
 	Uid            uint             `json:"uid" `
@@ -30,7 +30,7 @@ type Info struct {
 	CreatedAt      time.Time        `json:"created_at"`
 }
 
-//创作者信息
+//creatorInfo
 type creatorInfo struct {
 	ID          uint   `json:"id"`
 	Username    string `json:"username"`
@@ -39,7 +39,7 @@ type creatorInfo struct {
 	IsAttention bool   `json:"is_attention"`
 }
 
-//推荐视频信息
+//recommendVideo info
 type recommendVideo struct {
 	ID            uint      `json:"id"`
 	Uid           uint      `json:"uid" `
@@ -62,12 +62,12 @@ type Response struct {
 }
 
 func GetVideoContributionByIDResponse(vc *video.VideosContribution, recommendVideoList *video.VideosContributionList, isAttention bool, isLike bool, isCollect bool) Response {
-	//处理视频主要信息
+	//Processing video key information
 	creatorAvatar, _ := conversion.FormattingJsonSrc(vc.UserInfo.Photo)
 	cover, _ := conversion.FormattingJsonSrc(vc.Cover)
 	videoSrc, _ := conversion.FormattingJsonSrc(vc.Video)
 
-	//评论
+	//comment
 	comments := commentsInfoList{}
 	for _, v := range vc.Comments {
 		photo, _ := conversion.FormattingJsonSrc(v.UserInfo.Photo)
@@ -115,7 +115,7 @@ func GetVideoContributionByIDResponse(vc *video.VideosContribution, recommendVid
 			CreatedAt: vc.CreatedAt,
 		},
 	}
-	//处理推荐视频
+	//Handling of testimonial videos
 	rl := make(RecommendList, 0)
 	for _, lk := range *recommendVideoList {
 		cover, _ := conversion.FormattingJsonSrc(lk.Cover)
@@ -154,7 +154,7 @@ func GetVideoBarrageResponse(list *barrage.BarragesList) interface{} {
 	return barrageInfoList
 }
 
-//获取视频弹幕响应
+//Get video pop-up response
 type barrageInfo struct {
 	Time     int       `json:"time"`
 	Text     string    `json:"text"`
@@ -176,7 +176,7 @@ func GetVideoBarrageListResponse(list *barrage.BarragesList) interface{} {
 	return barrageList
 }
 
-//评论信息
+//Comments
 type commentsInfo struct {
 	ID              uint             `json:"id"`
 	CommentID       uint             `json:"comment_id"`
@@ -199,24 +199,24 @@ type GetArticleContributionCommentsResponseStruct struct {
 	CommentsNumber int              `json:"comments_number"`
 }
 
-//得到分级结构
+//Getting the hierarchical structure
 func (l commentsInfoList) getChildComment() commentsInfoList {
 	topList := commentsInfoList{}
 	for _, v := range l {
 		if v.CommentID == 0 {
-			//顶层
+			//the top of a building
 			topList = append(topList, v)
 		}
 	}
 	return commentsInfoListSecondTree(topList, l)
 }
 
-//生成树结构
+//Spanning Tree Structure
 func commentsInfoListTree(menus commentsInfoList, allData commentsInfoList) commentsInfoList {
-	//循环所有一级菜单
+	//Cycle through all first level menus
 	for k, v := range menus {
-		//查询所有该菜单下的所有子菜单
-		var nodes commentsInfoList //定义子节点目录
+		//Query all submenus under this menu
+		var nodes commentsInfoList //Defining the child node directory
 		for _, av := range allData {
 			if av.CommentID == v.ID {
 				nodes = append(nodes, av)
@@ -225,17 +225,17 @@ func commentsInfoListTree(menus commentsInfoList, allData commentsInfoList) comm
 		for kk, _ := range nodes {
 			menus[k].LowerComments = append(menus[k].LowerComments, nodes[kk])
 		}
-		//将刚刚查询出来的子菜单进行递归,查询出三级菜单和四级菜单
+		//Just query the sub-menu for recursion, query the three-level menu and four-level menu
 		commentsInfoListTree(nodes, allData)
 	}
 	return menus
 }
 
 func commentsInfoListSecondTree(menus commentsInfoList, allData commentsInfoList) commentsInfoList {
-	//循环所有一级菜单
+	//Cycle through all first level menus
 	for k, v := range menus {
-		//查询所有该菜单下的所有子菜单
-		var nodes commentsInfoList //定义子节点目录
+		//Query all submenus under this menu
+		var nodes commentsInfoList //Defining the child node directory
 		for _, av := range allData {
 			if av.CommentFirstID == v.ID {
 				nodes = append(nodes, av)
@@ -244,14 +244,14 @@ func commentsInfoListSecondTree(menus commentsInfoList, allData commentsInfoList
 		for kk, _ := range nodes {
 			menus[k].LowerComments = append(menus[k].LowerComments, nodes[kk])
 		}
-		//将刚刚查询出来的子菜单进行递归,查询出三级菜单和四级菜单
+		//Just query the sub-menu for recursion, query the three-level menu and four-level menu
 		commentsInfoListTree(nodes, allData)
 	}
 	return menus
 }
 
 func GetVideoContributionCommentsResponse(vc *video.VideosContribution) GetArticleContributionCommentsResponseStruct {
-	//评论
+	//comment
 	comments := commentsInfoList{}
 	for _, v := range vc.Comments {
 		photo, _ := conversion.FormattingJsonSrc(v.UserInfo.Photo)
@@ -271,7 +271,7 @@ func GetVideoContributionCommentsResponse(vc *video.VideosContribution) GetArtic
 		})
 	}
 	commentsList := comments.getChildComment()
-	//输出
+	//output
 	response := GetArticleContributionCommentsResponseStruct{
 		Id:             vc.ID,
 		Comments:       commentsList,

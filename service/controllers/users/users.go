@@ -11,14 +11,14 @@ type UserControllers struct {
 	controllers.BaseControllers
 }
 
-//GetUserInfo 获取用户信息
+//GetUserInfo 
 func (us UserControllers) GetUserInfo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.GetUserInfo(uid)
 	us.Response(ctx, results, err)
 }
 
-//SetUserInfo  设置用户信息
+//SetUserInfo  
 func (us UserControllers) SetUserInfo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.SetUserInfoReceiveStruct)); err == nil {
@@ -27,7 +27,7 @@ func (us UserControllers) SetUserInfo(ctx *gin.Context) {
 	}
 }
 
-//DetermineNameExists 判断名字是否存在
+//DetermineNameExists 
 func (us UserControllers) DetermineNameExists(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DetermineNameExistsStruct)); err == nil {
@@ -36,7 +36,7 @@ func (us UserControllers) DetermineNameExists(ctx *gin.Context) {
 	}
 }
 
-//UpdateAvatar 修改头像
+//UpdateAvatar 
 func (us UserControllers) UpdateAvatar(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.UpdateAvatarStruct)); err == nil {
@@ -45,14 +45,14 @@ func (us UserControllers) UpdateAvatar(ctx *gin.Context) {
 	}
 }
 
-//GetLiveData 获取直播资料
+//GetLiveData 
 func (us UserControllers) GetLiveData(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.GetLiveData(uid)
 	us.Response(ctx, results, err)
 }
 
-//SaveLiveData 修改直播资料
+//SaveLiveData 
 func (us UserControllers) SaveLiveData(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.SaveLiveDataReceiveStruct)); err == nil {
@@ -61,14 +61,14 @@ func (us UserControllers) SaveLiveData(ctx *gin.Context) {
 	}
 }
 
-//SendEmailVerificationCodeByChangePassword 找回密码发送验证码
+//SendEmailVerificationCodeByChangePassword 
 func (us UserControllers) SendEmailVerificationCodeByChangePassword(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.SendEmailVerificationCodeByChangePassword(uid)
 	us.Response(ctx, results, err)
 }
 
-//ChangePassword 修改密码
+//ChangePassword 
 func (us UserControllers) ChangePassword(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.ChangePasswordReceiveStruct)); err == nil {
@@ -77,7 +77,7 @@ func (us UserControllers) ChangePassword(ctx *gin.Context) {
 	}
 }
 
-//Attention 关注用户
+//Attention 
 func (us UserControllers) Attention(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.AttentionReceiveStruct)); err == nil {
@@ -86,7 +86,7 @@ func (us UserControllers) Attention(ctx *gin.Context) {
 	}
 }
 
-//CreateFavorites 创建收藏夹
+//CreateFavorites 
 func (us UserControllers) CreateFavorites(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.CreateFavoritesReceiveStruct)); err == nil {
@@ -95,7 +95,7 @@ func (us UserControllers) CreateFavorites(ctx *gin.Context) {
 	}
 }
 
-//DeleteFavorites 获取收藏夹
+//DeleteFavorites 
 func (us UserControllers) DeleteFavorites(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DeleteFavoritesReceiveStruct)); err == nil {
@@ -104,14 +104,14 @@ func (us UserControllers) DeleteFavorites(ctx *gin.Context) {
 	}
 }
 
-//GetFavoritesList 获取收藏夹列表
+//GetFavoritesList 
 func (us UserControllers) GetFavoritesList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.GetFavoritesList(uid)
 	us.Response(ctx, results, err)
 }
 
-//FavoriteVideo 收藏视频
+//FavoriteVideo 
 func (us UserControllers) FavoriteVideo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.FavoriteVideoReceiveStruct)); err == nil {
@@ -120,7 +120,7 @@ func (us UserControllers) FavoriteVideo(ctx *gin.Context) {
 	}
 }
 
-//GetFavoritesListByFavoriteVideo 获取收藏夹列表在视频页面
+//GetFavoritesListByFavoriteVideo 
 func (us UserControllers) GetFavoritesListByFavoriteVideo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetFavoritesListByFavoriteVideoReceiveStruct)); err == nil {
@@ -129,7 +129,7 @@ func (us UserControllers) GetFavoritesListByFavoriteVideo(ctx *gin.Context) {
 	}
 }
 
-//GetFavoriteVideoList 获取收藏夹视频列表
+//GetFavoriteVideoList 
 func (us UserControllers) GetFavoriteVideoList(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetFavoriteVideoListReceiveStruct)); err == nil {
 		results, err := users.GetFavoriteVideoList(rec)
@@ -137,7 +137,7 @@ func (us UserControllers) GetFavoriteVideoList(ctx *gin.Context) {
 	}
 }
 
-//GetRecordList 获取历史记录
+//GetRecordList 
 func (us UserControllers) GetRecordList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetRecordListReceiveStruct)); err == nil {
@@ -146,14 +146,14 @@ func (us UserControllers) GetRecordList(ctx *gin.Context) {
 	}
 }
 
-//ClearRecord 清空历史记录
+//ClearRecord 
 func (us UserControllers) ClearRecord(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.ClearRecord(uid)
 	us.Response(ctx, results, err)
 }
 
-//DeleteRecordByID 删除历史记录根据id
+//DeleteRecordByID 
 func (us UserControllers) DeleteRecordByID(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DeleteRecordByIDReceiveStruct)); err == nil {
@@ -162,7 +162,7 @@ func (us UserControllers) DeleteRecordByID(ctx *gin.Context) {
 	}
 }
 
-//GetNoticeList 获取通知消息
+//GetNoticeList 
 func (us UserControllers) GetNoticeList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetNoticeListReceiveStruct)); err == nil {
@@ -171,14 +171,14 @@ func (us UserControllers) GetNoticeList(ctx *gin.Context) {
 	}
 }
 
-//GetChatList 获取聊天列表
+//GetChatList 
 func (us UserControllers) GetChatList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.GetChatList(uid)
 	us.Response(ctx, results, err)
 }
 
-//GetChatHistoryMsg 获取历史聊天记录
+//GetChatHistoryMsg 
 func (us UserControllers) GetChatHistoryMsg(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetChatHistoryMsgStruct)); err == nil {
@@ -187,7 +187,7 @@ func (us UserControllers) GetChatHistoryMsg(ctx *gin.Context) {
 	}
 }
 
-//PersonalLetter 点击私信时触发
+//PersonalLetter 
 func (us UserControllers) PersonalLetter(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.PersonalLetterReceiveStruct)); err == nil {
@@ -196,7 +196,7 @@ func (us UserControllers) PersonalLetter(ctx *gin.Context) {
 	}
 }
 
-//DeleteChatItem 删除聊天记录
+//DeleteChatItem 
 func (us UserControllers) DeleteChatItem(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DeleteChatItemReceiveStruct)); err == nil {

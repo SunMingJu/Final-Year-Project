@@ -17,13 +17,13 @@ func (lv LivesControllers) LiveSocket(ctx *gin.Context) {
 	conn, _ := ctx.Get("conn")
 	ws := conn.(*websocket.Conn)
 
-	//判断是否创建直播间
+	//Determine whether to create a live room
 	liveRoom, _ := strconv.Atoi(ctx.Query("liveRoom"))
 	liveRoomID := uint(liveRoom)
 	if socket.Severe.LiveRoom[liveRoomID] == nil {
 		message := &pb.Message{
 			MsgType: consts.Error,
-			Data:    []byte("直播未开启"),
+			Data:    []byte("The live stream is not on"),
 		}
 		res, _ := proto.Marshal(message)
 		_ = ws.WriteMessage(websocket.BinaryMessage, res)

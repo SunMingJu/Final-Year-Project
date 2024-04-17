@@ -24,7 +24,7 @@ import (
 )
 
 func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct, uid uint) (results interface{}, err error) {
-	//发布视频
+	//publish video
 	videoSrc, _ := json.Marshal(common.Img{
 		Src: data.Video,
 		Tp:  data.VideoUploadType,
@@ -47,23 +47,23 @@ func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct,
 		Heat:          0,
 	}
 	if *data.Timing {
-		//发布视频后进行的推送相关（待开发）
+		//Push related after posting a video (to be developed)
 	}
 	if !videoContribution.Create() {
-		return nil, fmt.Errorf("保存失败")
+		return nil, fmt.Errorf("fail to save")
 	}
-	return "保存成功", nil
+	return "Save Successful", nil
 }
 
 func UpdateVideoContribution(data *receive.UpdateVideoContributionReceiveStruct, uid uint) (results interface{}, err error) {
-	//更新视频
+	//Update Video
 	videoInfo := new(video.VideosContribution)
 	err = videoInfo.FindByID(data.ID)
 	if err != nil {
-		return nil, fmt.Errorf("操作视频不存在")
+		return nil, fmt.Errorf("Operation video does not exist")
 	}
 	if videoInfo.Uid != uid {
-		return nil, fmt.Errorf("非法操作")
+		return nil, fmt.Errorf("unauthorised operation")
 	}
 	coverImg, _ := json.Marshal(common.Img{
 		Src: data.Cover,
@@ -78,69 +78,69 @@ func UpdateVideoContribution(data *receive.UpdateVideoContributionReceiveStruct,
 	}
 	//进行视频资料更新
 	if !videoInfo.Update(updateList) {
-		return nil, fmt.Errorf("更新数据失败")
+		return nil, fmt.Errorf("Failed to update data")
 	}
-	return "更新成功", nil
+	return "Successful update", nil
 }
 
 func DeleteVideoByID(data *receive.DeleteVideoByIDReceiveStruct, uid uint) (results interface{}, err error) {
 	vo := new(video.VideosContribution)
 	if !vo.Delete(data.ID, uid) {
-		return nil, fmt.Errorf("删除失败")
+		return nil, fmt.Errorf("Failed to delete")
 	}
-	return "删除成功", nil
+	return "Deleted successfully", nil
 }
 
 func GetVideoContributionByID(data *receive.GetVideoContributionByIDReceiveStruct, uid uint) (results interface{}, err error) {
 	videoInfo := new(video.VideosContribution)
-	//获取视频信息
+	//Get video information
 	err = videoInfo.FindByID(data.VideoID)
 	if err != nil {
-		return nil, fmt.Errorf("查询信息失败")
+		return nil, fmt.Errorf("Failed to query information")
 	}
 	isAttention := false
 	isLike := false
 	isCollect := false
 	if uid != 0 {
-		//进行视频播放增加
+		//Perform video playback additions
 		if !global.RedisDb.SIsMember(consts.VideoWatchByID+strconv.Itoa(int(data.VideoID)), uid).Val() {
-			//最近无播放
+			//No recent broadcasts
 			global.RedisDb.SAdd(consts.VideoWatchByID+strconv.Itoa(int(data.VideoID)), uid)
 			if videoInfo.Watch(data.VideoID) != nil {
-				global.Logger.Error("添加播放量错误", videoInfo.Watch(data.VideoID))
+				global.Logger.Error("Add playback error", videoInfo.Watch(data.VideoID))
 			}
 		}
-		//获取是否关注
+		//Get attention or not
 		at := new(attention.Attention)
 		isAttention = at.IsAttention(uid, videoInfo.UserInfo.ID)
 
-		//获取是否关注
+		//Get attention or not
 		lk := new(like.Likes)
 		isLike = lk.IsLike(uid, videoInfo.ID)
 
-		//判断是否已经收藏
+		//Determine whether a collection has been made
 		fl := new(favorites.FavoriteList)
 		err = fl.GetFavoritesList(uid)
 		if err != nil {
-			return nil, fmt.Errorf("查询失败")
+			return nil, fmt.Errorf("Enquiry Failure")
 		}
 		flIDs := make([]uint, 0)
 		for _, v := range *fl {
 			flIDs = append(flIDs, v.ID)
 		}
-		//判断是否在收藏夹内
+		//Determine if you are in your favourites
 		cl := new(collect.CollectsList)
 		isCollect = cl.FindIsCollectByFavorites(data.VideoID, flIDs)
 
-		//添加历史记录
+		//Add History
 		rd := new(record.Record)
 		err = rd.AddVideoRecord(uid, data.VideoID)
 		if err != nil {
-			return nil, fmt.Errorf("添加历史记录失败")
+			return nil, fmt.Errorf("Failed to add history")
 		}
 
 	}
-	//获取推荐列表
+	//Get Recommended List
 	recommendList := new(video.VideosContributionList)
 	err = recommendList.GetRecommendList()
 	if err != nil {
@@ -151,7 +151,7 @@ func GetVideoContributionByID(data *receive.GetVideoContributionByIDReceiveStruc
 }
 
 func SendVideoBarrage(data *receive.SendVideoBarrageReceiveStruct, uid uint) (results interface{}, err error) {
-	//保存弹幕
+	//Save pop-ups
 	videoID, _ := strconv.ParseUint(data.ID, 0, 19)
 	bg := barrage.Barrage{
 		Uid:     uid,
@@ -163,9 +163,9 @@ func SendVideoBarrage(data *receive.SendVideoBarrageReceiveStruct, uid uint) (re
 		Color:   data.Color,
 	}
 	if !bg.Create() {
-		return data, fmt.Errorf("发送弹幕失败")
+		return data, fmt.Errorf("Failed to send pop-up")
 	}
-	//socket消息通知
+	//socket message notification
 	res := videoSocket.ChanInfo{
 		Type: consts.VideoSocketTypeResponseBarrageNum,
 		Data: nil,
@@ -178,22 +178,22 @@ func SendVideoBarrage(data *receive.SendVideoBarrageReceiveStruct, uid uint) (re
 }
 
 func GetVideoBarrage(data *receive.GetVideoBarrageReceiveStruct) (results interface{}, err error) {
-	//获取视频弹幕
+	//Get video pop-ups
 	list := new(barrage.BarragesList)
 	videoID, _ := strconv.ParseUint(data.ID, 0, 19)
 	if !list.GetVideoBarrageByID(uint(videoID)) {
-		return nil, fmt.Errorf("查询失败")
+		return nil, fmt.Errorf("Enquiry Failure")
 	}
 	res := response.GetVideoBarrageResponse(list)
 	return res, nil
 }
 
 func GetVideoBarrageList(data *receive.GetVideoBarrageListReceiveStruct) (results interface{}, err error) {
-	//获取视频弹幕
+	//Get video pop-ups
 	list := new(barrage.BarragesList)
 	videoID, _ := strconv.ParseUint(data.ID, 0, 19)
 	if !list.GetVideoBarrageByID(uint(videoID)) {
-		return nil, fmt.Errorf("查询失败")
+		return nil, fmt.Errorf("Enquiry Failure")
 	}
 	res := response.GetVideoBarrageListResponse(list)
 	return res, nil
@@ -203,7 +203,7 @@ func VideoPostComment(data *receive.VideosPostCommentReceiveStruct, uid uint) (r
 	videoInfo := new(video.VideosContribution)
 	err = videoInfo.FindByID(data.VideoID)
 	if err != nil {
-		return nil, fmt.Errorf("视频不存在")
+		return nil, fmt.Errorf("Video does not exist")
 	}
 
 	ct := comments.Comment{
@@ -224,58 +224,58 @@ func VideoPostComment(data *receive.VideosPostCommentReceiveStruct, uid uint) (r
 		CommentFirstID: CommentFirstID,
 	}
 	if !comment.Create() {
-		return nil, fmt.Errorf("发布失败")
+		return nil, fmt.Errorf("Failure to publish")
 	}
 
-	//socket推送(在线的情况下)
+	//Socket push (when online)
 	if _, ok := noticeSocket.Severe.UserMapChannel[videoInfo.UserInfo.ID]; ok {
 		userChannel := noticeSocket.Severe.UserMapChannel[videoInfo.UserInfo.ID]
 		userChannel.NoticeMessage(notice.VideoComment)
 	}
 
-	return "发布成功", nil
+	return "Publish Successfully", nil
 }
 
 func GetVideoComment(data *receive.GetVideoCommentReceiveStruct) (results interface{}, err error) {
 	videosContribution := new(video.VideosContribution)
 	if !videosContribution.GetVideoComments(data.VideoID, data.PageInfo) {
-		return nil, fmt.Errorf("查询失败")
+		return nil, fmt.Errorf("Enquiry Failure")
 	}
 	return response.GetVideoContributionCommentsResponse(videosContribution), nil
 }
 
 func GetVideoManagementList(data *receive.GetVideoManagementListReceiveStruct, uid uint) (results interface{}, err error) {
-	//获取个人发布视频信息
+	//Getting information on individual video releases
 	list := new(video.VideosContributionList)
 	err = list.GetVideoManagementList(data.PageInfo, uid)
 	if err != nil {
-		return nil, fmt.Errorf("查询失败")
+		return nil, fmt.Errorf("Enquiry Failure")
 	}
 	res, err := response.GetVideoManagementListResponse(list)
 	if err != nil {
-		return nil, fmt.Errorf("响应失败")
+		return nil, fmt.Errorf("Response Failure")
 	}
 	return res, nil
 }
 
 func LikeVideo(data *receive.LikeVideoReceiveStruct, uid uint) (results interface{}, err error) {
-	//点赞视频
+	//LIKE VIDEO
 	videoInfo := new(video.VideosContribution)
 	err = videoInfo.FindByID(data.VideoID)
 	if err != nil {
-		return nil, fmt.Errorf("视频不存在")
+		return nil, fmt.Errorf("Video does not exist")
 	}
 	lk := new(like.Likes)
 	err = lk.Like(uid, data.VideoID, videoInfo.UserInfo.ID)
 	if err != nil {
-		return nil, fmt.Errorf("操作失败")
+		return nil, fmt.Errorf("failure of an operation")
 	}
 
-	//socket推送(在线的情况下)
+	//Socket push (when online)
 	if _, ok := noticeSocket.Severe.UserMapChannel[videoInfo.UserInfo.ID]; ok {
 		userChannel := noticeSocket.Severe.UserMapChannel[videoInfo.UserInfo.ID]
 		userChannel.NoticeMessage(notice.VideoLike)
 	}
 
-	return "操作成功", nil
+	return "The operation was successful.", nil
 }

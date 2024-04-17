@@ -8,10 +8,10 @@ import (
 func SendMail(mailTo []string, subject string, body string) error {
 	// 设置邮箱主体
 	mailConn := map[string]string{
-		"user": "q2506152074@163.com",
-		"pass": "TPDAYYESMYRHLSDU",
-		"host": "smtp.163.com",
-		"port": "465",
+		"user": "fyp20104599@oimj.cn",
+		"pass": "ASdf123456",
+		"host": "smtpdm.aliyun.com",
+		"port": "80",
 	}
 
 	port, _ := strconv.Atoi(mailConn["port"])

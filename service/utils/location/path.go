@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-//GetCurrentAbPath 最终方案-全兼容
+//GetCurrentAbPath 
 func GetCurrentAbPath() string {
 	dir := getCurrentAbPathByExecutable()
 	if strings.Contains(dir, getTmpDir()) {
@@ -18,7 +18,7 @@ func GetCurrentAbPath() string {
 	return dir
 }
 
-// 获取系统临时目录，兼容go run
+// Get a temporary system directory, compatible with go run
 func getTmpDir() string {
 	dir := os.Getenv("TEMP")
 	if dir == "" {
@@ -28,7 +28,7 @@ func getTmpDir() string {
 	return res
 }
 
-// 获取当前执行文件绝对路径
+// Get the absolute path of the current executable file
 func getCurrentAbPathByExecutable() string {
 	exePath, err := os.Executable()
 	if err != nil {
@@ -38,7 +38,7 @@ func getCurrentAbPathByExecutable() string {
 	return res
 }
 
-// 获取当前执行文件绝对路径（go run）
+// Get the absolute path to the current executable (go run)
 func getCurrentAbPathByCaller() string {
 	var abPath string
 	_, filename, _, ok := runtime.Caller(0)
@@ -48,7 +48,7 @@ func getCurrentAbPathByCaller() string {
 	return abPath
 }
 
-// IsDir 判断是否存在
+// IsDir 
 func IsDir(fileAddr string) bool {
 	s, err := os.Stat(fileAddr)
 	if err != nil {
@@ -58,7 +58,7 @@ func IsDir(fileAddr string) bool {
 	return s.IsDir()
 }
 
-// CreateDir 创建目录
+// CreateDir 
 func CreateDir(dirName string) bool {
 	err := os.Mkdir(dirName, 755)
 	if err != nil {

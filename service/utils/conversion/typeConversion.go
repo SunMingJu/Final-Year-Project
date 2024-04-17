@@ -6,18 +6,18 @@ import (
 	"unsafe"
 )
 
-// StringConversionMap 字符串转数组
+// StringConversionMap 
 func StringConversionMap(s string) []string {
 	s = strings.TrimSpace(s)
 	list := strings.Split(s, ",")
-	//只有一项且为空返回空数组
+	//Returns an empty array if there is only one item and it is empty
 	if len(list) == 1 && list[0] == "" {
 		return make([]string, 0)
 	}
 	return list
 }
 
-// MapConversionString 数组转字符串
+// MapConversionString 
 func MapConversionString(m []string) string {
 	var srt string
 	if len(m) != 0 {
@@ -30,7 +30,7 @@ func MapConversionString(m []string) string {
 	return ""
 }
 
-// StringImgConversionMap 字符串图片转数组
+// StringImgConversionMap 
 func StringImgConversionMap(s string) []string {
 	list := strings.Split(s, ",")
 	for k, v := range list {
@@ -39,7 +39,7 @@ func StringImgConversionMap(s string) []string {
 	return list
 }
 
-//BoolTurnInt8 布尔类型转int8
+//BoolTurnInt8 
 func BoolTurnInt8(is bool) int8 {
 	if is {
 		return 1
@@ -48,7 +48,7 @@ func BoolTurnInt8(is bool) int8 {
 	}
 }
 
-//Int8TurnBool int8类型转布尔
+//Int8TurnBool 
 func Int8TurnBool(i int8) bool {
 	if i > 0 {
 		return true
@@ -65,7 +65,7 @@ func IntTurnBool(i int) bool {
 	}
 }
 
-// String2Bytes 强转化
+// String2Bytes 
 func String2Bytes(s string) []byte {
 	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
 	bh := reflect.SliceHeader{
@@ -76,7 +76,7 @@ func String2Bytes(s string) []byte {
 	return *(*[]byte)(unsafe.Pointer(&bh))
 }
 
-// Bytes2String 强转化
+// Bytes2String 
 func Bytes2String(b []byte) string {
 	return *(*string)(unsafe.Pointer(&b))
 }

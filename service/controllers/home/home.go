@@ -11,7 +11,7 @@ type Controllers struct {
 	controllers.BaseControllers
 }
 
-//GetHomeInfo 获取主页信息
+//GetHomeInfo 
 func (c Controllers) GetHomeInfo(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetHomeInfoReceiveStruct)); err == nil {
 		results, err := home.GetHomeInfo(rec)

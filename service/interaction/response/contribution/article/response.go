@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-//评论信息
+//Comments Info
 type commentsInfo struct {
 	ID              uint             `json:"id"`
 	CommentID       uint             `json:"comment_id"`
@@ -67,24 +67,24 @@ type GetArticleContributionCommentsResponseStruct struct {
 	CommentsNumber int              `json:"comments_number"`
 }
 
-//得到分级结构
+//Getting the hierarchical structure
 func (l commentsInfoList) getChildComment() commentsInfoList {
 	topList := commentsInfoList{}
 	for _, v := range l {
 		if v.CommentID == 0 {
-			//顶层
+			//the top of a building
 			topList = append(topList, v)
 		}
 	}
 	return commentsInfoListSecondTree(topList, l)
 }
 
-//生成树结构
+//Spanning Tree Structure
 func commentsInfoListTree(menus commentsInfoList, allData commentsInfoList) commentsInfoList {
-	//循环所有一级菜单
+	//Cycle through all first level menus
 	for k, v := range menus {
-		//查询所有该菜单下的所有子菜单
-		var nodes commentsInfoList //定义子节点目录
+		//Query all submenus under this menu
+		var nodes commentsInfoList //Defining the child node directory
 		for _, av := range allData {
 			if av.CommentID == v.ID {
 				nodes = append(nodes, av)
@@ -93,7 +93,7 @@ func commentsInfoListTree(menus commentsInfoList, allData commentsInfoList) comm
 		for kk, _ := range nodes {
 			menus[k].LowerComments = append(menus[k].LowerComments, nodes[kk])
 		}
-		//将刚刚查询出来的子菜单进行递归,查询出三级菜单和四级菜单
+		//Just query the sub-menu for recursion, query the three-level menu and four-level menu
 		commentsInfoListTree(nodes, allData)
 
 	}
@@ -101,10 +101,10 @@ func commentsInfoListTree(menus commentsInfoList, allData commentsInfoList) comm
 }
 
 func commentsInfoListSecondTree(menus commentsInfoList, allData commentsInfoList) commentsInfoList {
-	//循环所有一级菜单
+	//Cycle through all first level menus
 	for k, v := range menus {
-		//查询所有该菜单下的所有子菜单
-		var nodes commentsInfoList //定义子节点目录
+		//Query all submenus under this menu
+		var nodes commentsInfoList //Defining the child node directory
 		for _, av := range allData {
 			if av.CommentFirstID == v.ID {
 				nodes = append(nodes, av)
@@ -113,7 +113,7 @@ func commentsInfoListSecondTree(menus commentsInfoList, allData commentsInfoList
 		for kk, _ := range nodes {
 			menus[k].LowerComments = append(menus[k].LowerComments, nodes[kk])
 		}
-		//将刚刚查询出来的子菜单进行递归,查询出三级菜单和四级菜单
+		//Just query the sub-menu for recursion, query the three-level menu and four-level menu
 		commentsInfoListTree(nodes, allData)
 	}
 	return menus
@@ -124,7 +124,7 @@ func GetArticleContributionListByUserResponse(l *article.ArticlesContributionLis
 	for _, v := range *l {
 		coverSrc, _ := conversion.FormattingJsonSrc(v.Cover)
 
-		//正则替换首文内容
+		//Regular replacement of first text
 		reg := regexp2.MustCompile(`<(\S*?)[^>]*>.*?|<.*? />`, 0)
 		match, _ := reg.Replace(v.Content, "", -1, -1)
 		matchRune := []rune(match)
@@ -134,7 +134,7 @@ func GetArticleContributionListByUserResponse(l *article.ArticlesContributionLis
 			v.Content = match
 		}
 
-		//只显示一个标签
+		//Show only one label
 		label := conversion.StringConversionMap(v.Label)
 		if len(label) >= 3 {
 			label = label[:1]
@@ -163,7 +163,7 @@ func GetArticleContributionListResponse(l *article.ArticlesContributionList) Get
 	for _, v := range *l {
 		coverSrc, _ := conversion.FormattingJsonSrc(v.Cover)
 
-		//正则替换首文内容
+		//Regular replacement of first text
 		reg := regexp2.MustCompile(`<(\S*?)[^>]*>.*?|<.*? />`, 0)
 		match, _ := reg.Replace(v.Content, "", -1, -1)
 		matchRune := []rune(match)
@@ -173,7 +173,7 @@ func GetArticleContributionListResponse(l *article.ArticlesContributionList) Get
 			v.Content = match
 		}
 
-		//只显示一个标签
+		//Show only one label
 		label := conversion.StringConversionMap(v.Label)
 		if len(label) >= 2 {
 			label = label[:1]
@@ -201,7 +201,7 @@ func GetArticleContributionByIDResponse(vc *article.ArticlesContribution) GetArt
 	coverSrc, _ := conversion.FormattingJsonSrc(vc.Cover)
 
 	prefix, _ := conversion.SwitchTypeAsUrlPrefix(vc.ContentStorageType)
-	//正则替换src
+	//Regular Replacement src
 	reg := regexp2.MustCompile(`(?<=(img[^>]*src="))[^"]*?`+consts.UrlPrefixSubstitutionEscape, 0)
 	match, _ := reg.Replace(vc.Content, prefix, -1, -1)
 	vc.Content = match
@@ -210,7 +210,7 @@ func GetArticleContributionByIDResponse(vc *article.ArticlesContribution) GetArt
 	if len(label) >= 2 {
 		label = label[:1]
 	}
-	//评论
+	//comments
 	comments := commentsInfoList{}
 	for _, v := range vc.Comments {
 		photo, _ := conversion.FormattingJsonSrc(v.UserInfo.Photo)
@@ -231,7 +231,7 @@ func GetArticleContributionByIDResponse(vc *article.ArticlesContribution) GetArt
 	}
 	commentsList := comments.getChildComment()
 
-	//输出
+	//output
 	response := GetArticleContributionByIDResponseStruct{
 		Id:             vc.ID,
 		Uid:            vc.Uid,
@@ -250,7 +250,7 @@ func GetArticleContributionByIDResponse(vc *article.ArticlesContribution) GetArt
 }
 
 func GetArticleContributionCommentsResponse(vc *article.ArticlesContribution) GetArticleContributionCommentsResponseStruct {
-	//评论
+	//comment
 	comments := commentsInfoList{}
 	for _, v := range vc.Comments {
 		photo, _ := conversion.FormattingJsonSrc(v.UserInfo.Photo)
@@ -270,7 +270,7 @@ func GetArticleContributionCommentsResponse(vc *article.ArticlesContribution) Ge
 		})
 	}
 	commentsList := comments.getChildComment()
-	//输出
+	//output
 	response := GetArticleContributionCommentsResponseStruct{
 		Id:             vc.ID,
 		Comments:       commentsList,
@@ -279,7 +279,7 @@ func GetArticleContributionCommentsResponse(vc *article.ArticlesContribution) Ge
 	return response
 }
 
-//ArticleClassificationInfo 文章分类信息
+//ArticleClassificationInfo 
 type ArticleClassificationInfo struct {
 	ID       uint                          `json:"id"`
 	AID      uint                          `json:"aid"`
@@ -289,12 +289,12 @@ type ArticleClassificationInfo struct {
 
 type ArticleClassificationInfoList []*ArticleClassificationInfo
 
-//得到分级结构
+//Getting the hierarchical structure
 func (l ArticleClassificationInfoList) getChildComment() ArticleClassificationInfoList {
 	topList := ArticleClassificationInfoList{}
 	for _, v := range l {
 		if v.AID == 0 {
-			//顶层
+			//the top of a building
 			topList = append(topList, &ArticleClassificationInfo{
 				ID:       v.ID,
 				AID:      v.AID,
@@ -306,12 +306,12 @@ func (l ArticleClassificationInfoList) getChildComment() ArticleClassificationIn
 	return classificationInfoListTree(topList, l)
 }
 
-//生成树结构
+//Spanning Tree Structure
 func classificationInfoListTree(menus ArticleClassificationInfoList, allData ArticleClassificationInfoList) ArticleClassificationInfoList {
-	//循环所有一级菜单
+	//Cycle through all first level menus
 	for k, v := range menus {
-		//查询所有该菜单下的所有子菜单
-		var nodes ArticleClassificationInfoList //定义子节点目录
+		//Query all submenus under this menu
+		var nodes ArticleClassificationInfoList //Defining the child node directory
 		for _, av := range allData {
 			if av.AID == v.ID {
 				nodes = append(nodes, &ArticleClassificationInfo{
@@ -325,17 +325,17 @@ func classificationInfoListTree(menus ArticleClassificationInfoList, allData Art
 		for kk, _ := range nodes {
 			menus[k].Children = append(menus[k].Children, nodes[kk])
 		}
-		//将刚刚查询出来的子菜单进行递归,查询出三级菜单和四级菜单
+		//Just query the sub-menu for recursion, query the three-level menu and four-level menu
 		classificationListSecondTree(nodes, allData)
 	}
 	return menus
 }
 
 func classificationListSecondTree(menus ArticleClassificationInfoList, allData ArticleClassificationInfoList) ArticleClassificationInfoList {
-	//循环所有一级菜单
+	//Cycle through all first level menus
 	for k, v := range menus {
-		//查询所有该菜单下的所有子菜单
-		var nodes ArticleClassificationInfoList //定义子节点目录
+		//Query all submenus under this menu
+		var nodes ArticleClassificationInfoList //Defining the child node directory
 		for _, av := range allData {
 			if av.AID == v.ID {
 				nodes = append(nodes, av)
@@ -344,7 +344,7 @@ func classificationListSecondTree(menus ArticleClassificationInfoList, allData A
 		for kk, _ := range nodes {
 			menus[k].Children = append(menus[k].Children, nodes[kk])
 		}
-		//将刚刚查询出来的子菜单进行递归,查询出三级菜单和四级菜单
+		//Just query the sub-menu for recursion, query the three-level menu and four-level menu
 		classificationListSecondTree(nodes, allData)
 	}
 	return menus
@@ -410,7 +410,7 @@ func GetArticleManagementListResponse(al *article.ArticlesContributionList) (int
 		_ = json.Unmarshal(v.Cover, coverJson)
 		cover, _ := conversion.FormattingJsonSrc(v.Cover)
 		prefix, _ := conversion.SwitchTypeAsUrlPrefix(v.ContentStorageType)
-		//正则替换src
+		//Regular Replacement src
 		reg := regexp2.MustCompile(`(?<=(img[^>]*src="))[^"]*?`+consts.UrlPrefixSubstitutionEscape, 0)
 		match, _ := reg.Replace(v.Content, prefix, -1, -1)
 		v.Content = match

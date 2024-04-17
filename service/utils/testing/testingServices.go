@@ -8,9 +8,9 @@ import (
 	"time"
 )
 
-// LiveSeverTesting 检测直播服务端口
+// LiveSeverTesting 
 func LiveSeverTesting() {
-	//获取直播服务端口地址
+	//Get the live service port address
 	var liveConfig = config.Config.LiveConfig
 
 	ipPort := CheckPortsAsLocalHost(liveConfig.IP, []string{"8090", "7001"})
@@ -23,26 +23,26 @@ func LiveSeverTesting() {
 	}
 }
 
-// CheckPortsAsLocalHost 检测当前主机端口
+// CheckPortsAsLocalHost 
 func CheckPortsAsLocalHost(ip string, Ports []string) []string {
-	//未开启端口
+	//unenabled port
 	untenablePort := make([]string, 10)
 	for _, ipPort := range Ports {
-		// 检测端口
+		// detection port
 		ipPort = ip + ":" + ipPort
 		conn, err := net.DialTimeout("tcp", ipPort, 3*time.Second)
 		if err != nil {
 			untenablePort = append(untenablePort, ipPort)
-			global.Logger.Warn(ipPort, "端口未开启(fail)!")
+			global.Logger.Warn(ipPort, "Port not open(fail)!")
 		} else {
 			if conn != nil {
-				global.Logger.Info(ipPort, ipPort, "端口已开启(success)!")
+				global.Logger.Info(ipPort, ipPort, "Port is open(success)!")
 				err := conn.Close()
 				if err != nil {
 					return nil
 				}
 			} else {
-				global.Logger.Warn(ipPort, "端口未开启(fail)!")
+				global.Logger.Warn(ipPort, "Port not open(fail)!")
 			}
 		}
 	}

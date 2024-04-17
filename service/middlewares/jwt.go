@@ -13,20 +13,20 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
-//VerificationToken 请求头中携带token
+//VerificationToken Carrying a token in the request header
 func VerificationToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
 		claim, err := jwt.ParseToken(token)
 		if err != nil {
-			ControllersCommon.NotLogin(c, "Token过期")
+			ControllersCommon.NotLogin(c, "Token expiry")
 			c.Abort()
 			return
 		}
 		u := new(users.User)
 		if !u.IsExistByField("id", claim.UserID) {
-			//没有改用户的情况下
-			ControllersCommon.NotLogin(c, "用户异常")
+			//Without changing the user
+			ControllersCommon.NotLogin(c, "user anomaly")
 			c.Abort()
 			return
 		}
@@ -36,7 +36,7 @@ func VerificationToken() gin.HandlerFunc {
 	}
 }
 
-//VerificationTokenAsParameter body参数中携带token
+//VerificationTokenAsParameter Carrying a token in the body parameter
 func VerificationTokenAsParameter() gin.HandlerFunc {
 	type qu struct {
 		Token string `json:"token"`
@@ -50,14 +50,14 @@ func VerificationTokenAsParameter() gin.HandlerFunc {
 		token := req.Token
 		claim, err := jwt.ParseToken(token)
 		if err != nil {
-			ControllersCommon.NotLogin(c, "Token过期")
+			ControllersCommon.NotLogin(c, "Token expiry")
 			c.Abort()
 			return
 		}
 		u := new(users.User)
 		if !u.IsExistByField("id", claim.UserID) {
-			//没有改用户的情况下
-			ControllersCommon.NotLogin(c, "用户异常")
+			//Without changing the user
+			ControllersCommon.NotLogin(c, "user anomaly")
 			c.Abort()
 			return
 		}
@@ -67,23 +67,23 @@ func VerificationTokenAsParameter() gin.HandlerFunc {
 	}
 }
 
-//VerificationTokenNotNecessary 请求头中携带token (非必须)
+//VerificationTokenNotNecessary Carrying a token in the request header (not required)
 func VerificationTokenNotNecessary() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
 		if len(token) == 0 {
-			//用户未登入时不验证
+			//No authentication when users are not logged in
 			c.Next()
 		} else {
-			//用户登入情况
+			//User access
 			claim, err := jwt.ParseToken(token)
 			if err != nil {
 				c.Next()
 			}
 			u := new(users.User)
 			if !u.IsExistByField("id", claim.UserID) {
-				//没有改用户的情况下
-				ControllersCommon.NotLogin(c, "用户异常")
+				//Without changing the user
+				ControllersCommon.NotLogin(c, "user anomaly")
 				c.Abort()
 				return
 			}
@@ -96,7 +96,7 @@ func VerificationTokenNotNecessary() gin.HandlerFunc {
 
 func VerificationTokenAsSocket() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//升级ws 以便返回消息
+		//Upgrade ws to return messages
 		conn, err := (&websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}).Upgrade(c.Writer, c.Request, nil)
 		if err != nil {
 			http.NotFound(c.Writer, c.Request)
@@ -106,15 +106,15 @@ func VerificationTokenAsSocket() gin.HandlerFunc {
 		token := c.Query("token")
 		claim, err := jwt.ParseToken(token)
 		if err != nil {
-			Response.NotLoginWs(conn, "Token 验证失败")
+			Response.NotLoginWs(conn, "Token validation failure")
 			_ = conn.Close()
 			c.Abort()
 			return
 		}
 		u := new(users.User)
 		if !u.IsExistByField("id", claim.UserID) {
-			//没有改用户的情况下
-			Response.NotLoginWs(conn, "用户异常")
+			//Without changing the user
+			Response.NotLoginWs(conn, "user anomaly")
 			_ = conn.Close()
 			c.Abort()
 			return

@@ -4,7 +4,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-//Writer 监听写入数据
+//Writer Listening for write data
 func (lre LiveRoomEvent) Writer() {
 	for {
 		select {

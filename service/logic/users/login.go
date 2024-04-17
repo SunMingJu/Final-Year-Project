@@ -22,7 +22,7 @@ import (
 )
 
 func WxAuthorization(data *receive.WxAuthorizationReceiveStruct) (results interface{}, err error) {
-	/*微信小程序登录 返回值*/
+	
 	type WXLoginResp struct {
 		OpenID     string `json:"openid"`
 		SessionKey string `json:"session_key"`
@@ -33,13 +33,11 @@ func WxAuthorization(data *receive.WxAuthorizationReceiveStruct) (results interf
 		Auth       uint32 `json:"auth"`
 		Name       string `json:"name"`
 		Phone      string `json:"phone"`
-		Nickname   string `json:"nickname"`  //微信昵称
-		HeadImage  string `json:"headImage"` //微信头像
+		Nickname   string `json:"nickname"`  
+		HeadImage  string `json:"headImage"` 
 	}
 	url := "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code"
-	// 合成url, 这里的appId和secret是在微信公众平台上获取的
 	url = fmt.Sprintf(url, "wxfbd9d7966fc9796c", "92fbe8e2921e00fc3ba68e34d5d0b986", data.Code)
-	// 创建http get请求
 	resp, err := http.Get(url)
 	if err != nil {
 		//response.ResponseError(ctx, err.Error())
@@ -51,17 +49,17 @@ func WxAuthorization(data *receive.WxAuthorizationReceiveStruct) (results interf
 
 		}
 	}(resp.Body)
-	// 解析http请求中body 数据到我们定义的结构体中
+	// Parses the body data from the http request into the structure we defined.
 	wxResp := WXLoginResp{}
 	decoder := json.NewDecoder(resp.Body)
 	if err := decoder.Decode(&wxResp); err != nil {
 		//response.ResponseError(ctx, err.Error())
 		return nil, err
 	}
-	//得到openid进行处理
+	//Get openid for processing
 	users := new(userModel.User)
 	if !users.IsExistByField("openid", wxResp.OpenID) {
-		//当这个微信没有注册
+		//When this microsoft is not registered
 		photo, _ := json.Marshal(common.Img{
 			Src: data.AvatarUrl,
 			Tp:  "wx",
@@ -73,9 +71,9 @@ func WxAuthorization(data *receive.WxAuthorizationReceiveStruct) (results interf
 		}
 		registerRes := users.Create()
 		if !registerRes {
-			return nil, fmt.Errorf("注册失败")
+			return nil, fmt.Errorf("registration failure")
 		}
-		//注册token
+		//Registering a token
 		tokenString := jwt.NextToken(users.ID)
 		src, _ := conversion.FormattingJsonSrc(users.Photo)
 		userInfo := response.UserInfoResponseStruct{
@@ -86,8 +84,8 @@ func WxAuthorization(data *receive.WxAuthorizationReceiveStruct) (results interf
 		}
 		return userInfo, nil
 	}
-	//已经注册的话直接返回token
-	fmt.Printf("查询到的用户id是：%v", users.ID)
+	//Returns a token if you have already registered
+	fmt.Printf("The queried user id is:%v", users.ID)
 	src, _ := conversion.FormattingJsonSrc(users.Photo)
 	tokenString := jwt.NextToken(users.ID)
 	userInfo := response.UserInfoResponseStruct{
@@ -100,21 +98,21 @@ func WxAuthorization(data *receive.WxAuthorizationReceiveStruct) (results interf
 }
 
 func Register(data *receive.RegisterReceiveStruct) (results interface{}, err error) {
-	//判断邮箱是否唯一
+	//Determine if a mailbox is unique
 	users := new(userModel.User)
 	if users.IsExistByField("email", data.Email) {
-		return nil, fmt.Errorf("邮箱已被注册")
+		return nil, fmt.Errorf("Email already registered")
 	}
-	//判断验证码是否正确
+	//Determine if the CAPTCHA is correct
 	verCode, err := global.RedisDb.Get(fmt.Sprintf("%s%s", consts.RegEmailVerCode, data.Email)).Result()
 	if err == redis.Nil {
-		return nil, fmt.Errorf("验证码过期！")
+		return nil, fmt.Errorf("Captcha expired!")
 	}
 
 	if verCode != data.VerificationCode {
-		return nil, fmt.Errorf("验证码错误")
+		return nil, fmt.Errorf("CAPTCHA error")
 	}
-	//生成密码盐 8 位
+	//Generate password salt 8 bits
 	salt := make([]byte, 6)
 	for i := range salt {
 		salt[i] = jwt.SaltStr[rand.Int63()%int64(len(jwt.SaltStr))]
@@ -135,9 +133,9 @@ func Register(data *receive.RegisterReceiveStruct) (results interface{}, err err
 	}
 	registerRes := registerData.Create()
 	if !registerRes {
-		return nil, fmt.Errorf("注册失败")
+		return nil, fmt.Errorf("registration failure")
 	}
-	//注册token
+	//Registering a token
 	tokenString := jwt.NextToken(registerData.ID)
 	results = response.UserInfoResponse(registerData, tokenString)
 
@@ -148,12 +146,12 @@ func Register(data *receive.RegisterReceiveStruct) (results interface{}, err err
 func Login(data *receive.LoginReceiveStruct) (results interface{}, err error) {
 	users := new(userModel.User)
 	if !users.IsExistByField("username", data.Username) {
-		return nil, fmt.Errorf("账号不存在")
+		return nil, fmt.Errorf("Account does not exist")
 	}
 	if !users.IfPasswordCorrect(data.Password) {
-		return nil, fmt.Errorf("密码错误")
+		return nil, fmt.Errorf("incorrect password")
 	}
-	//注册token
+	//Registering a token
 	tokenString := jwt.NextToken(users.ID)
 	userInfo := response.UserInfoResponse(users, tokenString)
 	return userInfo, nil
@@ -162,15 +160,15 @@ func Login(data *receive.LoginReceiveStruct) (results interface{}, err error) {
 func SendEmailVerCode(data *receive.SendEmailVerCodeReceiveStruct) (results interface{}, err error) {
 	users := new(userModel.User)
 	if users.IsExistByField("email", data.Email) {
-		return nil, fmt.Errorf("邮箱已被注册")
+		return nil, fmt.Errorf("Email already registered")
 	}
-	//发送方
+	//sender
 	mailTo := []string{data.Email}
-	// 邮件主题
+	// Email Subject
 	code := fmt.Sprintf("%06v", rand.New(rand.NewSource(time.Now().UnixNano())).Int63n(1000000))
-	subject := "验证码"
-	// 邮件正文
-	body := fmt.Sprintf("您正在注册验证码为:%s,5分钟有效,请勿转发他人", code)
+	subject := "CAPTCHA"
+	// Body of the email
+	body := fmt.Sprintf("You are registering with the verification code:%s,5 minutes. Please do not forward to others.", code)
 	err = email.SendMail(mailTo, subject, body)
 	if err != nil {
 		return nil, err
@@ -179,22 +177,22 @@ func SendEmailVerCode(data *receive.SendEmailVerCodeReceiveStruct) (results inte
 	if err != nil {
 		return nil, err
 	}
-	return "发送成功", nil
+	return "Sent successfully", nil
 }
 
 func SendEmailVerCodeByForget(data *receive.SendEmailVerCodeReceiveStruct) (results interface{}, err error) {
-	//判断用户是否存在
+	//Determine if a user exists
 	users := new(userModel.User)
 	if !users.IsExistByField("email", data.Email) {
-		return nil, fmt.Errorf("该邮箱未注册")
+		return nil, fmt.Errorf("This email is not registered")
 	}
-	//发送方
+	//sender
 	mailTo := []string{data.Email}
-	// 邮件主题
+	// Email Subject
 	code := fmt.Sprintf("%06v", rand.New(rand.NewSource(time.Now().UnixNano())).Int63n(1000000))
-	subject := "验证码"
-	// 邮件正文
-	body := fmt.Sprintf("您正在找回密码您的验证码为:%s,5分钟有效,请勿转发他人", code)
+	subject := "CAPTCHA"
+	// email body
+	body := fmt.Sprintf("You are retrieving your passwordYour verification code is:%s,5 minutes. Please do not forward to others.", code)
 	err = email.SendMail(mailTo, subject, body)
 	if err != nil {
 		return nil, err
@@ -203,25 +201,25 @@ func SendEmailVerCodeByForget(data *receive.SendEmailVerCodeReceiveStruct) (resu
 	if err != nil {
 		return nil, err
 	}
-	return "发送成功", nil
+	return "Sent successfully", nil
 }
 
 func Forget(data *receive.ForgetReceiveStruct) (results interface{}, err error) {
-	//判断邮箱是否唯一
+	//Determine if a mailbox is unique
 	users := new(userModel.User)
 	if !users.IsExistByField("email", data.Email) {
-		return nil, fmt.Errorf("该账号不存在")
+		return nil, fmt.Errorf("This account does not exist")
 	}
-	//判断验证码是否正确
+	//Determine if the CAPTCHA is correct
 	verCode, err := global.RedisDb.Get(fmt.Sprintf("%s%s", consts.RegEmailVerCodeByForget, data.Email)).Result()
 	if err == redis.Nil {
-		return nil, fmt.Errorf("验证码过期！")
+		return nil, fmt.Errorf("Captcha expired!")
 	}
 
 	if verCode != data.VerificationCode {
-		return nil, fmt.Errorf("验证码错误")
+		return nil, fmt.Errorf("CAPTCHA error")
 	}
-	//生成密码盐 8 位
+	//Generate password salt 8 bits
 	salt := make([]byte, 6)
 	for i := range salt {
 		salt[i] = jwt.SaltStr[rand.Int63()%int64(len(jwt.SaltStr))]
@@ -235,7 +233,7 @@ func Forget(data *receive.ForgetReceiveStruct) (results interface{}, err error) 
 	}
 	registerRes := registerData.Update()
 	if !registerRes {
-		return nil, fmt.Errorf("修改失败")
+		return nil, fmt.Errorf("Modification Failure")
 	}
-	return "修改成功", nil
+	return "Modified successfully", nil
 }

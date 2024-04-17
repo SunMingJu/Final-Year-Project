@@ -23,7 +23,7 @@ func (Collect) TableName() string {
 	return "lv_users_collect"
 }
 
-//Create 添加数据
+//Create 
 func (c *Collect) Create() bool {
 	err := global.Db.Create(c).Error
 	if err != nil {
@@ -32,7 +32,7 @@ func (c *Collect) Create() bool {
 	return true
 }
 
-//DetectByFavoritesID 删除收藏根据收藏夹id
+//DetectByFavoritesID 
 func (c *Collect) DetectByFavoritesID(id uint) bool {
 	err := global.Db.Where("favorites_id", id).Delete(c).Error
 	if err != nil {
@@ -51,9 +51,9 @@ func (l *CollectsList) GetVideoInfo(id uint) error {
 	return err
 }
 
-//FindIsCollectByFavorites 判断收藏夹列表内是否收藏该视频
+//FindIsCollectByFavorites 
 func (l *CollectsList) FindIsCollectByFavorites(videoID uint, ids []uint) bool {
-	//没创建收藏夹情况直接false
+	//False if no favourite is created
 	if len(ids) == 0 {
 		return false
 	}

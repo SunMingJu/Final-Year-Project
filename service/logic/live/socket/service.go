@@ -10,11 +10,11 @@ import (
 	"strconv"
 )
 
-//发送弹幕信息
+//Send a pop-up message
 func serviceSendBarrage(lre LiveRoomEvent, text []byte) error {
 	barrageInfo := &pb.WebClientSendBarrageReq{}
 	if err := proto.Unmarshal(text, barrageInfo); err != nil {
-		return fmt.Errorf("消息格式错误")
+		return fmt.Errorf("Message formatting error")
 	}
 	src, _ := conversion.FormattingJsonSrc(lre.Channel.UserInfo.Photo)
 	response := &pb.WebClientSendBarrageRes{
@@ -27,9 +27,9 @@ func serviceSendBarrage(lre LiveRoomEvent, text []byte) error {
 	}
 	data, err := proto.Marshal(response)
 	if err != nil {
-		return fmt.Errorf("消息格式错误")
+		return fmt.Errorf("Message formatting error")
 	}
-	//将弹幕存入最近消息
+	//Save pop-ups to recent messages
 	str := conversion.Bytes2String(data)
 	if studentLen, _ := global.RedisDb.LLen(consts.LiveRoomHistoricalBarrage + strconv.Itoa(int(lre.RoomID))).Result(); studentLen >= 10 {
 		err := global.RedisDb.RPop(consts.LiveRoomHistoricalBarrage + strconv.Itoa(int(lre.RoomID))).Err()
@@ -37,20 +37,20 @@ func serviceSendBarrage(lre LiveRoomEvent, text []byte) error {
 			return err
 		}
 	}
-	//消息不足20条 直接插入
+	//Less than 20 messages Insert directly
 	err = global.RedisDb.LPush(consts.LiveRoomHistoricalBarrage+strconv.Itoa(int(lre.RoomID)), str).Err()
 	if err != nil {
-		global.Logger.Errorf("房间ID： %d 最近弹幕存入Redis失败 消息： %s", lre.RoomID, data)
+		global.Logger.Errorf("Room ID： %d Recent failures to deposit pop-ups into Redis messages： %s", lre.RoomID, data)
 		return err
 	}
-	//格式化响应
+	//Formatting the response
 	message := &pb.Message{
 		MsgType: consts.WebClientBarrageRes,
 		Data:    data,
 	}
 	res, err := proto.Marshal(message)
 	if err != nil {
-		return fmt.Errorf("消息格式错误")
+		return fmt.Errorf("Message formatting error")
 	}
 	for _, v := range Severe.LiveRoom[lre.RoomID] {
 		v.MsgList <- res
@@ -59,9 +59,9 @@ func serviceSendBarrage(lre LiveRoomEvent, text []byte) error {
 	return nil
 }
 
-//用户上下线提现
+//User offline alerts
 func serviceOnlineAndOfflineRemind(lre LiveRoomEvent, isOnlineOndOffline bool) error {
-	//得到当前所有用户
+	//Get all current users
 	type userListStruct []*pb.EnterLiveRoom
 	userList := make(userListStruct, 0)
 	src, _ := conversion.FormattingJsonSrc(lre.Channel.UserInfo.Photo)
@@ -85,10 +85,10 @@ func serviceOnlineAndOfflineRemind(lre LiveRoomEvent, isOnlineOndOffline bool) e
 		List:     userList,
 	}
 
-	//响应输出
+	//response output
 	data, err := proto.Marshal(response)
 	if err != nil {
-		return fmt.Errorf("消息格式错误")
+		return fmt.Errorf("Message formatting error")
 	}
 	message := &pb.Message{
 		MsgType: consts.WebClientEnterLiveRoomRes,
@@ -96,7 +96,7 @@ func serviceOnlineAndOfflineRemind(lre LiveRoomEvent, isOnlineOndOffline bool) e
 	}
 	res, err := proto.Marshal(message)
 	if err != nil {
-		return fmt.Errorf("消息格式错误")
+		return fmt.Errorf("Message formatting error")
 	}
 	for _, v := range Severe.LiveRoom[lre.RoomID] {
 		v.MsgList <- res
@@ -104,36 +104,36 @@ func serviceOnlineAndOfflineRemind(lre LiveRoomEvent, isOnlineOndOffline bool) e
 	return nil
 }
 
-//响应历史消息弹幕
+//Responding to history message pop-ups
 func serviceResponseLiveRoomHistoricalBarrage(lre LiveRoomEvent) error {
-	//得到历史消息
+	//Get the history.
 	val, err := global.RedisDb.LRange(consts.LiveRoomHistoricalBarrage+strconv.Itoa(int(lre.RoomID)), 0, -1).Result()
 
 	if err != nil {
-		return fmt.Errorf("获取历史弹幕失败")
+		return fmt.Errorf("Failed to get history popups")
 	}
 	historicalBarrage := &pb.WebClientHistoricalBarrageRes{}
 	list := make([]*pb.WebClientSendBarrageRes, 0)
 	for _, v := range val {
 		barrage := &pb.WebClientSendBarrageRes{}
 		if err := proto.Unmarshal(conversion.String2Bytes(v), barrage); err != nil {
-			return fmt.Errorf("消息格式错误")
+			return fmt.Errorf("Message formatting error")
 		}
 		list = append(list, barrage)
 	}
 	historicalBarrage.List = list
 	data, err := proto.Marshal(historicalBarrage)
 	if err != nil {
-		return fmt.Errorf("消息格式错误")
+		return fmt.Errorf("Message formatting error")
 	}
-	//格式化响应
+	//Formatting the response
 	message := &pb.Message{
 		MsgType: consts.WebClientHistoricalBarrageRes,
 		Data:    data,
 	}
 	res, err := proto.Marshal(message)
 	if err != nil {
-		return fmt.Errorf("消息格式错误")
+		return fmt.Errorf("Message formatting error")
 	}
 	for _, v := range Severe.LiveRoom[lre.RoomID] {
 		v.MsgList <- res

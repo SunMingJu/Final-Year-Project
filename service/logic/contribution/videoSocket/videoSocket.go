@@ -10,7 +10,7 @@ import (
 )
 
 type Engine struct {
-	//视频房间
+	//VideoRoom
 	VideoRoom map[uint]UserMapChannel
 
 	Register     chan VideoRoomEvent
@@ -24,14 +24,14 @@ type ChanInfo struct {
 	Data interface{}
 }
 
-//UserChannel 用户信息
+//UserChannel 
 type UserChannel struct {
 	UserInfo userModel.User
 	Socket   *websocket.Conn
 	MsgList  chan ChanInfo
 }
 
-//VideoRoomEvent 事件 注册 离线
+//VideoRoomEvent 
 type VideoRoomEvent struct {
 	VideoID uint
 	Channel *UserChannel
@@ -43,15 +43,15 @@ var Severe = &Engine{
 	Cancellation: make(chan VideoRoomEvent, 10),
 }
 
-// Start 启动服务
+// Start 
 func (e *Engine) Start() {
 	for {
 		select {
-		//注册事件
+		//registered event
 		case registerMsg := <-e.Register:
-			//添加成员
+			//Add Member
 			e.VideoRoom[registerMsg.VideoID][registerMsg.Channel.UserInfo.ID] = registerMsg.Channel
-			//广播在线观看人数
+			//Number of online viewers of broadcasts
 			num := len(e.VideoRoom[registerMsg.VideoID])
 			r := struct {
 				People int `json:"people"`
@@ -66,7 +66,7 @@ func (e *Engine) Start() {
 				v.MsgList <- res
 			}
 		case cancellationMsg := <-e.Cancellation:
-			//广播在线观看人数
+			//Number of online viewers of broadcasts
 			num := len(e.VideoRoom[cancellationMsg.VideoID]) - 1
 			r := struct {
 				People int `json:"people"`
@@ -86,18 +86,18 @@ func (e *Engine) Start() {
 }
 
 func CreateVideoSocket(userID uint, videoID uint, conn *websocket.Conn) (err error) {
-	//创建UserChannel
+	//Creating a UserChannel
 	userChannel := new(UserChannel)
-	//绑定ws
+	//Binding ws
 	userChannel.Socket = conn
-	//绑定用户信息
+	//Binding user information
 	user := userModel.User{}
 	user.Find(userID)
 	userChannel.UserInfo = user
-	//防止阻塞
+	//Preventing blockage
 	userChannel.MsgList = make(chan ChanInfo, 10)
 
-	//创建用户
+	//Create User
 	userLiveEvent := VideoRoomEvent{
 		VideoID: videoID,
 		Channel: userChannel,
@@ -110,7 +110,7 @@ func CreateVideoSocket(userID uint, videoID uint, conn *websocket.Conn) (err err
 
 }
 
-//Writer 监听写入数据
+//Writer Listening for write data
 func (lre VideoRoomEvent) Writer() {
 	for {
 		select {
@@ -120,9 +120,9 @@ func (lre VideoRoomEvent) Writer() {
 	}
 }
 
-//Read 读取数据
+//Read 
 func (lre VideoRoomEvent) Read() {
-	//链接断开进行离线
+	//Link broken for offline
 	defer func() {
 		Severe.Cancellation <- lre
 		err := lre.Channel.Socket.Close()
@@ -130,9 +130,9 @@ func (lre VideoRoomEvent) Read() {
 			return
 		}
 	}()
-	//监听业务通道
+	//Listening to business channels
 	for {
-		//检查通达ping通
+		//Checking for Tonda ping passes
 		lre.Channel.Socket.PongHandler()
 		_, text, err := lre.Channel.Socket.ReadMessage()
 		if err != nil {
@@ -140,7 +140,7 @@ func (lre VideoRoomEvent) Read() {
 		}
 		info := new(receive.Receive)
 		if err = json.Unmarshal(text, info); err != nil {
-			response.ErrorWs(lre.Channel.Socket, "消息格式错误")
+			response.ErrorWs(lre.Channel.Socket, "Message formatting error")
 		}
 		switch info.Type {
 

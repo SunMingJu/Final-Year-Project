@@ -11,7 +11,7 @@ type SpaceControllers struct {
 	controllers.BaseControllers
 }
 
-//GetSpaceIndividual 获取个人空间
+//GetSpaceIndividual 
 func (sp SpaceControllers) GetSpaceIndividual(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetSpaceIndividualReceiveStruct)); err == nil {
@@ -20,7 +20,7 @@ func (sp SpaceControllers) GetSpaceIndividual(ctx *gin.Context) {
 	}
 }
 
-//GetReleaseInformation 获取发布信息（视频and专栏）
+//GetReleaseInformation 
 func (sp SpaceControllers) GetReleaseInformation(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetReleaseInformationReceiveStruct)); err == nil {
 		results, err := users.GetReleaseInformation(rec)
@@ -28,7 +28,7 @@ func (sp SpaceControllers) GetReleaseInformation(ctx *gin.Context) {
 	}
 }
 
-//GetAttentionList 获取关注列表
+//GetAttentionList 
 func (sp SpaceControllers) GetAttentionList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetAttentionListReceiveStruct)); err == nil {
@@ -37,7 +37,7 @@ func (sp SpaceControllers) GetAttentionList(ctx *gin.Context) {
 	}
 }
 
-//GetVermicelliList 获取粉丝列表
+//GetVermicelliList 
 func (sp SpaceControllers) GetVermicelliList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetVermicelliListReceiveStruct)); err == nil {

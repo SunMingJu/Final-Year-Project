@@ -27,7 +27,7 @@ func (Favorites) TableName() string {
 	return "lv_users_favorites"
 }
 
-//Find 查询
+//Find 
 func (f *Favorites) Find(id uint) bool {
 	err := global.Db.Where("id", id).Preload("CollectList").Order("created_at desc").Find(&f).Error
 	if err != nil {
@@ -36,7 +36,7 @@ func (f *Favorites) Find(id uint) bool {
 	return true
 }
 
-//Create 添加数据
+//Create 
 func (f *Favorites) Create() bool {
 	err := global.Db.Create(&f).Error
 	if err != nil {
@@ -45,7 +45,7 @@ func (f *Favorites) Create() bool {
 	return true
 }
 
-//AloneTitleCreate 单标题创建
+//AloneTitleCreate 
 func (f *Favorites) AloneTitleCreate() bool {
 	err := global.Db.Create(&f).Error
 	if err != nil {
@@ -54,7 +54,7 @@ func (f *Favorites) AloneTitleCreate() bool {
 	return true
 }
 
-//Update 更新数据
+//Update 
 func (f *Favorites) Update() bool {
 	err := global.Db.Updates(&f).Error
 	if err != nil {
@@ -63,26 +63,26 @@ func (f *Favorites) Update() bool {
 	return true
 }
 
-//Delete 删除数据
+//Delete 
 func (f *Favorites) Delete(id uint, uid uint) error {
 	err := global.Db.Where("id", id).Find(&f).Error
 	if err != nil {
-		return fmt.Errorf("查询失败")
+		return fmt.Errorf("Enquiry Failure")
 	}
 	if f.ID <= 0 {
-		return fmt.Errorf("收藏夹不存在")
+		return fmt.Errorf("Favourites do not exist")
 	}
 	err = global.Db.Delete(&f).Error
 	if f.Uid != uid {
-		return fmt.Errorf("非创建者不可删除")
+		return fmt.Errorf("Cannot be deleted by non-creators")
 	}
-	//删除收藏记录
+	//Delete Collection Record
 	cl := new(collect.Collect)
 	if !cl.DetectByFavoritesID(id) {
-		return fmt.Errorf("删除收藏记录失败")
+		return fmt.Errorf("Failed to delete favourite records")
 	}
 	if err != nil {
-		return fmt.Errorf("删除失败")
+		return fmt.Errorf("Failed to delete")
 	}
 	return nil
 }
