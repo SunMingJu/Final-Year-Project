@@ -17,7 +17,7 @@ export interface GetArticleManagementListItem {
     is_comments: boolean
     heat: number
 
-    is_delete: boolean //用于伪删除
+    is_delete: boolean //for pseudo deletion
 }
 
 export type GetArticleManagementListRes = Array<GetArticleManagementListItem>

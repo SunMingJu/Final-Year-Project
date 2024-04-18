@@ -2,7 +2,7 @@ export default [{
     path: 'space/:id',
     name: 'Space',
     meta: {
-        title: '用户信息',
+        title: 'User Info',
         requireAuth: false,
         keepAlive: false
     },
@@ -12,7 +12,7 @@ export default [{
             path: 'individual',
             name: 'SpaceIndividual',
             meta: {
-                title: '个人空间',
+                title: 'personal space',
                 requireAuth: false,
                 keepAlive: false
             },
@@ -22,7 +22,7 @@ export default [{
             path: 'myAttention',
             name: 'MyAttention',
             meta: {
-                title: '我的关注',
+                title: 'my focus',
                 requireAuth: false,
                 keepAlive: false
             },
@@ -32,7 +32,7 @@ export default [{
             path: 'myVermicelli',
             name: 'MyVermicelli',
             meta: {
-                title: '我的粉丝',
+                title: 'my fans',
                 requireAuth: false,
                 keepAlive: false
             },

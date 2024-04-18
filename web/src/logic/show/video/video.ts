@@ -20,7 +20,7 @@ export const useVideoProp = () => {
   const barrageListShow = ref(false)
   const videoBarrage = ref(true)
   const liveNumber = ref(0)
-  //回复二级评论
+  //Reply to secondary comments
   const replyCommentsDialog = reactive({
     show: false,
     commentsID: 0,
@@ -55,7 +55,7 @@ export const useSendBarrage = async (text: Ref<string>, dpaler: DPlayer, userSto
   console.log(userStore.userInfoData)
   if (res.code != 0) {
     Swal.fire({
-      title: "弹幕服务异常",
+      title: "Barrage service exception",
       heightAuto: false,
       confirmButtonColor: globalScss.colorButtonTheme,
       icon: "error",
@@ -88,7 +88,7 @@ export const useLikeVideo = async (videoInfo: UnwrapNestedRefs<VideoInfo>) => {
     videoInfo.videoInfo.is_like = !videoInfo.videoInfo.is_like
   } catch (err) {
     Swal.fire({
-      title: "点赞失败",
+      title: "Failed to like",
       heightAuto: false,
       confirmButtonColor: globalScss.colorButtonTheme,
       icon: "error",
@@ -98,11 +98,11 @@ export const useLikeVideo = async (videoInfo: UnwrapNestedRefs<VideoInfo>) => {
 
 export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoaded, Router: Router, videoID: Ref<Number>, videoInfo: UnwrapNestedRefs<VideoInfo>) => {
   try {
-    //绑定视频id
+    //Bind video id
     if (!route.query.videoID) {
       Router.back()
       Swal.fire({
-        title: "获取视频失败",
+        title: "Failed to get video",
         heightAuto: false,
         confirmButtonColor: globalScss.colorButtonTheme,
         icon: "error",
@@ -111,7 +111,7 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
       return
     }
     videoID.value = Number(route.query.videoID)
-    //得到视频信息
+   //Get video information
     const vinfo = await getVideoContributionByID(<GetVideoContributionByIDReq>{
       video_id: videoID.value
     })
@@ -119,19 +119,19 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
     videoInfo.videoInfo = vinfo.data.videoInfo
     videoInfo.recommendList = vinfo.data.recommendList
 
-    //获取视频弹幕信息
+    //Get video barrage information
     const barrageList = await getVideoBarrageList(<GetVideoBarrageListReq>{
       id: videoID.value.toString()
     })
     if (!barrageList.data) return false
     videoInfo.barrageList = barrageList.data
-    //获取当前用户信息
-    const userStore = useUserStore()
-    //初始化播放器
+    //Get current user information
+const userStore = useUserStore()
+    //Initialize the player
     const dp = new DPlayer({
       container: videoRef.value,
-      loop: true, // 循环播放
-      lang: "zh-cn", // 语言
+      loop: true, //loop playback
+      lang: "zh-cn", //language
       logo: "",
       autoplay: true,
       danmaku: {
@@ -139,10 +139,10 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
         api: danmakuApi,
         token: userStore.userInfoData.token
       },
-      mutex: false, // 互斥，阻止多个播放器同时播放
-      video: { // 视频信息
-        type: "auto", // 视频类型 可选"auto", "hls", "flv", "dash"..
-        url: videoInfo.videoInfo.video, // 视频链接
+      mutex: false, //Mutually exclusive, prevent multiple players from playing at the same time
+      video: { //Video information
+        type: "auto", //Video type optional "auto", "hls", "flv", "dash"..
+        url: videoInfo.videoInfo.video, //video link
         pic: videoInfo.videoInfo.cover
       },
     });
@@ -156,10 +156,10 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
 export const useWebSocket = (userStore: any, videoInfo: UnwrapNestedRefs<VideoInfo>, Router: Router, liveNumber: Ref<number>) => {
   let socket: WebSocket
   const open = () => {
-    console.log("websocket 连接成功 ")
+    console.log("websocket connection succeeded ")
   }
   const error = () => {
-    console.error("websocket 连接失败")
+    console.error("websocket Connection failed")
   }
   const getMessage = async (msg: any) => {
     let data = JSON.parse(msg.data)
@@ -176,7 +176,7 @@ export const useWebSocket = (userStore: any, videoInfo: UnwrapNestedRefs<VideoIn
 
   if (typeof (WebSocket) === "undefined") {
     Swal.fire({
-      title: "您的浏览器不支持socket",
+      title: "Your browser does not support sockets",
       heightAuto: false,
       confirmButtonColor: globalScss.colorButtonTheme,
       icon: "error",
@@ -184,13 +184,13 @@ export const useWebSocket = (userStore: any, videoInfo: UnwrapNestedRefs<VideoIn
     Router.back()
     return
   } else {
-    // 实例化socket
+    //Instantiate socket
     socket = new WebSocket(import.meta.env.VITE_SOCKET_URL + "/ws/videoSocket?token=" + userStore.userInfoData.token + "&videoID=" + videoInfo.videoInfo.id)
-    // 监听socket连接
+    //Listen to socket connection
     socket.onopen = open
-    // 监听socket错误信息
+    //Listen for socket error messages
     socket.onerror = error
-    // 监听socket消息
+    //Listen to socket messages
     socket.onmessage = getMessage
   }
 

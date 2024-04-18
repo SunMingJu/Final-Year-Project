@@ -1,6 +1,6 @@
 <template>
   <div class="overall">
-    <pageHeader title="直播设置" icon-nmae="live"></pageHeader>
+    <pageHeader title="Live broadcast settings" icon-nmae="live"></pageHeader>
     <div class=" principal  personal-layout animate__animated animate__slideInRight">
       <div class="form-box">
         <el-upload class="cover-uploader" :action="liveInformationForm.action" :show-file-list="false"
@@ -17,7 +17,7 @@
             <el-form :model="liveInformationForm" ref="saveDateFormRef" :rules="liveInformationRules"
               label-position="left" label-width="5rem">
 
-              <el-form-item label="直播标题" prop="title">
+              <el-form-item label="Live title" prop="title">
                 <el-input v-model="liveInformationForm.title" />
               </el-form-item>
               <el-form-item label="Adders">
@@ -35,10 +35,10 @@
         </div>
       </div>
       <div class="bottom-box">
-        <span class="text"> 请设置您的直播封面和标题,以便更好吸引观众嗷~</span>
+        <span class="text"> Please set your live broadcast cover and title to better attract viewers~</span>
         <div class="button">
           <el-button v-removeFocus @click="useSaveData(liveInformationForm, saveDateFormRef, rawData)" type="primary"
-            round>保存资料
+            round>save data
           </el-button>
         </div>
       </div>

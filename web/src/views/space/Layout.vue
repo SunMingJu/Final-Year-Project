@@ -31,7 +31,7 @@ const space = useSpaceStore()
 const scrollHeight = ref(0)
 const scrollRef = ref()
 
-//需要在组件挂载前绑定id
+//The id needs to be bound before the component is mounted.
 onBeforeMount(() => {
     uid.value = parseInt(route.params.id as string)
     space.setSpaceID(uid.value)

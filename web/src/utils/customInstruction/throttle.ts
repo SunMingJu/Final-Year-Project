@@ -1,5 +1,5 @@
 import { DirectiveBinding } from 'vue'
-//节流
+//Throttle
 export const vThrottle = {
     mounted(el: HTMLElement, binding: DirectiveBinding<any>) {
         let lastTime: number = 0

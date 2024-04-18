@@ -13,14 +13,14 @@ export const useChatListStore = defineStore("caht", () => {
         chatListData.value = info
     }
 
-    //删除记录
+    //Delete Record
     const deleteItemByid = (tid: number) => {
         chatListData.value = chatListData.value.filter((item) => {
             return item.to_id != tid
         })
     }
 
-    //清空未读消息
+    //Clear unread messages
     const clearUnread = (tid: number) => {
         chatListData.value = chatListData.value.filter((item) => {
             if (item.to_id == tid) {
@@ -29,11 +29,11 @@ export const useChatListStore = defineStore("caht", () => {
             return item
         })
     }
-    //添加消息
+    //Add message
     const addMessage = (tid: number, info: MessageInfo) => {
         chatListData.value = chatListData.value.filter((item) => {
             if (item.to_id == tid) {
-                //更换最后一条记录 
+                //Replace the last record 
                 item.last_message = info.message
                 item.last_at = timetoRFC3339(new Date())
                 item.message_list = [...item.message_list, info]
@@ -55,7 +55,7 @@ export const useChatListStore = defineStore("caht", () => {
         addMessage
     }
 }, {
-    //只持久化聊天相关数据
+    //Only persist chat related data
     persist: [
         {
             paths: ['chatListData'],

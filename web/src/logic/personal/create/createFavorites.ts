@@ -29,7 +29,7 @@ export const useCreateFavoritesProp = () => {
         progress: 0
     });
 
-    //定义请求结果原始数据
+    //Define request result raw data
     const rawData = reactive<GetLiveDataRes>({
         title: "",
         img: ""
@@ -45,7 +45,7 @@ export const useCreateFavoritesProp = () => {
 }
 
 
-//文件上传处理
+//File upload processing
 export const useHandleFileMethod = (createFavoriteRmationForm: CreateCollectRmation) => {
     const handleFileSuccess: UploadProps['onSuccess'] = (
         response,
@@ -56,10 +56,9 @@ export const useHandleFileMethod = (createFavoriteRmationForm: CreateCollectRmat
 
     const handleFileError: UploadProps['onError'] = (
         response,
-    ) => {
-        console.log("上传失败")
+    ) => {console.log("Upload failed")
         Swal.fire({
-            title: "上传失败",
+            title: "Upload failed",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -70,29 +69,29 @@ export const useHandleFileMethod = (createFavoriteRmationForm: CreateCollectRmat
 
     const beforeFileUpload: UploadProps['beforeUpload'] = async (rawFile) => {
         return await new Promise<boolean>((resolve, reject) => {
-            //判断大小
-            if (rawFile.size / 1024 / 1024 > 2) {
+            //Judge the size
+            if (rawFile.size /1024 /1024 > 2) {
                 Swal.fire({
-                    title: "封面大小不能大于2M",
+                    title: "Cover size cannot be larger than 2M",
                     heightAuto: false,
                     icon: "error",
 
                 })
                 reject(false);
             }
-            //判断尺寸
+            //Judge size
             let reader = new FileReader();
             reader.readAsDataURL(rawFile);
             reader.onload = () => {
-                // 让页面中的img标签的src指向读取的路径
+                //Let the src of the img tag in the page point to the read path
                 let img = new Image();
-                img.src = reader.result as string;
+img.src = reader.result as string;
                 img.onload = () => {
                     console.log(img.width);
                     console.log(img.height);
                     if (img.width < 960 || img.height < 600) {
                         Swal.fire({
-                            title: "请上传 960*600 尺寸以上图片",
+                            title: "Please upload pictures above 960*600 size",
                             heightAuto: false,
                             confirmButtonColor: globalScss.colorButtonTheme,
                             icon: "error",
@@ -114,7 +113,7 @@ export const useHandleFileMethod = (createFavoriteRmationForm: CreateCollectRmat
         } catch (err) {
             console.log(err)
             Swal.fire({
-                title: "获取上传节点失败",
+                title: "Failed to obtain upload node",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -137,8 +136,8 @@ export const useSaveData = async (createFavoriteRmationForm: CreateCollectRmatio
     await formEl.validate(async (valid, fields) => {
         if (valid) {
             try {
-                if (createFavoriteRmationForm.uploadUrl == rawData.img && createFavoriteRmationForm.title == rawData.title) throw "未修改信息";
-                if (!createFavoriteRmationForm.uploadUrl) throw "请先上传图片"
+                if (createFavoriteRmationForm.uploadUrl == rawData.img && createFavoriteRmationForm.title == rawData.title) throw "Unmodified information";
+                if (!createFavoriteRmationForm.uploadUrl) throw "Please upload pictures first"
                 const requistData = <SaveCreateFavoritesDataReq>{
                     id: createFavoriteRmationForm.id,
                     type: createFavoriteRmationForm.uploadType,
@@ -149,24 +148,24 @@ export const useSaveData = async (createFavoriteRmationForm: CreateCollectRmatio
                 await createFavorites(requistData)
                 emits("shutDown");
                 if (createFavoriteRmationForm.id == 0) {
-                    //清空内容
+                    //clear content
                     createFavoriteRmationForm.FileUrl = ""
                     createFavoriteRmationForm.title = ""
                     createFavoriteRmationForm.content = ""
-                    //创建模式
+                    //Create mode
                     Swal.fire({
-                        title: "创建成功",
+                        title: "Created successfully",
                         confirmButtonColor: globalScss.colorButtonTheme,
                         heightAuto: false,
                         icon: "success",
-                        preConfirm: () => {
+preConfirm: () => {
                             router.push({ name: "Favorites", query: { type: 'createTime' + Date.now() } })
                         }
                     })
                 } else {
-                    //更新模式
+                    //Update model
                     Swal.fire({
-                        title: "更新成功",
+                        title: "Update Success",
                         confirmButtonColor: globalScss.colorButtonTheme,
                         heightAuto: false,
                         icon: "success",
@@ -192,7 +191,7 @@ export const useSaveData = async (createFavoriteRmationForm: CreateCollectRmatio
 
 export const useInit = async (createFavoriteRmationForm: CreateCollectRmation, rawData: GetLiveDataRes, type: boolean, item: GetFavoritesListItem | undefined) => {
     try {
-        //获取当前接口的请求方法
+        //Get the request method of the current interface
         const updataMenhod = (await getuploadingMethod(<GetUploadingMethodReq>{
             method: createFavoriteRmationForm.interface
         })).data as GetUploadingMethodRes
@@ -200,7 +199,7 @@ export const useInit = async (createFavoriteRmationForm: CreateCollectRmation, r
         if (!type) {
             if (item == undefined) return false
             if (createFavoriteRmationForm.FileUrl) {
-                //已上传图片才更改上传类型
+                //Change the upload type only after uploading the image
                 createFavoriteRmationForm.uploadType = item.type
             }
             createFavoriteRmationForm.title = item.title
@@ -213,7 +212,7 @@ export const useInit = async (createFavoriteRmationForm: CreateCollectRmation, r
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "获取上传方法失败",
+            title: "Failed to get upload method",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -222,7 +221,7 @@ export const useInit = async (createFavoriteRmationForm: CreateCollectRmation, r
 }
 
 
-//表单验证
+//form validation
 export const useRules = () => {
     const liveInformationRules = reactive({
         title: [{ validator: validateCollectTitle, trigger: 'change' }],

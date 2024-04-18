@@ -2,7 +2,7 @@
     <div class="column">
 
         <div class="column-list">
-            <!-- 单个卡片 -->
+            <!--Single card -->
             <div :class="{ mouseover: item.is_stay, mouseleave: !item.is_stay }" class="column-item shadow-box "
                 @mouseover="mouseOver(item)" @mouseleave="mouseleave(item)" v-for="(item,index) in columnList" :key="item.id"
                 @click="jumpArticle(item.id)">
@@ -11,22 +11,22 @@
                 </div>
                 <div class="item-text">
                     <div class="post-meta">
-                        <SvgIcon name="camera" class="icon-small"></SvgIcon> " 发布于
+                        <SvgIcon name="camera" class="icon-small"></SvgIcon> " posted on
                         {{ dayjs(item.created_at).format('YYYY.MM.DD.hh.mm') }} "
                     </div>
                     <h3>{{ item.title }}</h3>
                     <div class="post-meta" style="margin-bottom: 15px;">
                         <SvgIcon name="hot" class="icon-small"></SvgIcon>
                         <span>
-                            {{ item.heat }} 热度
+                            {{ item.heat }} heat
                         </span>
                         <SvgIcon name="comments" class="icon-small"></SvgIcon>
                         <span>
-                            {{ item.comments_number }} 条评论
+                            {{ item.comments_number }} comments
                         </span>
                         <SvgIcon name="like" class="icon-small"></SvgIcon>
                         <span>
-                            {{ item.likes_number }}点赞
+                            {{ item.likes_number }}like
                         </span>
                     </div>
                     <div class="recent-post-desc">
@@ -73,7 +73,7 @@ const props = defineProps({
 )
 const router = useRouter()
 
-//专栏列表
+//column list
 const columnList = ref<GetArticleContributionListByUserRes>([])
 const mouseOver = (item: GetArticleContributionListByUserResItem) => {
     item.is_stay = true
@@ -89,7 +89,7 @@ const init = async () => {
             userID: props.roomID
         }
         const response = await getArticleContributionListByUser(requistData)
-        //加上是否停留鼠标
+        //Add whether to stay the mouse
         response.data?.filter((item) => {
             item.is_stay = false
             return true

@@ -10,11 +10,11 @@
                 <div class="username">
                     <span>{{ username }}</span>
                     <div class="private-letter" @click="usePersonalLetter(id)">
-                        <SvgIcon name="message" class="icon" color="#9499A0"></SvgIcon> 私信
+                        <SvgIcon name="message" class="icon" color="#9499A0"></SvgIcon> Private letter
                     </div>
                 </div>
                 <div class="signature">
-                    <VueEllipsis3 :text="signature ? signature : '这个人很勤快什么都没留下~'">
+                    <VueEllipsis3 :text="signature ? signature : 'This man is very diligent and leaves nothing behind.~'">
                         <template v-slot:ellipsisNode>
                             <span>...</span>
                         </template>
@@ -22,11 +22,11 @@
                 </div>
                 <div class="btn-list">
                     <el-button v-removeFocus type="primary" size="small" round :icon="House"
-                        @click="jumpSpace(id)">主页</el-button>
+                        @click="jumpSpace(id)">Home page</el-button>
                     <el-button class="attention" v-if="!is_attention" v-removeFocus type="primary" size="small" round
-                        :icon="Plus" @click="attention(id)">关注</el-button>
+                        :icon="Plus" @click="attention(id)">focus on</el-button>
                     <el-button class="attention" v-if="is_attention" v-removeFocus type="primary" size="small" round
-                        :icon="MoreFilled" color="#F1F2F3" @click="attention(id)">已关注</el-button>
+                        :icon="MoreFilled" color="#F1F2F3" @click="attention(id)">Already following</el-button>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@ const emits = defineEmits(["attention"])
 const router = useRouter()
 
 
-//跳转用户空间
+//Jump to user space
 const jumpSpace = (id: number) => {
     router.push({ name: "SpaceIndividual", params: { "id": id } })
 }

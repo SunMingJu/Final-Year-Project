@@ -20,7 +20,7 @@ export const useVdeoContributionProp = () => {
     const formRef = ref<FormInstance>()
     const ruleFormRef = ref<FormInstance>()
     const router = useRouter()
-    const video = ref() //上传的视频信息
+    const video = ref() //Uploaded video information
     const form = reactive(<vdeoContributionForm>{
         id: 0,
         isShow: false,
@@ -66,7 +66,7 @@ export const useVdeoContributionProp = () => {
     }
 }
 
-//上传视频处理
+//上Video upload processing
 export const useHandleFileMethod = (uploadFileformation: uploadFileformation, form: vdeoContributionForm, video: Ref) => {
 
     const handleFileSuccess: UploadProps['onSuccess'] = async (
@@ -74,9 +74,9 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
         uploadFile
     ) => {
         uploadFileformation.FileUrl = URL.createObjectURL(uploadFile.raw!)
-        //视频准备好事件
+        //video ready event
         video.value.onloadedmetadata = () => {
-            //修改视频时长
+            //Modify video duration
             form.videoDuration = Math.round(video.value.duration)
         }
         const readerInfo = await fileReader(uploadFile.raw!)
@@ -86,9 +86,9 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
     const handleFileError: UploadProps['onError'] = (
         response,
     ) => {
-        console.log("上传失败")
+        console.log("upload failed")
         Swal.fire({
-            title: "上传失败",
+            title: "upload failed",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -98,15 +98,15 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
 
     }
 
-    //上传前处理
+    //Processing before uploading
     const beforeFileUpload: UploadProps['beforeUpload'] = async (rawFile: UploadRawFile) => {
         return true
     }
 
-    //修改默认请求
+    //Modify default request
     const RedefineUploadFile = async (params: UploadRequestOptions) => {
         try {
-            //大于30mb分片
+            //Larger than 30mb fragments
             let fragment = params.file.size > 30 * 1024 * 1024 ? true : false
             form.isShow = !form.isShow
             const response = await uploadFile(uploadFileformation, params.file, fragment)
@@ -116,7 +116,7 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
             console.log(err)
             form.isShow = false
             Swal.fire({
-                title: "获取上传节点失败",
+                title: "Failed to obtain upload node",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -133,7 +133,7 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
 
 }
 
-//上传封面处理
+//Upload cover processing
 export const useHandleCoverMethod = (uploadCoveration: uploadFileformation, form: vdeoContributionForm) => {
 
     const handleFileSuccess: UploadProps['onSuccess'] = (
@@ -146,9 +146,9 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation, form
     const handleFileError: UploadProps['onError'] = (
         response,
     ) => {
-        console.log("上传失败")
+        console.log("upload failed")
         Swal.fire({
-            title: "上传失败",
+            title: "upload failed",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -158,24 +158,24 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation, form
 
     }
 
-    //上传前处理
+    //Processing before uploading
     const beforeFileUpload: UploadProps['beforeUpload'] = async (rawFile: UploadRawFile) => {
         return await new Promise<boolean>((resolve, reject) => {
-            //判断大小
+            //Determine size
             if (rawFile.size / 1024 / 1024 > 2) {
                 Swal.fire({
-                    title: "封面大小不能大于2M",
+                    title: "Cover size cannot be larger than 2 m",
                     heightAuto: false,
                     icon: "error",
 
                 })
                 reject(false);
             }
-            //判断尺寸
+            //Determine size
             let reader = new FileReader();
             reader.readAsDataURL(rawFile);
             reader.onload = () => {
-                // 让页面中的img标签的src指向读取的路径
+                // Let the src of the img tag in the page point to the read path
                 let img = new Image();
                 img.src = reader.result as string;
                 img.onload = () => {
@@ -183,7 +183,7 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation, form
                     console.log(img.height);
                     if (img.width < 960 || img.height < 600) {
                         Swal.fire({
-                            title: "请上传 960*600 尺寸以上图片",
+                            title: "Please upload images above 960*600 size",
                             heightAuto: false,
                             confirmButtonColor: globalScss.colorButtonTheme,
                             icon: "error",
@@ -197,7 +197,7 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation, form
         })
     }
 
-    //修改默认请求
+    //Modify default request
     const RedefineUploadFile = async (params: UploadRequestOptions) => {
         try {
             const response = await uploadFile(uploadCoveration, params.file)
@@ -206,7 +206,7 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation, form
         } catch (err) {
             console.log(err)
             Swal.fire({
-                title: "获取上传节点失败",
+                title: "Failed to obtain upload node",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -261,10 +261,10 @@ export const useSaveData = async (form: vdeoContributionForm, uploadFileformatio
                 } else {
                     form.date1time = timetoRFC3339(new Date(form.date1time))
                 }
-                if (!uploadCoveration.uploadUrl) throw "请先上传封面"
-                //判断操作类型
+                if (!uploadCoveration.uploadUrl) throw "Please upload the cover first"
+                //Determine operation type
                 if (props.type == "edit") {
-                    //更新视频
+                    //Update video
                     var updateRequistData = <UpdateVideoContributionReq>{
                         id: form.id,
                         cover: uploadCoveration.uploadUrl,
@@ -276,8 +276,8 @@ export const useSaveData = async (form: vdeoContributionForm, uploadFileformatio
                     }
                     await updateVideoContribution(updateRequistData)
                 } else {
-                    //创建视频
-                    if (!uploadFileformation.uploadUrl) throw "上传未完成"
+                    //Create video
+                    if (!uploadFileformation.uploadUrl) throw "Upload not completed"
                     var createRequistData = <CreateVideoContributionReq>{
                         id: form.id,
                         video: uploadFileformation.uploadUrl,
@@ -294,7 +294,7 @@ export const useSaveData = async (form: vdeoContributionForm, uploadFileformatio
                     }
                     await createVideoContribution(createRequistData)
                 }
-                let swalTitle = props.type == "edit" ? "更新成功" : "发布成功"
+                let swalTitle = props.type == "edit" ? "update completed" : "Posted successfully"
                 Swal.fire({
                     title: swalTitle,
                     confirmButtonColor: globalScss.colorButtonTheme,
@@ -325,7 +325,7 @@ export const useSaveData = async (form: vdeoContributionForm, uploadFileformatio
 
 export const useInit = async (uploadFileformation: uploadFileformation, uploadCoveration: uploadFileformation, form: UnwrapNestedRefs<vdeoContributionForm>, props: any, editVideoStore: any) => {
     try {
-        //获取当前接口的请求方法
+        //Get the request method of the current interface
         const updataMenhod = (await getuploadingMethod(<GetUploadingMethodReq>{
             method: uploadFileformation.interface
         })).data as GetUploadingMethodRes
@@ -334,9 +334,9 @@ export const useInit = async (uploadFileformation: uploadFileformation, uploadCo
             method: uploadCoveration.interface
         })).data as GetUploadingMethodRes
 
-        //判断当前模式
+        //Determine current mode
         if (props.type == "edit") {
-            //编辑模式
+            //edit mode
             form.isShow = true
             uploadFileformation.progress = 100
             form.id = editVideoStore.editVideoData.videoID
@@ -356,7 +356,7 @@ export const useInit = async (uploadFileformation: uploadFileformation, uploadCo
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "获取上传方法失败",
+            title: "Failed to get upload method",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -364,7 +364,7 @@ export const useInit = async (uploadFileformation: uploadFileformation, uploadCo
     }
 }
 
-//表单验证
+//form validation
 export const useRules = () => {
     const videoContributionRules = reactive({
         title: [{ validator: validateVideoTitle, trigger: 'change' }],

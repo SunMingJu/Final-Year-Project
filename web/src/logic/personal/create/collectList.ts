@@ -34,7 +34,7 @@ export const useInit = async (route : RouteLocationNormalizedLoaded ,releaseInfo
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "获取收藏夹内容失败",
+            title: "Failed to get favorites content",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",

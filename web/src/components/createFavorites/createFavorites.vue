@@ -15,10 +15,10 @@
                     <div class="form-show">
                         <el-form :model="createFavoriteRmationForm" ref="saveDateFormRef" :rules="liveInformationRules"
                             label-position="left" label-width="5rem">
-                            <el-form-item label="标题" prop="title">
+                            <el-form-item label="title" prop="title">
                                 <el-input v-model="createFavoriteRmationForm.title" />
                             </el-form-item>
-                            <el-form-item label="介绍">
+                            <el-form-item label="introduce">
                                 <el-input type="textarea" resize="none" :rows="4"
                                     v-model="createFavoriteRmationForm.content" />
                             </el-form-item>
@@ -27,11 +27,11 @@
                 </div>
             </div>
             <div class="bottom-box">
-                <span class="text"> 请设置您的封面和标题,以便更好查询收藏内容嗷~ </span>
+                <span class="text"> Please set your cover and title to better search for collection content.~ </span>
                 <div class="button">
                     <el-button v-removeFocus
                         @click="useSaveData(createFavoriteRmationForm, saveDateFormRef, rawData, router, emits)"
-                        type="primary" round> {{createFavoriteRmationForm.id == 0 ? "创建文件夹" : "更新文件夹"}}
+                        type="primary" round> {{createFavoriteRmationForm.id == 0 ? "Create folder" : "update folder"}}
                     </el-button>
                 </div>
             </div>
@@ -52,7 +52,7 @@ const props = defineProps({
         type: Object as () => GetFavoritesListItem,
     },
     type : {
-        type : Boolean, //true 为插入模式false 为更新模式
+        type : Boolean, //true is insert mode false is update mode
         required: true,
     }
 })
@@ -67,7 +67,7 @@ onMounted(() => {
 
 })
 
-//数据变化再次更新
+//Data changes are updated again
 onUpdated(() => {
     useInit(createFavoriteRmationForm, rawData,props.type,props.info)
 })

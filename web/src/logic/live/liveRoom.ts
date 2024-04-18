@@ -32,14 +32,14 @@ export const useWebSocket = (dp: DPlayer, userStore: any, sideRef: Ref<any>, roo
   let socket: WebSocket
   const initWebSocket = (() => {
     const open = () => {
-      console.log("websocket 连接成功 ")
+      console.log("websocket connection successful")
     }
     const error = () => {
-      console.error("websocket 连接失败 ")
+      console.error("websocket connection failed")
     }
     const getMessage = async (msg: any) => {
       console.log(msg.data)
-      //转义uint8ARRAY
+      //Escape uint8ARRAY
       const reader = new FileReader();
       reader.readAsArrayBuffer(msg.data);
       reader.onload = function (e) {
@@ -58,7 +58,7 @@ export const useWebSocket = (dp: DPlayer, userStore: any, sideRef: Ref<any>, roo
           case "webClientHistoricalBarrageRes":
             webClientHistoricalBarrageRes(response, dp, sideRef)
             break;
-          default: console.error("未支持的消息类型")
+          default: console.error("Unsupported message type")
             break;
         }
         console.log(response)
@@ -67,7 +67,7 @@ export const useWebSocket = (dp: DPlayer, userStore: any, sideRef: Ref<any>, roo
 
     if (typeof (WebSocket) === "undefined") {
       Swal.fire({
-        title: "您的浏览器不支持socket",
+        title: "Your browser does not support sockets",
         heightAuto: false,
         confirmButtonColor: globalScss.colorButtonTheme,
         icon: "error",
@@ -75,19 +75,19 @@ export const useWebSocket = (dp: DPlayer, userStore: any, sideRef: Ref<any>, roo
       Router.back()
       return
     } else {
-      // 实例化socket
-      socket = new WebSocket( import.meta.env.VITE_SOCKET_URL + "/ws/liveSocket?token=" +  userStore.userInfoData.token + "&liveRoom=" + roomID.value)
-      // 监听socket连接
+      //Instantiate socket
+      socket = new WebSocket( import.meta.env.VITE_SOCKET_URL + "/ws/liveSocket?token=" + userStore.userInfoData.token + "&liveRoom=" + roomID.value)
+      //Listen to socket connection
       socket.onopen = open
-      // 监听socket错误信息
+      //Listen for socket error messages
       socket.onerror = error
-      // 监听socket消息
+      //Listen to socket messages
       socket.onmessage = getMessage
     }
   })()
 
   const sendMessage = (msg: string | ArrayBufferLike | Blob | ArrayBufferView) => {
-    console.log("发送消息", msg)
+    console.log("Send a message", msg)
     socket.send(msg)
   }
 
@@ -100,11 +100,11 @@ export const useWebSocket = (dp: DPlayer, userStore: any, sideRef: Ref<any>, roo
 
 export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoaded, Router: Router, roomID: Ref<Number>,liveInfo : UnwrapNestedRefs<GetLiveRoomInfoRes>) => {
   try {
-    //绑定房间
+    //Bind room
     if (!route.query.roomID) {
       Router.back()
       Swal.fire({
-        title: "访问房间失败",
+        title: "Failed to access room",
         heightAuto: false,
         confirmButtonColor: globalScss.colorButtonTheme,
         icon: "error",
@@ -114,7 +114,7 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
     }
     roomID.value = Number(route.query.roomID)
 
-    //获取直播信息
+    //Get live broadcast information
 
     const li = await getLiveRoomInfo(<GetLiveRoomInfoReq>{
       room_id :  roomID.value
@@ -122,7 +122,7 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
 
     if(!li.data){
       Swal.fire({
-        title: "该用户未进行直播配置",
+        title: "This user has not configured live broadcast",
         heightAuto: false,
         confirmButtonColor: globalScss.colorButtonTheme,
         icon: "error",
@@ -136,15 +136,15 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
 
 
 
-    //初始化播放器
+    //Initialize player
     console.log(videoRef)
     const dp = new DPlayer({
-      container: videoRef.value, // 容器
-      loop: true, // 循环播放
-      lang: "zh-cn", // 语言，可选'en', 'zh-cn', 'zh-tw',
-      logo: "", // 在左上角展示一个logo
-      autoplay : true,
-      danmaku: true as unknown as DPlayerDanmaku, //官方文档给的就是true 但是ts中规定类型不一致取的取舍方案
+     container: videoRef.value, //container
+      loop: true, //loop playback
+      lang: "zh-cn", //Language, optional 'en', 'zh-cn', 'zh-tw',
+      logo: "", //Display a logo in the upper left corner
+      autoplay: true,
+      danmaku: true as unknown as DPlayerDanmaku, //The official document gives true, but the types specified in ts are inconsistent.
       apiBackend: {
         read: function (options) {
           console.log('Pretend to connect WebSocket');
@@ -155,10 +155,10 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
           options.success();
         },
       },
-      mutex: false, // 互斥，阻止多个播放器同时播放
-      video: { // 视频信息
-        type: "customFlv", // 视频类型 可选"auto", "hls", "flv", "dash"..
-        url: liveInfo.flv, // 视频链接
+      mutex: false, //Mutually exclusive, prevent multiple players from playing at the same time
+      video: { //Video information
+        type: "customFlv", //Video type optional "auto", "hls", "flv", "dash"..
+        url: liveInfo.flv, //video link
         customType: {
           customFlv: (video: any, player: any) => {
             const flvPlayer = flvJs.createPlayer({

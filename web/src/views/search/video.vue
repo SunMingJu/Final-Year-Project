@@ -23,7 +23,7 @@
             </div>
         </div>
         <div>
-            <!-- 空状态 -->
+            <!--Empty state -->
             <div class="empty" v-show="isLoading && !videoList.length">
                 <el-empty description="这里空空如也" />
             </div>
@@ -50,7 +50,7 @@ components: {
 const isLoading = ref(false)
 const route = useRoute()
 const pageInfo = reactive(<SearchReq>{
-    //待完成分页功能
+    //Paging function to be completed
     page_info: {
         page: 1,
         size: 36,
@@ -64,11 +64,11 @@ let searchInfo = ref<SearchRes>([])
 
 const videoList = computed(() => {
     let list = [] as Array<VideoInfo>
-    //判断当前页面数量 为第二页
+    //Determine the current page number as the second page
     if (pageInfo.page_info.page == 2) {
         if (searchInfo.value.length % 11 == 0) {
             list = [...list, ...searchInfo.value, ...quickCreationArr(15)]
-            //并且加载数据
+            //and load data
             loadData(searchInfo, pageInfo)
         } else {
             list = [...searchInfo.value]
@@ -87,7 +87,7 @@ const videoList = computed(() => {
 })
 
 
-//生成占位骨架屏
+//Generate placeholder skeleton screen
 const quickCreationArr = (num: number): Array<VideoInfo> => {
     let arr = []
     for (let i = 0; i < num; i++) {
@@ -101,7 +101,7 @@ const loadData = async (searchInfo: Ref<SearchRes>, pageInfo: UnwrapNestedRefs<S
     const response = await search(pageInfo)
     if (!response.data) return
     searchInfo.value = [...searchInfo.value, ...response.data]
-    //请求成功后下次分页+1
+    //+1 for next paging after successful request
     pageInfo.page_info.page = pageInfo.page_info.page + 1
     isLoading.value = true
 }

@@ -10,13 +10,13 @@ import { reactive, ref, Ref } from "vue";
 import { Router, useRouter } from 'vue-router';
 import { useInitChatSocket } from "../global/chat";
 import { useInitNoticeSocket } from "../global/notice";
-//提供数据
+//provide data
 
 const loading = useGlobalStore().globalData.loading
 
 export const useLoginProp = () => {
-    //公共部分
-    const currentModel = ref(false) //当前模块 true 注册 false 登入
+    //Public section
+    const currentModel = ref(false) //Current module true registration false login
     const userStore = useUserStore()
     const router = useRouter();
     const isShowSendEmail = ref(false)
@@ -66,7 +66,7 @@ export const useLoginProp = () => {
             sendEmailInfo.isPleaseClick = false
             loading.loading = false
             ElMessage({
-                message: "验证码已发送！",
+                message: "Verification code has been sent!",
                 type: 'success',
             })
             sendEmailInfo.btnText = "60"
@@ -104,7 +104,7 @@ export const useLoginProp = () => {
         forgetFormRef
     }
 }
-//登入
+//login
 export const useLoginMethod = (store: any, router: Router, loginForm: loginReq) => {
 
     const login = async (formEl: FormInstance | undefined) => {
@@ -116,11 +116,11 @@ export const useLoginMethod = (store: any, router: Router, loginForm: loginReq) 
                     loading.loading = true
                     const result = await loginRequist(loginForm)
                     store.setUserInfo(<userInfoRes>result.data)
-                    //初始化socket
+                    //Initialize socket
                     useInitChatSocket()
                     useInitNoticeSocket()
                     ElMessage({
-                        message: "登入成功",
+                        message: "sign in suceesfully",
                         type: 'success',
                     })
                     loading.loading = false
@@ -150,7 +150,7 @@ export const useLoginMethod = (store: any, router: Router, loginForm: loginReq) 
 }
 
 
-//注册
+//register
 export const useRegisterMethod = (store: any, router: Router, registForm: registReq) => {
 
     const register = async (formEl: FormInstance | undefined) => {
@@ -163,7 +163,7 @@ export const useRegisterMethod = (store: any, router: Router, registForm: regist
                     const result = await regist(registForm)
                     store.setUserInfo(<userInfoRes>result.data)
                     ElMessage({
-                        message: "注册成功",
+                        message: "registration success",
                         type: 'success',
                     })
                     loading.loading = false
@@ -191,7 +191,7 @@ export const useRegisterMethod = (store: any, router: Router, registForm: regist
 }
 
 
-//找回密码
+//Retrieve password
 export const useForgetrMethod = (forgetForm: forgetReq, currentModel: Ref<boolean>) => {
 
     const forfet = async (formEl: FormInstance | undefined) => {
@@ -202,13 +202,13 @@ export const useForgetrMethod = (forgetForm: forgetReq, currentModel: Ref<boolea
                     loading.loading = true
                     const result = await forgetRequist(forgetForm)
                     ElMessage({
-                        message: "修改成功",
+                        message: "Successfully modified",
                         type: 'success',
                     })
                     forgetForm.email = ""
                     forgetForm.password = ""
                     forgetForm.verificationCode = ""
-                    //清除表单校验 需要延迟
+                    //Clear form validation requires delay
                     setTimeout(() => {
                         formEl.clearValidate()
                     }, 500)
@@ -239,7 +239,7 @@ export const useForgetrMethod = (forgetForm: forgetReq, currentModel: Ref<boolea
     }
 }
 
-//发送验证码
+//Send the verification code
 export const useSendEmail = async (email: string) => {
     try {
         const emailReq = <sendEmailReq>{
@@ -254,13 +254,13 @@ export const useSendEmail = async (email: string) => {
     }
 }
 
-//表单验证
+//form validation
 export const useRules = () => {
     const loginRules = reactive({
         username: [{ validator: validateUsername, trigger: 'change' }],
         password: [{ validator: validatePassword, trigger: 'change' }]
     });
-    // 注册表单校验规则
+    // Registration form validation rules
     const registerRules = reactive({
         username: [{ validator: validateUsername, trigger: 'change' }],
         email: [{ validator: validateEmail, trigger: 'change' }],

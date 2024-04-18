@@ -6,11 +6,11 @@
             <div class="author-name"><span>{{ authorInfo.username }}</span></div>
             <div class="column-info">
                 <div class="column-info-item">
-                    <div> <span>文章</span></div>
+                    <div> <span>article</span></div>
                     <div class="info-num"><span>{{ totalInfo.article_num }}</span></div>
-                </div>
+</div>
                 <div class="column-info-item">
-                    <div><span>分类</span></div>
+                    <div><span>Classification</span></div>
                     <div class="info-num"><span>{{ totalInfo.classification_num }}</span></div>
                 </div>
             </div>
@@ -19,7 +19,7 @@
             </a>
         </div>
         <div class="classification-card">
-            <div class="card-title"><SvgIcon name="file" class="icon" color="#4C4948"></SvgIcon>分类</div>
+<div class="card-title"><SvgIcon name="file" class="icon" color="#4C4948"></SvgIcon>Classification</div>
             <el-tree :data="totalInfo.classification" :default-expand-all="true" :props="defaultProps" />
         </div>
     </div>
@@ -30,11 +30,10 @@
 import { getArticleTotalInfo } from '@/apis/contribution';
 import { getArticleTotalInfoRes } from '@/types/creation/contribute/contributePage/articleContribution';
 import { onMounted, reactive } from 'vue';
-
 const authorInfo = reactive({
     avatar : "http://q1.qlogo.cn/g?b=qq&nk=2506152074&s=100",
-    username : "橡皮擦",
-    github : "https://github.com/suanju",
+    username : "MingJu Sun",
+    github : "https://github.com/SunMingJu/Final-Year-Project",
 }) 
 const totalInfo = reactive(<getArticleTotalInfoRes>{})
 
@@ -47,7 +46,7 @@ const init = async () => {
     const articleTotalInfo = await getArticleTotalInfo()
     if(!articleTotalInfo.data) return false
     totalInfo.classification = articleTotalInfo.data?.classification
-    totalInfo.article_num = articleTotalInfo.data?.article_num
+totalInfo.article_num = articleTotalInfo.data?.article_num
     totalInfo.classification_num = articleTotalInfo.data?.classification_num
 }
 

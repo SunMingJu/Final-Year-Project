@@ -1,11 +1,11 @@
 <template>
     <div class="overall">
-        <pageHeader title="评论管理" icon-nmae="comment" :animate="false" :whiteWhale="false"></pageHeader>
+        <pageHeader title="Comment management" icon-nmae="comment" :animate="false" :whiteWhale="false"></pageHeader>
         <div class="content">
             <div class="tabs">
                 <el-tabs v-model="activeName" class="demo-tabs">
-                    <el-tab-pane label="视频评论" name="video"><Video></Video></el-tab-pane>
-                    <el-tab-pane label="专栏评论" name="article"><Article></Article></el-tab-pane>
+                    <el-tab-pane label="video review" name="video"><Video></Video></el-tab-pane>
+                    <el-tab-pane label="Column comments" name="article"><Article></Article></el-tab-pane>
                 </el-tabs>
             </div>
         </div>

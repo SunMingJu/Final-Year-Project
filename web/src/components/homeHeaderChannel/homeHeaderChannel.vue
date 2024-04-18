@@ -1,32 +1,32 @@
 <template>
-       <!-- 顶部通道 热门分类 -->
+       <!--Top channel popular categories -->
        <div class="header-channel">
-      <!-- 左边部分 -->
+      <!--Left part -->
       <div class="header-channel-left">
         <div class="channel-left-item">
           <div class="channel-left-icon bg-orange">
             <SvgIcon name="dynamic" class="icon" color="#fff"></SvgIcon>
           </div>
-          <div class="channel-left-item-title">动态</div>
+          <div class="channel-left-item-title">dynamic</div>
         </div>
         <div class="channel-left-item">
           <div class="channel-left-icon bg-pink">
             <SvgIcon name="flame" class="icon" color="#fff"></SvgIcon>
           </div>
-          <div class="channel-left-item-title">热门</div>
+          <div class="channel-left-item-title">Popular</div>
         </div>
         <div class="channel-left-item">
           <div class="channel-left-icon bg-green">
             <SvgIcon name="channel" class="icon" color="#fff"></SvgIcon>
           </div>
-          <div class="channel-left-item-title">频道</div>
+          <div class="channel-left-item-title">channel</div>
         </div>
       </div>
-      <!-- 中间部分 -->
+      <!--middle part -->
       <div class="header-channel-right">
         <div class="channel-right-box-left">
           <div class="right-box-left-item" v-for="item in 24">
-            番剧
+            Fan drama
           </div>
         </div>
 
@@ -45,12 +45,12 @@
 import { reactive } from 'vue';
 
 const sideMavigation = reactive([
-    {iconName : "columnInformation" , title :"专栏"},
-    {iconName : "liveStreamPlayer" , title :"直播"},
-    {iconName : "flag" , title :"活动"},
-    {iconName : "classroom" , title :"课堂"},
-    {iconName : "chatList" , title :"消息列表"},
-    {iconName : "music" , title :"听首曲子"},
+    {iconName : "columnInformation" , title :"Column"},
+    {iconName : "liveStreamPlayer" , title :"live streaming"},
+    {iconName : "flag" , title :"Activity"},
+    {iconName : "classroom" , title :"classroom"},
+    {iconName : "chatList" , title :"Message list"},
+    {iconName : "music" , title :"listen to a song"},
 ])
 
  

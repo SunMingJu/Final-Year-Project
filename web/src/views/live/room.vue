@@ -20,7 +20,7 @@
 
     <div class="content">
       <div class="content-row">
-        <h3>Ta 的专栏</h3>
+        <h3>Ta's column</h3>
         <el-row :gutter="20">
           <el-col :span="16">
             <div class="dynamic-box">
@@ -56,7 +56,7 @@ components: {
   Announcement
 }
 const sideRef = ref()
-var dp: DPlayer //播放器配置对象
+var dp: DPlayer //Player configuration object
 const { videoRef, userStore , route ,  router , roomID ,liveInfo} = useLiveRoomProp()
 
 

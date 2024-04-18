@@ -20,11 +20,11 @@ export const useArticleProp = () => {
         page: 1,
         size: 8,
     })
-    //是否首次加载
+    //Whether to load for the first time
     const isLoading = ref(true)
-    //是否正在加载更多
+    //Is loading more
     const isLoadMore = ref(false)
-    //是否全部加载完成
+    //Whether all loading is completed
     const isTheEnd = ref(false)
     return {
         articleList,
@@ -45,15 +45,15 @@ export const useJump = (item: GetArticleManagementListItem, router: Router) => {
 
 export const useDelRecord = async (recordList: Ref<GetArticleManagementListRes>, id: number) => {
     try {
-        //删除请求
+        //Delete request
         Swal.fire({
             heightAuto: false,
-            title: '确认删除该文章嘛',
+            title: 'Are you sure you want to delete this article?',
             icon: 'warning',
             confirmButtonColor: globalScss.colorButtonTheme,
             showCancelButton: true,
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
+            confirmButtonText: 'confirm',
+            cancelButtonText: 'Cancel',
             reverseButtons: true
         }).then(async (result) => {
             if (result.isConfirmed) {
@@ -62,7 +62,7 @@ export const useDelRecord = async (recordList: Ref<GetArticleManagementListRes>,
                         id
                     })
                     Swal.fire({
-                        title: "删除成功",
+                        title: "successfully deleted",
                         confirmButtonColor: globalScss.colorButtonTheme,
                         heightAuto: false,
                         icon: "success",
@@ -79,21 +79,21 @@ export const useDelRecord = async (recordList: Ref<GetArticleManagementListRes>,
                 } catch (err: any) {
                     console.log(err)
                     Swal.fire({
-                        title: "删除失败",
+                        title: "failed to delete",
                         heightAuto: false,
                         confirmButtonColor: globalScss.colorButtonTheme,
                         icon: "error",
                     })
                 }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                console.log("取消")
+                console.log("Cancel")
             }
         })
 
     } catch (err) {
 
         Swal.fire({
-            title: "删除失败",
+            title: "failed to delete",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -118,7 +118,7 @@ export const useEditRecord = async (item: GetArticleManagementListItem, loading:
         router.push({ name: "Contribute", query: { type: "editArticle" } })
     } catch (err) {
         Swal.fire({
-            title: "编辑失败",
+            title: "Edit failed",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -145,7 +145,7 @@ export const useLoadData = async (articleList: Ref<GetArticleManagementListRes>,
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "获取视频稿件失败",
+            title: "Failed to obtain video manuscript",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",

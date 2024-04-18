@@ -1,6 +1,6 @@
 import { FileUpload } from "@/types/idnex"
 import { Ref } from "vue"
-//form 表单结构
+//form form structure
 export interface vdeoContributionForm {
     id : number | undefined,
     isShow: boolean,
@@ -19,7 +19,7 @@ export interface uploadFileformation extends FileUpload {
 
 }
 
-//api createVideoContribution 需要结构
+//api createVideoContribution need structure
 export interface CreateVideoContributionReq {
     id : number,
     video: string,

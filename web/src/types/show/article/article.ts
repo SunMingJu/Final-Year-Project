@@ -43,7 +43,7 @@ export interface ArticlePostCommentReq {
     content_id: number
 }
 
-//页面中评论相关
+//Comments related to the page
 export interface CommentsInfo{
     comments : string,
     commentsID : number

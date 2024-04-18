@@ -3,7 +3,7 @@
         <textarea class="comments-textarea" placeholder="写下点什么..." maxlength="1000"
             v-model="comments.comments"></textarea>
     </div>
-    <!-- 标签及发布 -->
+    <!--Labeling and publishing -->
     <div class="comments-fun">
         <div>
             <SvgIcon name="expression"
@@ -12,7 +12,7 @@
             </SvgIcon>
         </div>
 
-        <div> <el-button type="primary" v-removeFocus round @click="postComment(comments, articleID)">发布</el-button>
+        <div> <el-button type="primary" v-removeFocus round @click="postComment(comments, articleID)">release</el-button>
         </div>
     </div>
     <div :class="{ 'comments-emoji': true, 'animate__animated': true, 'animate__headShake': !emoji.animationBox, 'animate__flipOutX': emoji.animationBox }"
@@ -62,11 +62,11 @@ const comments = reactive(<CommentsInfo>{
 })
 
 
-//点击表情触发
+//Click on emoticon to trigger
 const clickEmoji = () => {
     emoji.animationBox = !emoji.animationBox
     if (emoji.show) {
-        //收回面板的动画效果
+        //Retract panel animation effect
         setTimeout(() => {
             emoji.show = !emoji.show
         }, 800);
@@ -75,7 +75,7 @@ const clickEmoji = () => {
     }
 }
 
-//回复评论
+//Reply to comment
 const postComment = async (comments: UnwrapNestedRefs<CommentsInfo>, articleID: number) => {
     try {
         const requistData = <ArticlePostCommentReq>{
@@ -86,11 +86,11 @@ const postComment = async (comments: UnwrapNestedRefs<CommentsInfo>, articleID: 
         const reponse = await articlePostComment(requistData)
         console.log(reponse)
 
-        //清空输入款
+        //Clear input money
         comments.comments = ""
         const commentsList = await getArticleComment(<GetArticleCommentReq>{ articleID: articleID })
         if (!commentsList.data) {
-            throw ("获取评论信息失败")
+            throw ("Get Comment failed")
         }
         emit('updateArticleInfo', commentsList.data)
         const Toast = Swal.mixin({
@@ -106,7 +106,7 @@ const postComment = async (comments: UnwrapNestedRefs<CommentsInfo>, articleID: 
 
         Toast.fire({
             icon: 'success',
-            title: '评论成功'
+            title: 'Comment successful'
         })
 
     } catch (err) {

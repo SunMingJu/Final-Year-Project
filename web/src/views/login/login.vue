@@ -1,8 +1,8 @@
 <template>
   <div class="main ">
-    <!-- login/register 总盒子 -->
+<!--login/register main box -->
     <div :class="{ active: currentModel, container: true,animate__animated :true, animate__flipInX :true}" >
-      <!-- 注册 -->
+      <!--Register -->
       <div class="form-container sign-up-container ">
         <el-form
           v-if="!isForget"
@@ -14,12 +14,12 @@
         >
           <h3 class="container-title">Register</h3>
           <el-form-item class="form-item" prop="username">
-            <el-input v-model="regForm.username" type="text" placeholder="昵称" />
+            <el-input v-model="regForm.username" type="text" placeholder="Nick name" />
           </el-form-item>
           <el-form-item class="form-item" prop="email">
             <el-input
               v-model="regForm.email"
-              placeholder="邮箱"
+              placeholder="Mail"
               class="input-with-select"
             >
               <template #append v-if="regForm.email">
@@ -38,7 +38,7 @@
               v-model="regForm.password"
               type="password"
               name="password"
-              placeholder="密码"
+              placeholder="password"
             />
           </el-form-item>
           <el-form-item class="form-item" prop="verificationCode">
@@ -46,13 +46,13 @@
               v-model="regForm.verificationCode"
               type="text"
               name="password"
-              placeholder="验证码"
+              placeholder="Verification code"
             />
           </el-form-item>
           <button  type="button" class="signUp theme-button" @click="register(regFormRef)">sign up</button>
         </el-form>
 
-        <!-- 找回密码-->
+        <!--Retrieve password -->
         <el-form
           v-if="isForget"
           class="form"
@@ -65,7 +65,7 @@
           <el-form-item class="form-item" prop="email">
             <el-input
               v-model="forgetForm.email"
-              placeholder="邮箱"
+              placeholder="Mail"
               class="input-with-select"
             >
               <template #append v-if="forgetForm.email">
@@ -84,7 +84,7 @@
               v-model="forgetForm.password"
               type="password"
               name="password"
-              placeholder="密码"
+              placeholder="password"
             />
           </el-form-item>
           <el-form-item class="form-item" prop="verificationCode">
@@ -92,13 +92,13 @@
               v-model="forgetForm.verificationCode"
               type="text"
               name="password"
-              placeholder="验证码"
+              placeholder="Verification code"
             />
           </el-form-item>
           <button   type="button" class="signUp theme-button" @click="forfet(forgetFormRef)">modify</button>
         </el-form>
       </div>
-      <!-- 登入 -->
+      <!--Login -->
       <div class="form-container sign-in-container">
         <el-form
           class="form"
@@ -110,14 +110,14 @@
           <h2 class="container-title">Login</h2>
 
           <el-form-item class="form-item" prop="username">
-            <el-input v-model="loginForm.username" type="text" placeholder="昵称" />
+            <el-input v-model="loginForm.username" type="text" placeholder="Nick name" />
           </el-form-item>
           <el-form-item class="form-item" prop="passwoed">
             <el-input
               v-model="loginForm.password"
               type="password"
               name="password"
-              placeholder="密码"
+              placeholder="password"
             />
           </el-form-item>
           <button class="signUp theme-button"   type="button"  @click="login(loginFormRef)">sign in</button>
@@ -132,19 +132,19 @@
           </p>
         </el-form>
       </div>
-      <!--覆盖容器-->
+      <!--Overlay container-->
       <div class="overlay_container">
         <div class="overlay">
-          <!--左边 -->
+          <!--Left side -->
           <div class="overlay_panel overlay_left_container">
             <h2 class="container-title">Welcome back!</h2>
-            <p>请输入您的个人信息登录，以保持与我们的联系</p>
-            <button  type="button" id="sign-in" class="theme-button" @click="currentModel = !currentModel">登入</button>
+            <p>Please log in with your personal information to stay in touch with us</p>
+            <button  type="button" id="sign-in" class="theme-button" @click="currentModel = !currentModel">login</button>
           </div>
-          <!-- 右边 -->
+          <!--Right -->
           <div class="overlay_panel overlay_right_container">
             <h2 class="container-title">hello friend!</h2>
-            <p>输入您的个人信息，与我们一起开始旅程</p>
+            <p>Enter your personal information and start the journey with us</p>
             <button
             type="button"
             class="theme-button"
@@ -154,7 +154,7 @@
                 isForget = false;
               "
             >
-              注册
+              register
             </button>
           </div>
         </div>

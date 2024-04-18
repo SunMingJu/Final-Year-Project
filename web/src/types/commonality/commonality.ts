@@ -1,6 +1,6 @@
 import { PageInfo } from "../idnex";
 
-//获取请求方法
+//Get request method
 export interface GetUploadingMethodReq {
     method: string
 }

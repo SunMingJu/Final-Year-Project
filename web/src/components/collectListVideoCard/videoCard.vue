@@ -15,7 +15,7 @@
             <div class="info">
                 <div class="video-title"><VueEllipsis3 :text="props.title" :visibleLine="2" /></div>
                 <div class="video-information">
-                    <span class="video-information-time">收藏时间  :</span>
+                    <span class="video-information-time">Collection time  :</span>
                     <SvgIcon name="videoTime" class="icon" color="#999"></SvgIcon>
                      <span class="video-information-time">  {{ dayjs(rFC3339ToTime(props.created_at)).format('YYYY-MM-DD')  }}</span>
                 </div>

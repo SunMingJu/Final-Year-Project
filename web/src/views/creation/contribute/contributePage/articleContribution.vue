@@ -1,14 +1,14 @@
 <template>
     <div class="article-contribution">
-        <!-- 基本设置 -->
+        <!--Basic settings -->
         <div class="form-box animate__animated animate__bounceInRight" v-show="form.isShow">
-            <h3> 基本设置</h3>
+            <h3> basic settings</h3>
             <el-form :model="form" ref="ruleFormRef" label-width="120px" label-position="left"
                 :rules="rules.articleContributionRules">
-                <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" placeholder="给文章起个标题吧~" />
+                <el-form-item label="title" prop="title">
+                    <el-input v-model="form.title" placeholder="Give the article a title~" />
                 </el-form-item>
-                <el-form-item class="form-item-middle" label="封面">
+                <el-form-item class="form-item-middle" label="cover">
                     <el-upload class="cover-uploader" :action="uploadCoveration.action" :show-file-list="false"
                         :on-success="handleCover.handleFileSuccess" :on-error="handleCover.handleFileError"
                         :before-upload="handleCover.beforeFileUpload" :auto-upload="true"
@@ -19,29 +19,29 @@
                         </el-icon>
                     </el-upload>
                 </el-form-item>
-                <el-form-item label="内容编辑">
+                <el-form-item label="edit content">
                     <el-button v-removeFocus size="small" type="primary" :icon="Edit" round
-                        @click="form.isShow = false">编辑</el-button>
+                        @click="form.isShow = false">edit</el-button>
                 </el-form-item>
-                <el-form-item label="定时发布" v-show="props.type != 'edit'">
+                <el-form-item label="Release regularly" v-show="props.type != 'edit'">
                     <el-switch v-model="form.timing" />
                 </el-form-item>
-                <el-form-item label="选择时间" v-show="form.timing" class="animate__animated animate__fadeIn">
+                <el-form-item label="selection period" v-show="form.timing" class="animate__animated animate__fadeIn">
                     <el-col :span="7">
-                        <el-date-picker v-model="form.date1time" type="datetime" placeholder="请选择定时发布时间" />
+                        <el-date-picker v-model="form.date1time" type="datetime" placeholder="Please select a scheduled release time" />
                     </el-col>
                 </el-form-item>
-                <el-form-item label="开启评论">
+                <el-form-item label="Enable comments">
                     <el-switch v-model="form.comments" />
                 </el-form-item>
-                <el-form-item label="分类">
-                    <el-cascader v-model="cascaderValue" placeholder="请选择分类" :props="{
+                <el-form-item label="Classification">
+                    <el-cascader v-model="cascaderValue" placeholder="please select a type" :props="{
                         value: 'id',
                         label: 'label',
                         children: 'children'
                     }" :options="cascader" :show-all-levels="false" @change="cascaderHandleChange" />
                 </el-form-item>
-                <el-form-item label="标签" class="label-box">
+                <el-form-item label="Label" class="label-box">
                     <el-tag v-for="tag in form.label" :key="tag" closable :disable-transitions="false" class="label-item"
                         @close="labelHandl.handleClose(tag)">
                         {{ tag }}
@@ -55,7 +55,7 @@
                 </el-form-item>
                 <el-button size="small" type="primary"
                     @click="useSaveData(form, ruleFormRef, router, uploadFileformation, uploadCoveration,props)">{{ props.type ==
-                        "edit" ? "更新专栏" : "发布专栏" }}</el-button>
+                        "edit" ? "Update column" : "Post a column" }}</el-button>
             </el-form>
         </div>
         <!-- 上传组件 -->
@@ -64,13 +64,13 @@
                 ref="uploadRef" multiple :on-success="handle.handleFileSuccess" :on-error="handle.handleFileError"
                 :show-file-list="false" :before-upload="handle.beforeFileUpload" :auto-upload="true"
                 :http-request="handle.RedefineUploadFile">
-                <el-button size="small" type="primary" ref="uploadBtnRef">上传文件</el-button>
+                <el-button size="small" type="primary" ref="uploadBtnRef">upload files</el-button>
             </el-upload>
         </div>
-        <!-- 文件上传进度 -->
+        <!--File upload progress -->
         <el-progress ref="uploadProgressRef" v-show="false" :text-inside="true" :stroke-width="16" type="dashboard"
             :percentage="uploadFileformation.progress" :color="colors" />
-        <!-- 富文本组件 -->
+       <!--Rich text component -->
         <div class="quill-box" v-show="!form.isShow">
             <el-page-header @back="form.isShow = true" class="page-header">
                 <template #content>
@@ -112,7 +112,7 @@ onMounted(() => {
     useInit(uploadFileformation, uploadCoveration, cascader, form, editArticleStore, props, myQuillEditor, cascaderValue)
 })
 
-//分类选择
+//Category selection
 const cascaderHandleChange = (value: any) => {
     form.classification_id = value[value.length - 1]
     console.log(form.classification_id)

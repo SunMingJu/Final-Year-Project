@@ -3,7 +3,7 @@
     <div class="head">
       <topNavigation color="#fff" scroll :displaySearch="false"></topNavigation>
     </div>
-    <!-- 封面图 -->
+    <!--Cover image -->
     <div class="cover-picture" :style="{ backgroundImage: `url(${articleInfo.cover})` }">
       <div class="article-info-container">
         <div class="title">{{ articleInfo.title }}</div>
@@ -34,24 +34,24 @@
         </div>
       </div>
     </div>
-    <!-- 文章内容 -->
+    <!--Article content -->
     <div class="article-content">
       <div class="content">
-        <!-- 其他 ql-container ql-snow -->
+        <!--Other ql-container ql-snow -->
         <div class="ql-editor" v-html="articleInfo.content">
         </div>
       </div>
-      <!-- 底部评论 -->
+      <!--Bottom comments -->
       <div class="comments-box">
         <div class="comments-head">
-          <SvgIcon name="editor" class="icon-edit"></SvgIcon> 评论
+          <SvgIcon name="editor" class="icon-edit"></SvgIcon> Comment
         </div>
         <div class="comments-main">
           <commentPosting :articleID="articleID" :articleInfo="articleInfo" @updateArticleInfo="updateArticleInfo"
             :commentsID="0"></commentPosting>
         </div>
         <div class="comments-show">
-          <div class="comments-show-titel"><span>Comments | </span> <span>{{ articleInfo.comments_number }} 条评论</span>
+          <div class="comments-show-titel"><span>Comments | </span> <span>{{ articleInfo.comments_number }} comments</span>
           </div>
           <div class="comments-show-info">
             <div class="comment-info-detail" v-for="commentsItem in articleInfo.comments" :key="commentsItem.id">
@@ -63,14 +63,14 @@
                   </div>
                   <div class="commentInfo-reply">
                     <el-button type="primary" v-removeFocus round size="small"
-                      @click="replyComments(commentsItem.id)">回复</el-button>
+                      @click="replyComments(commentsItem.id)">reply</el-button>
                   </div>
                 </div>
                 <!-- 评论内容部分 -->
                 <div class="content-info">
                   {{ commentsItem.context }}
                 </div>
-                <!-- 子评论 -->
+                <!--Subcomment -->
                 <div class="comment-info-detail" v-for="lowerComments in commentsItem.lowerComments"
                   :key="lowerComments.id">
                   <el-avatar shape="square" :size="36" :src="lowerComments.photo" />
@@ -82,11 +82,11 @@
                       </div>
                       <div class="commentInfo-reply">
                         <el-tag effect="dark" round v-removeFocus @click="replyComments(lowerComments.id)">
-                          回复
+                          reply
                         </el-tag>
                       </div>
                     </div>
-                    <!-- 评论内容部分 -->
+                    <!--Comment content part -->
                     <div class="content-info">
                       <span v-if="lowerComments.comment_user_id != commentsItem.uid"><span class="at-user">@{{
                         lowerComments.comment_user_name
@@ -98,7 +98,7 @@
             </div>
           </div>
         </div>
-        <!-- 回复评论  dialog-->
+        <!--Reply to comment dialog-->
         <el-dialog v-model="replyCommentsDialog.show" title="Shipping address">
           <commentPosting :articleID="articleID" :articleInfo="articleInfo" @updateArticleInfo="updateArticleInfo"
             :commentsID="replyCommentsDialog.commentsID"></commentPosting>
@@ -119,7 +119,7 @@ import 'quill/dist/quill.snow.css'
 import topNavigation from "@/components/topNavigation/topNavigation.vue"
 import { useArticleShowProp, useInit } from "@/logic/show/article/article"
 import dayjs from "dayjs"
-//代码高亮
+//Code highlighting
 import { GetArticleCommentRes } from "@/types/show/article/article"
 import { vRemoveFocus } from "@/utils/customInstruction/focus"
 import { blossom } from "@/utils/effect/blossom"
@@ -132,20 +132,19 @@ components: {
 }
 
 const { articleID, articleInfo, router, route, replyCommentsDialog } = useArticleShowProp()
-
-//更新评论数据
+//Update comment data
 const updateArticleInfo = (commentsList: GetArticleCommentRes) => {
   articleInfo.value.comments = commentsList.comments
   articleInfo.value.comments_number = commentsList.comments_number
 }
 
-//回复二级评论
+//Reply to secondary comments
 const replyComments = (commentsID: number) => {
   replyCommentsDialog.commentsID = commentsID
   replyCommentsDialog.show = !replyCommentsDialog.show
 }
 
-//樱花动效
+//Sakura animation
 const { startSakura, stopp } = blossom()
 
 onMounted(async () => {
@@ -160,6 +159,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-// 添加相关样式
+//Add related styles
 @import "@/assets/styles/views/show/article/article.scss";
 </style>

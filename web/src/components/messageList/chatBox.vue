@@ -21,7 +21,7 @@
         </div>
         <div class="chat-input">
             <el-input v-model="input" resize="none" :input-style="{ width: '400px' }" autosize type="textarea"
-                placeholder="聊点啥呢~" />
+                placeholder="What are we talking about~" />
             <el-button v-removeFocus @click="sendText(input)" class="send" :type="input ? 'primary' : 'info'" :icon="Check"
                 circle />
         </div>
@@ -66,17 +66,17 @@ const boxRef = ref()
 const loadSocket = () => {
     let socket: WebSocket
     const open = () => {
-        console.log("用户聊天websocket连接成功 ")
+        console.log("User chat websocket connection successful ")
     }
     const error = (err: any) => {
         console.log(err)
-        console.error("用户聊天聊天websocket连接失败")
+        console.error("User chat chat websocket connection failed")
     }
     const getMessage = async (msg: any) => {
         let data = <ResultDataWs>JSON.parse(msg.data)
         switch (data.type) {
             case "error":
-                console.error("用户聊天聊天socket返回错误")
+                console.error("User chat chat socket returns error")
                 ElMessage({
                     message: data.message,
                     type: 'error',
@@ -92,7 +92,7 @@ const loadSocket = () => {
 
     if (typeof (WebSocket) === "undefined") {
         Swal.fire({
-            title: "您的浏览器不支持socket",
+            title: "Your browser does not support sockets",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -100,13 +100,13 @@ const loadSocket = () => {
         router.back()
         return
     } else {
-        // 实例化socket
+        // Instantiate socket
         socket = new WebSocket(import.meta.env.VITE_SOCKET_URL + "/ws/chatByUserSocket?token=" + userStore.userInfoData.token + "&tid=" + tid.value)
-        // 监听socket连接
+        // Listen for socket connections
         socket.onopen = open
-        // 监听socket错误信息
+        // Listen for socket error messages
         socket.onerror = error
-        // 监听socket消息
+        // Listen for socket messages
         socket.onmessage = getMessage
     }
     return socket
@@ -123,7 +123,7 @@ const send = (type: string, msg: string) => {
 const sendText = (msg: string) => {
     if (msg == "") return false
     send("sendChatMsgText", msg)
-    //添加记录
+    //Add record
     input.value = ""
     chatListStore.addMessage(tid.value, <MessageInfo>{
         uid: userStore.userInfoData.id,
@@ -134,7 +134,7 @@ const sendText = (msg: string) => {
         type: "text",
         created_at: Date().toString()
     })
-    //滚动到底部
+    //scroll to bottom
     nextTick(() => {
         rollingBottom()
     })
@@ -150,7 +150,7 @@ const chatSendTextMsg = (data: ChatSendTextMsg) => {
 
 
 const rollingBottom = () => {
-    //执行了
+    //Executed
     if (props.msgList) {
         nextTick(() => {
             if (boxRef?.value?.scrollHeight) {
@@ -163,13 +163,13 @@ const rollingBottom = () => {
 }
 
 const boxScroll = async () => {
-    console.log("触碰顶部")
+    console.log("touch top")
 
     if (boxRef.value.scrollTop == 0) {
-        //触碰顶加载更多‘
+        //Touch top to load more’
         const h = boxRef.value.scrollHeight
         try {
-            let mixTime: number | string = new Date().getTime() //最小值默认当前时间
+            let mixTime: number | string = new Date().getTime() //Minimum value defaults to current time
             chatListStore.chatListData.filter((item) => {
                 if (item.to_id == chatListStore.tid) {
                     item.message_list.filter((ml) => {
@@ -180,7 +180,7 @@ const boxScroll = async () => {
                     })
                 }
             })
-            console.log("最小值", mixTime)
+            console.log("minimum value", mixTime)
             const response = await getChatHistoryMsg(<GetChatHistoryMsgReq>{
                 tid: props.tid,
                 last_time: mixTime
@@ -220,7 +220,7 @@ onMounted(() => {
 
 })
 
-//关闭时结束监听和socket
+//End listening and socket when closing
 onUnmounted(() => {
     watchTid()
     socket?.close()

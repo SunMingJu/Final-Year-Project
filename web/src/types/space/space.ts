@@ -17,7 +17,7 @@ export interface GetReleaseInformationReq {
     id : number
 }
 
-//视频信息
+//Video information
 export interface VideoInfo {
     id : number
 	uid :number 
@@ -35,7 +35,7 @@ export interface VideoInfo {
 
 export type VideoInfoList = Array<VideoInfo>
 
-//专栏信息
+//Column information
 export interface ArticleInfo {
     id: number
     uid: number

@@ -13,7 +13,7 @@ const routes = [
         path: '',
         name: 'Home',
         meta: {
-            title: '首页',
+            title: 'front pageont page',
             requireAuth: false,
             keepAlive: false
         },
@@ -23,7 +23,7 @@ const routes = [
         path: '/column',
         name: 'Column',
         meta: {
-            title: '专栏',
+            title: 'Column',
             requireAuth: false,
             keepAlive: false
         },
@@ -33,7 +33,7 @@ const routes = [
         path: '/live',
         name: 'Live',
         meta: {
-            title: '专栏',
+            title: 'Column',
             requireAuth: false,
             keepAlive: false
         },
@@ -50,23 +50,23 @@ const routes = [
             ...space,
         ]
     },
-    //登入
+    //login
     {
         path: "/login",
         name: "Login",
         meta: {
-            title: '登入',
+            title: 'login',
             requireAuth: false,
             keepAlive: false
         },
         component: () => import('@/views/login/login.vue'),
     },
     ...search,
-    //创作中心
+    //Creation Center
     ...creation,
-    //专栏展示
+    //Column display
     ...articleShow
-    //未匹配路由404
+    //Route not matched 404
     ,
     {
         path: '/:pathMatch(.*)*',
@@ -86,17 +86,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const globalStore = useGlobalStore()
     globalStore.globalData.router.currentRouter = to.path
-    // if(to.path !== "/login"){
-    //     let  userInfo = useUserStore();
-    //     if (userInfo.userInfoData.id == 0 ){
-    //         ElMessage({
-    //             message: '请先登入',
-    //             type: 'error',
-    //         })
-    //         next({name : "Login"})
-    //         return
-    //     }
-    // }
 
     next()
 })

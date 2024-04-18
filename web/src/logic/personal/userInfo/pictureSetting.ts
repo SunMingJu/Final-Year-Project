@@ -41,9 +41,9 @@ export const useHandleFileMethod = (uploadAvatarForm: uploadAvatar) => {
     const handleFileError: UploadProps['onError'] = (
         response,
     ) => {
-        console.log("上传失败")
+        console.log("upload failed")
         Swal.fire({
-            title: "上传失败",
+            title: "upload failed",
             heightAuto: false,
             icon: "error",
 
@@ -55,7 +55,7 @@ export const useHandleFileMethod = (uploadAvatarForm: uploadAvatar) => {
     const beforeFileUpload: UploadProps['beforeUpload'] = (rawFile) => {
         if (rawFile.size / 1024 / 1024 > 2) {
             Swal.fire({
-                title: "文件不符合格式",
+                title: "File does not conform to the format",
                 heightAuto: false,
                 icon: "error",
 
@@ -75,7 +75,7 @@ export const useHandleFileMethod = (uploadAvatarForm: uploadAvatar) => {
         } catch (err) {
             console.log(err)
             Swal.fire({
-                title: "获取上传节点失败",
+                title: "Failed to obtain upload node",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -103,7 +103,7 @@ export const useInit = async (uploadAvatarForm: uploadAvatar) => {
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "获取上传方法失败",
+            title: "Failed to get upload method",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -114,7 +114,7 @@ export const useInit = async (uploadAvatarForm: uploadAvatar) => {
 
 export const useUpdateAvatar = async (store: any, uploadAvatarForm: uploadAvatar) => {
     try {
-        if (!uploadAvatarForm.uploadUrl) throw "请先上传图片"
+        if (!uploadAvatarForm.uploadUrl) throw "Please upload pictures first"
         const requistData = <UpdateAvatarReq>{
             imgUrl: uploadAvatarForm.uploadUrl,
             type: uploadAvatarForm.uploadType
@@ -124,16 +124,16 @@ export const useUpdateAvatar = async (store: any, uploadAvatarForm: uploadAvatar
         uploadAvatarForm.FileUrl = ""
         store.userInfoData.photo = String(data.data) ?? ""
         Swal.fire({
-            title: "更换成功",
+            title: "Replacement successful",
             heightAuto: false,
             icon: "success",
 
         })
-        console.log("上传成功")
+        console.log("Upload successful")
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "请上传图片",
+            title: "Please upload pictures",
             confirmButtonColor: globalScss.colorButtonTheme,
             heightAuto: false,
             icon: "warning",

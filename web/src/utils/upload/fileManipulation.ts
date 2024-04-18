@@ -1,7 +1,7 @@
 import { lib, SHA256 } from 'crypto-js'
 import fileToArrayBuffer from 'file-to-array-buffer'
 
-// 获取文件后缀
+// Get file suffix
 export const fileSuffix = (filename: string) => {
     const pos = filename.lastIndexOf('.')
     let suffix = ''
@@ -20,7 +20,7 @@ export const arrayBufferToWordArray = (ab: any) => {
     return lib.WordArray.create(a, i8a.length)
 }
 
-// 获取文件Hash
+// Get file hash
 export const fileHash = async (file: Blob): Promise<String> => {
     const buffer = await fileToArrayBuffer(file)
     return SHA256(arrayBufferToWordArray(buffer)).toString()

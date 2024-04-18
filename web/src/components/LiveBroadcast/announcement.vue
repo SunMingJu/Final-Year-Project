@@ -5,7 +5,7 @@
                 <img src="@/assets/img/temporary/00018.jpg" />
             </div>
             <div class="info-box">
-                <h3>枉有一壶醉人酒 难解半点俗世愁</h3>
+                <h3>It’s a waste to have a pot of intoxicating wine that can’t relieve any worldly sorrows</h3>
             </div>
         </div>
     </div>

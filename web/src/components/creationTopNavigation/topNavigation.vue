@@ -8,7 +8,7 @@
     <el-col :span="16">
       <div class="middle">
         <div class="info" @click="jump('Home')">
-          <SvgIcon name="bilibili-line" class="icon"></SvgIcon>主站
+          <SvgIcon name="bilibili-line" class="icon"></SvgIcon>Main site
         </div>
 
       </div>
@@ -28,7 +28,7 @@ components: {
   RightSide;
 }
 
-//跳转
+//Jump
 const jump = (name: string) => {
   router.push({
     name
@@ -36,7 +36,7 @@ const jump = (name: string) => {
 }
 const router = useRouter();
 
-//选项卡点击
+//tab click
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
   router.push(key);

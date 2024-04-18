@@ -18,9 +18,9 @@
         </div>
       </div>
       <div class="bottom-box">
-        <span class="text"> 请选择图片上传:大小180 * 180像素支持JPG、PNG等格式,图片需小于2M</span>
+        <span class="text"> Please select an image to upload: size 180 *180 pixels, support JPG, PNG and other formats, the image must be smaller than 2M</span>
         <div class="button">
-          <el-button v-removeFocus @click="useUpdateAvatar(userStore, uploadAvatarForm)" type="primary" round>修改头像
+          <el-button v-removeFocus @click="useUpdateAvatar(userStore, uploadAvatarForm)" type="primary" round>Modify avatar
           </el-button>
         </div>
       </div>

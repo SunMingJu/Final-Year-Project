@@ -18,7 +18,7 @@ export const webError = (data: Message) => {
 }
 
 export const webClientBarrageDeal = (data: Message, dp: DPlayer, sideRef: Ref<any>) => {
-    //格式化消息
+    //Format message
     if (!data.data) return;
     const msg = decodeWebClientSendBarrageRes(data.data)
     console.log(msg)
@@ -32,7 +32,7 @@ export const webClientBarrageDeal = (data: Message, dp: DPlayer, sideRef: Ref<an
 }
 
 export const webClientEnterLiveRoomDeal = (data: Message, dp: DPlayer, sideRef: Ref<any>) => {
-    //格式化消息
+    //Format message
     if (!data.data) return;
     const msg = decodeWebClientEnterLiveRoomRes(data.data)
     const list = msg.list
@@ -42,7 +42,7 @@ export const webClientEnterLiveRoomDeal = (data: Message, dp: DPlayer, sideRef: 
 }
 
 export const webClientHistoricalBarrageRes = (data: Message, dp: DPlayer, sideRef: Ref<any>) => {
-    //格式化消息
+    //Format message
     if (!data.data) return;
     const msg = decodeWebClientHistoricalBarrageRes(data.data)
     sideRef.value.addHistoryBarrage(msg)

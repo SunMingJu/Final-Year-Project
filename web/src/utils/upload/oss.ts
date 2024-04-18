@@ -6,14 +6,14 @@ import OSS from 'ali-oss'
 import { fileHash, fileSuffix } from "./fileManipulation"
 
 
-//初始化sts
+//Initialize sts
 export const initOssSTS = async (_interface: string): Promise<OssSTSInfo> => {
     return new Promise((resolve, reject) => {
-        // 从本地localstore从获取配置
+        // Get configuration from local localstore
         const globalStore = useGlobalStore()
         const conf = globalStore.ossData
         if (conf) {
-            //  配置存在并且距离过期时间还大一分钟秒则返回此配置
+            //  If the configuration exists and the expiration time is one minute and one second later, this configuration will be returned.
             const now = new Date().getTime() / 1000
             console.log(conf)
             if (conf.expirationTime - 600 > now) {
@@ -21,13 +21,13 @@ export const initOssSTS = async (_interface: string): Promise<OssSTSInfo> => {
                 return
             }
         }
-        // 请求接口返回配置数据
+        // Request interface to return configuration data
         gteossSTS()
             .then((res) => {
                 if (res.code == 200) {
                     if (!res.data) return false
                     let info = res.data
-                    // 配置数据写入本地store
+                    // Write configuration data to local store
                     globalStore.setOssInfo(<OssSTSInfo>{
                         region: info.region,
                         accessKeyId: info.access_key_id,
@@ -50,22 +50,22 @@ export const initOssSTS = async (_interface: string): Promise<OssSTSInfo> => {
 
 
 /**
- * 往Oss上传文件
- * @param file File对象
+ * Upload files to oss
+ * @param file File object
  * @returns {Promise<{name:string,host:string}>}
  */
 export const ossUpload = (file: File, uploadConfig: FileUpload, fragment: boolean): Promise<{ path: string }> => {
     return new Promise((resolve, reject) => {
         initOssSTS(uploadConfig.interface)
             .then(async (ossSts) => {
-                //获取保存路径
+                //Get save path
                 const response = await getuploadingDir(<GetuploadingDirReq>{
                     interface: uploadConfig.interface
                 })
                 let dir = response.data?.path
                 const name = await fileHash(file) + fileSuffix(file.name)
                 const key = `${dir}${name}`
-                // 初始化阿里云oss客户端
+                // Initialize Alibaba Cloud oss ​​client
                 const client = new OSS({
                     region: ossSts.region,
                     accessKeyId: ossSts.accessKeyId,
@@ -76,7 +76,7 @@ export const ossUpload = (file: File, uploadConfig: FileUpload, fragment: boolea
                 console.log(fragment)
                 if (!fragment) {
                     console.log("普通上传")
-                    //为了能够显示进度条的取舍也进行了分片上传
+                    //In order to be able to display the progress bar, multi-part uploading is also performed.
                     var checkpoint = getCheckpoint(name);
                     const options = {
                         checkpoint: checkpoint,
@@ -86,9 +86,9 @@ export const ossUpload = (file: File, uploadConfig: FileUpload, fragment: boolea
                             saveCheckpoint(name, cpt);
                         },
                         mime: "text/plain",
-                        // 设置并发上传的分片数量。
+                        // Set the number of concurrently uploaded shards.
                         parallel: 4,
-                        // 设置分片大小。默认值为1 MB，最小值为100 KB。
+                        // Set the shard size. The default value is 1 MB and the minimum value is 100 KB.
                         partSize: 200 * 1024,
                     };
 
@@ -102,23 +102,23 @@ export const ossUpload = (file: File, uploadConfig: FileUpload, fragment: boolea
                     } catch (err) {
                         console.log(err);
                         deleteCheckpoint(name);
-                        reject({ msg: '上传失败' })
+                        reject({ msg: 'upload failed' })
                     }
                 } else {
-                    console.log("分片上传")
-                    //分片上传加断点续传
+                    console.log("Multipart upload")
+                    //Multiple upload plus breakpoint resume
                     var checkpoint = getCheckpoint(name);
                     const options = {
                         checkpoint: checkpoint,
-                        // 获取分片上传进度、断点和返回值。
+                        //Get the multipart upload progress, breakpoints and return values.
                         progress: (p: any, cpt: any) => {
                             saveCheckpoint(name, cpt);
                             console.log(cpt)
-                            uploadConfig.progress = Math.round(p * 100)
+                            uploadConfig.progress = Math.round(p *100)
                         },
-                        // 设置并发上传的分片数量。
-                        parallel: 4,
-                        // 设置分片大小。默认值为1 MB，最小值为100 KB。
+                        //Set the number of concurrently uploaded shards.
+parallel: 4,
+                        //Set the shard size. The default value is 1 MB and the minimum value is 100 KB.
                         partSize: 1 * 1024 * 1024,
                         mime: "text/plain",
                     };
@@ -134,23 +134,23 @@ export const ossUpload = (file: File, uploadConfig: FileUpload, fragment: boolea
                     } catch (err) {
                         deleteCheckpoint(name);
                         console.log(err);
-                        reject({ msg: '上传失败' })
+                        reject({ msg: 'upload failed' })
                     }
                 }
             })
             .catch((err) => {
                 console.log(err);
-                reject({ msg: '上传失败' })
+                reject({ msg: 'upload failed' })
             })
     })
 }
 
-// 保存上传断点
+// Save upload breakpoint
 function saveCheckpoint(key: string, checkpoint: any) {
     localStorage.setItem(key, JSON.stringify(checkpoint));
 }
 
-// 获取上传断点
+// Get upload breakpoint
 function getCheckpoint(key: string,) {
     var checkpoint = localStorage.getItem(key);
     if (checkpoint) {
@@ -160,7 +160,7 @@ function getCheckpoint(key: string,) {
     }
 }
 
-// 删除上传断点
+// Delete upload breakpoint
 function deleteCheckpoint(key: string) {
     localStorage.removeItem(key);
 }

@@ -4,7 +4,7 @@
         <div class="collect-list" ref="scrollRef" :style="{ height: scrollHeight + 'px', overflow: isLoading ?  'scroll' : 'hidden'  }"
             v-show="isLoading == false || favoritesList.length > 0">
             <div class="collect-item" v-for="item in favoritesList.length > 0 ? favoritesList : quickCreationArr(7)">
-                <!-- 骨架屏 -->
+                <!--Skeleton screen -->
                 <el-skeleton style="width: 100%; height: 7.4rem;  margin:  6px 20px 20px 0px;" :loading="!item.id" animated>
                     <template #template>
                         <el-skeleton-item variant="text" style="width: 100%; height: 100%;" />
@@ -19,9 +19,9 @@
                         </div>
                         <div class="info">
                             <div class="title">{{ item.title }}</div>
-                            <div class="creator">创建者 : {{ item.userInfo.username }} 播放数 : 0</div>
+                            <div class="creator">creator : {{ item.userInfo.username }} Views : 0</div>
                             <div class="btn">
-                                <el-button type="primary" round size="small" @click="viewContent(item.id)"> 查看内容 </el-button>
+                                <el-button type="primary" round size="small" @click="viewContent(item.id)"> View content </el-button>
                             </div>
                         </div>
                         <div class="function">
@@ -32,9 +32,9 @@
                                     </el-icon>
                                 </template>
                                 <div style="text-align: center;">
-                                    <el-button type="primary" round size="small" @click="updateFavorites(item)"> 修改
+                                    <el-button type="primary" round size="small" @click="updateFavorites(item)"> Revise
                                     </el-button>
-                                    <el-button type="danger" round size="small" @click="delFavorites(item.id)"> 删除
+                                    <el-button type="danger" round size="small" @click="delFavorites(item.id)"> delete
                                     </el-button>
                                 </div>
                             </el-popover>
@@ -45,10 +45,10 @@
             <div class="placeholder"></div>
         </div>
         <div class="collect-empty" v-show="favoritesList.length == 0 && isLoading == true">
-            <el-empty description="还未创建收藏夹~" />
+            <el-empty description="No favorites created yet~" />
         </div>
         <div class="dialog">
-            <el-dialog v-model="createCollectDialogShow" title="创建收藏夹" width="50%" center :close-on-click-modal="true"
+            <el-dialog v-model="createCollectDialogShow" title="Create favorites" width="50%" center :close-on-click-modal="true"
                 :append-to-body="true" :before-close="createCollectDialogShowClose" align-center>
                 <CreateFavorites :info="updataInfo" :type="false" @shutDown="shutDown"></CreateFavorites>
             </el-dialog>
@@ -94,7 +94,7 @@ const createCollectDialogShowClose = (done: () => void) => {
     done()
 }
 
-//生成占位骨架屏
+//Generate placeholder skeleton screen
 const quickCreationArr = (num: number): Array<GetFavoritesListItem> => {
     let arr = []
     for (let i = 0; i < num; i++) {
@@ -104,10 +104,10 @@ const quickCreationArr = (num: number): Array<GetFavoritesListItem> => {
     return arr
 }
 
-//关闭createCollectDialogShow
+//Close create collect dialog show
 const shutDown = () => {
     createCollectDialogShow.value = false
-    //关闭是进行数据更新
+    //Close is for data update
     favoritesList.value = []
     isLoading.value = false
     setTimeout(() => {

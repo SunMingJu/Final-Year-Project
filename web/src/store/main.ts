@@ -17,7 +17,7 @@ export const useUserStore = defineStore("user", () => {
             address: "",
             key: ""
         },
-        //消息相关
+        //News related
         unreadNotice: 0
     })
 
@@ -40,7 +40,7 @@ export const useUserStore = defineStore("user", () => {
         userInfoData.token = ""
         userInfoData.created_at = ""
         userInfoData.unreadNotice = 0
-        //清空消息
+        //Clear messages
         let chat = useChatListStore()
         chat.chatListData = []
         chat.tid = 0
@@ -91,7 +91,7 @@ export const useGlobalStore = defineStore("global", () => {
         },
         loading: {
             loading: false,
-            loadingText: "努力加载中!",
+            loadingText: "Loading hard!",
             loadingBackground: "rgba(122, 122, 122, 0.3)",
             loadingSvg: `
             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" stroke="#fff">

@@ -4,7 +4,7 @@
         <div class="introduce">
             <VueEllipsis3 :text="introduce ? introduce : ''" :visibleLine="introduceVisibleLine" reflowOnResize>
                 <template v-slot:ellipsisNode>
-                    <span class="show-more" @click="introduceVisibleLine = 999">... 展开</span>
+                    <span class="show-more" @click="introduceVisibleLine = 999">... Expand</span>
                 </template>
             </VueEllipsis3>
         </div>

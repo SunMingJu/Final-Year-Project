@@ -16,7 +16,7 @@ export default [
                 path: 'videoManagement',
                 name: 'VideoManagement',
                 meta: {
-                    title: '视频稿件',
+                    title: 'Video manuscript',
                     requireAuth: false,
                     keepAlive: false
                 },
@@ -26,7 +26,7 @@ export default [
                 path: 'articleManagement',
                 name: 'ArticleManagement',
                 meta: {
-                    title: '专栏稿件',
+                    title: 'Column manuscript',
                     requireAuth: false,
                     keepAlive: false
                 },
@@ -36,7 +36,7 @@ export default [
                 path: 'barrageDiscuss',
                 name: 'BarrageDiscuss',
                 meta: {
-                    title: '弹幕管理',
+                    title: 'Barrage management',
                     requireAuth: false,
                     keepAlive: false
                 },
@@ -46,7 +46,7 @@ export default [
                 path: 'commentDiscuss',
                 name: 'CommentDiscuss',
                 meta: {
-                    title: '评论管理',
+                    title: 'Comment management',
                     requireAuth: false,
                     keepAlive: false
                 },

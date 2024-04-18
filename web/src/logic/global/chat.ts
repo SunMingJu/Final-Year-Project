@@ -14,17 +14,17 @@ export const useInitChatSocket = () => {
     const userStore = useUserStore()
     console.log(useChatListStore())
     let socket: WebSocket
-    const open = () => {
-        console.log("聊天websocket连接成功 ")
+   const open = () => {
+        console.log("Chat websocket connection successful")
     }
     const error = () => {
-        console.error("聊天websocket连接失败")
+        console.error("Chat websocket connection failed")
     }
     const getMessage = async (msg: any) => {
         let data = <ResultDataWs>JSON.parse(msg.data)
         switch (data.type) {
             case "error":
-                console.error("聊天socket返回错误")
+                console.error("Chat socket returns error")
                 break;
             case "chatUnreadNotice":
                 data as ResultDataWs<ChatUnreadNotic>
@@ -39,7 +39,7 @@ export const useInitChatSocket = () => {
 
     if (typeof (WebSocket) === "undefined") {
         Swal.fire({
-            title: "您的浏览器不支持socket",
+            title: "Your browser does not support sockets",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -47,19 +47,19 @@ export const useInitChatSocket = () => {
         router.back()
         return
     } else {
-        // 实例化socket
+        //Instantiate socket
         socket = new WebSocket(import.meta.env.VITE_SOCKET_URL + "/ws/chatSocket?token=" + userStore.userInfoData.token)
-        // 监听socket连接
+        //Listen to socket connection
         socket.onopen = open
-        // 监听socket错误信息
+        //Listen for socket error messages
         socket.onerror = error
-        // 监听socket消息
+        //Listen to socket messages
         socket.onmessage = getMessage
     }
 }
 
 
-//消息处理函数
+//Message processing function
 const chatUnreadNotice = (data: ChatUnreadNotic) => {
     const chatListStore = useChatListStore()
     chatListStore.chatListData = chatListStore.chatListData.filter((item: ChatInfo) => {
@@ -67,7 +67,7 @@ const chatUnreadNotice = (data: ChatUnreadNotic) => {
             item.updated_at = data.last_message_info.created_at
             item.last_message = data.last_message
             item.unread = data.unread
-            //添加到消息列表
+            //Add to message list
             chatListStore.addMessage(data.last_message_info.uid, <MessageInfo>{
                 uid: data.last_message_info.uid,
                 username: data.last_message_info.username,

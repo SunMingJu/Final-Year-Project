@@ -10,14 +10,14 @@ export default async (id: number) => {
         await personalLetter(<PersonalLetterReq>{
             id
         })
-        //更新聊天列表
+        //Update chat list
         useChatListStore()
         chatListStore.tid = id
         chatListStore.isShow = true
 
     } catch (err) {
         Swal.fire({
-            title: "私信失败",
+            title: "Private message failed",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",

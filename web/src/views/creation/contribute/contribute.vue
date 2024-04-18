@@ -1,10 +1,10 @@
 <template>
     <div class="content-box">
         <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-            <el-tab-pane label="视频投稿" name="video" v-if="type == 'editVideo' || type == '' ">
+            <el-tab-pane label="Video submission" name="video" v-if="type == 'editVideo' || type == '' ">
                 <videoContribution :type="type == 'editVideo' ? 'edit' : 'create'"></videoContribution>
             </el-tab-pane>
-            <el-tab-pane label="专栏投稿" name="article"  v-if="type == 'editArticle' || type == '' ">
+            <el-tab-pane label="Column submission" name="article"  v-if="type == 'editArticle' || type == '' ">
                 <articleContribution :type="type == 'editArticle' ? 'edit' : 'create'"></articleContribution>
             </el-tab-pane>
         </el-tabs>

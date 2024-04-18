@@ -1,10 +1,10 @@
 <template>
     <div class="overall">
-        <pageHeader title="我的收藏" icon-nmae="collection"></pageHeader>
+        <pageHeader title="my collection" icon-nmae="collection"></pageHeader>
         <div class="content">
             <div class="video-list">
                 <div class="title">
-                    <SvgIcon name="video" class="icon"></SvgIcon>视频作品
+                    <SvgIcon name="video" class="icon"></SvgIcon>video works
                 </div>
                 <div class="vidoe-box" v-show="releaseInformation?.videoList?.length > 0 || isLoading == false">
                     <div class="video-item"
@@ -30,10 +30,10 @@
                     </div>
                 </div>
                 <div class="vidoe-empty" v-show="releaseInformation?.videoList?.length == 0 && isLoading == true">
-                    <el-empty description="还未收藏视频~" />
+                    <el-empty description="No favorite videos yet~" />
                 </div>
             </div>
-            <!-- 撑开底部 -->
+            <!--Open the bottom -->
             <div class="spread-bottom">
             </div>
         </div>
@@ -50,7 +50,7 @@ import { useCollectListProp ,useInit} from "@/logic/personal/create/collectList"
 
 const {  route , releaseInformation , isLoading } = useCollectListProp()
 
-//生成占位骨架屏
+//Generate placeholder skeleton screen
 const quickCreationArr = (num: number): Array<VideoInfo> => {
     let arr = []
     for (let i = 0; i < num; i++) {

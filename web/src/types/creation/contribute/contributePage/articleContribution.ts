@@ -1,6 +1,6 @@
 import { PageInfo } from '@/types/idnex';
 import { type } from 'os';
-//form 表单结构
+//form form structure
 export interface ArticleContribution {
     id : number,
     isShow: boolean
@@ -15,7 +15,7 @@ export interface ArticleContribution {
     classification_id: number
 }
 
-//api createArticleContribution 需要结构
+//api createArticleContribution need structure
 export interface AreateArticleContributionReq {
     cover: string,
     coverUploadType: string,
@@ -41,7 +41,7 @@ export interface UpdateArticleContributionReq{
     classification_id: number
 }
 
-//api GetArticleContributionListByUser 需要结构
+//api GetArticleContributionListByUser need structure
 export interface GetArticleContributionListByUserReq {
     userID: Number
 }

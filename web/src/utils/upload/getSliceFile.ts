@@ -1,29 +1,29 @@
 import { fileHash } from "./fileManipulation";
 
 export /**
-* @param {File} file 切片文件
-* @param {number} pieceSizes 切片大小
-* @param {string} fileKey 文件唯一标识
+* @param {File} file slice file
+*@param {number} pieceSizes slice size
+*@param {string} fileKey file unique identifier
 */
     const getSliceFile = async (file: File, pieceSizes = 1, fileKey: string) => {
         const piece = 1024 * 1024 * pieceSizes;
-        // 文件总大小
+        //Total file size
         const totalSize = file.size;
         const fileName = file.name;
-        // 每次上传的开始字节
+        //Start byte of each upload
         let start = 0;
         let index = 1;
-        // 每次上传的结尾字节
+        //End byte of each upload
         let end = start + piece;
         const chunks = [];
         while (start < totalSize) {
             const current = Math.min(end, totalSize);
-            // 根据长度截取每次需要上传的数据
-            // File对象继承自Blob对象，因此包含slice方法
+            //Intercept the data that needs to be uploaded each time based on the length
+            //File object inherits from Blob object, so it contains slice method
             const blob = file.slice(start, current);
-            const hash = (await fileHash(blob)) as string;
+const hash = (await fileHash(blob)) as string;
 
-            // 特殊处理，对接阿里云大文件上传
+            //Special processing, docking with Alibaba Cloud to upload large files
             chunks.push({
                 file: blob,
                 size: totalSize,

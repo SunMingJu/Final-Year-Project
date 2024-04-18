@@ -12,10 +12,10 @@
       <template #default>
         <div class="user-selection">
           <div class="selection-item" @click="jump('Personal')">
-            <SvgIcon name="user" class="icon" color="#000"></SvgIcon>用户中心
+            <SvgIcon name="user" class="icon" color="#000"></SvgIcon>User Center
           </div>
           <div class="selection-item  mt" @click="loginOut">
-            <SvgIcon name="exit" class="icon" color="#000"></SvgIcon>退出登入
+            <SvgIcon name="exit" class="icon" color="#000"></SvgIcon>Log out
           </div>
         </div>
       </template>
@@ -36,7 +36,7 @@
               <SvgIcon name="notice" class="icon" :color="iconColor">
                 <div class="red-num-message">1</div>
               </SvgIcon>
-              <p :style="{ color: iconColor }">消息</p>
+              <p :style="{ color: iconColor }">information</p>
             </div>
           </el-badge>
         </template>
@@ -48,7 +48,7 @@
 
       <div class="icon-item">
         <SvgIcon name="dynamic" class="icon" :color="iconColor"></SvgIcon>
-        <p :style="{ color: iconColor }">动态</p>
+        <p :style="{ color: iconColor }">dynamic</p>
       </div>
 
       <el-popover :visible="chatListStore.isShow" :teleported="false" :width="720" trigger="hover"
@@ -57,7 +57,7 @@
           <el-badge is-dot :hidden="chatUnreadMessage == 0">
             <div class="icon-item" @mouseover="chatListStore.isShow = true">
               <SvgIcon name="message" class="icon" :color="iconColor"></SvgIcon>
-              <p :style="{ color: iconColor }">私信</p>
+              <p :style="{ color: iconColor }">Private letter</p>
             </div>
           </el-badge>
         </template>
@@ -68,28 +68,28 @@
 
       <div class="icon-item" @click="jump('Record')">
         <SvgIcon name="history" class="icon" :color="iconColor"></SvgIcon>
-        <p :style="{ color: iconColor }">历史</p>
+        <p :style="{ color: iconColor }">history</p>
       </div>
 
       <div class="icon-item" @click="jump('Contribute')">
         <SvgIcon name="creation" class="icon" :color="iconColor"></SvgIcon>
-        <p :style="{ color: iconColor }"> 创作</p>
+        <p :style="{ color: iconColor }"> creation</p>
       </div>
 
     </div>
 
-    <el-button type="primary" round @click="startLive()">开始直播</el-button>
+    <el-button type="primary" round @click="startLive()">Start live broadcast</el-button>
     <el-dialog v-model="dialogTableVisible" :lock-scroll="false" class="dialog" center title="Begin to live">
       <el-steps :active="nextIndex">
-        <el-step title="准备工作" description="Download tool" />
-        <el-step title="设置参数" description="Set the parameters" />
-        <el-step title="开始直播" description="Start to live" />
+        <el-step title="Preparation" description="Download tool" />
+        <el-step title="Setting parameters" description="Set the parameters" />
+        <el-step title="Start live broadcast" description="Start to live" />
       </el-steps>
 
       <el-row class="steps">
         <el-col :span="18">
           <div class="steps-left">
-            <p v-show="nextIndex == 1">下载 OBS Studio 直播工具, 安装到我的电脑打开</p>
+            <p v-show="nextIndex == 1">Download the OBS Studio live broadcast tool, install it on my computer and open it</p>
             <div v-show="nextIndex == 2">
               <h4>Adders : {{ userInfo.userInfoData.liveData.address }}</h4>
               <h4>
@@ -100,14 +100,14 @@
                 </el-button>
               </h4>
             </div>
-            <p v-show="nextIndex == 3">配置完成！开始直播咯~</p>
+            <p v-show="nextIndex == 3">Configuration completed! Start live broadcast~</p>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="steps-right">
             <el-button type="primary" @click="nextStep">
-              <span v-show="nextIndex < 3">下一步</span>
-              <span v-show="nextIndex == 3">完成</span>
+              <span v-show="nextIndex < 3">Next step</span>
+              <span v-show="nextIndex == 3">Finish</span>
               <el-icon class="el-icon--right">
                 <ArrowRight />
               </el-icon>
@@ -153,7 +153,7 @@ const emit = defineProps({
 const nextStep = () => {
   if (nextIndex.value >= 3) {
     dialogTableVisible.value = !dialogTableVisible.value;
-    //关窗动画结束后修改
+    //Modify after the window closing animation ends
     setTimeout(() => {
       nextIndex.value = 1;
     }, 1000);
@@ -162,7 +162,7 @@ const nextStep = () => {
   }
 };
 
-//跳转
+//Jump
 const jump = (name: string) => {
   router.push({
     name
@@ -203,7 +203,7 @@ const login = () => {
 
 const copy = async (text: string) => {
   try {
-    await toClipboard(text); //实现复制
+    await toClipboard(text); //Implement replication
     ElNotification({
       title: "Success",
       message: "复制成功",
@@ -215,7 +215,7 @@ const copy = async (text: string) => {
   }
 };
 
-// //消息通知相关
+// //Message notification related
 const noticeListRef = ref()
 
 const noticePopoverShow = () => {
@@ -226,9 +226,9 @@ const noticePopoverHide = () => {
   noticeListRef.value.end()
 }
 
-//未读消息数量
+//Number of unread messages
 const chatUnreadMessage = ref(0)
-//监听未读消息
+//Listen for unread messages
 const watchChatUnreadMessage = watch(() => { return chatListStore.chatListData }, (newVal, oldVal) => {
   chatUnreadMessage.value = 0
   newVal.filter((item) => {
@@ -236,7 +236,7 @@ const watchChatUnreadMessage = watch(() => { return chatListStore.chatListData }
   })
 }, { immediate: true, deep: true })
 
-//退出登入
+//Log out
 const loginOut = () => {
   userInfo.loginOut()
   router.push({
@@ -245,12 +245,12 @@ const loginOut = () => {
 }
 
 onMounted(() => {
-  //刷新时关闭
+  //Close on refresh
   chatListStore.isShow = false
 })
 
 onUnmounted(() => {
-  //清除监听
+  //clear listening
   watchChatUnreadMessage()
 })
 

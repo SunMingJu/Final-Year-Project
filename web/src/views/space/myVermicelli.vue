@@ -1,5 +1,5 @@
 <template>
-    <div class="title"><span >粉丝列表</span></div>
+    <div class="title"><span >Fans list</span></div>
     <div class="list">
         <div class="border"></div>
         <div class="item" v-for="item in list" :key="item.id">
@@ -11,9 +11,9 @@
             </div>
             <div class="function">
                 <el-button class="attention" v-if="!item.is_attention" v-removeFocus type="primary" size="small" round
-                    :icon="Plus" @click="attentionUser(item.id)">关注</el-button>
+                    :icon="Plus" @click="attentionUser(item.id)">focus on</el-button>
                 <el-button class="attention" v-if="item.is_attention" v-removeFocus type="primary" size="small" round
-                    :icon="MoreFilled" color="#F1F2F3" @click="attentionUser(item.id)">已关注</el-button>
+                    :icon="MoreFilled" color="#F1F2F3" @click="attentionUser(item.id)">Already following</el-button>
             </div>
         </div>
 </div>
@@ -39,7 +39,7 @@ const attentionUser = async (id: number) => {
     try {
         if (userStore.userInfoData.id == id) {
             Swal.fire({
-                title: "不能对自己操作哟!",
+                title: "You can't do it to yourself!",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -59,7 +59,7 @@ const attentionUser = async (id: number) => {
         
     } catch (err: any) {
         Swal.fire({
-            title: "操作失败",
+            title: "operation failed",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",

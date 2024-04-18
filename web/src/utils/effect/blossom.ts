@@ -145,7 +145,7 @@ export const blossom = () => {
         cxt = canvas.getContext('2d');
         let sakuraList: any
         sakuraList = new SakuraList();
-        //控制数量
+        //Control quantity
         for (let i = 0; i < 6; i++) {
             let sakura, randomX, randomY, randomS, randomR, randomFnx, randomFny, randomFnR;
             randomX = getRandom('x');
@@ -185,7 +185,7 @@ export const blossom = () => {
             window.cancelAnimationFrame(stop);
             staticx = false;
         } else {
-            //关闭樱花动效
+            //Turn off cherry blossom animation
             startSakura();
             document.getElementById("canvas_sakura")?.remove()
         }

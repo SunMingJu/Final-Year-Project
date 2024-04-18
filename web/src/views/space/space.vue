@@ -2,7 +2,7 @@
     <div class="content">
         <div class="video-list">
             <div class="title">
-                <SvgIcon name="video" class="icon"></SvgIcon>视频作品
+                <SvgIcon name="video" class="icon"></SvgIcon>video works
             </div>
             <div class="vidoe-box" v-show="releaseInformation?.videoList?.length > 0 || isLoading == false">
                 <div class="video-item"
@@ -29,22 +29,22 @@
                 </div>
             </div>
             <div class="vidoe-empty" v-show="releaseInformation?.videoList?.length == 0 && isLoading == true">
-                <el-empty description="还未发布视频~" />
+                <el-empty description="No video posted yet~" />
             </div>
         </div>
         <div class="article-list">
             <div class="title">
-                <SvgIcon name="column" class="icon"></SvgIcon>专栏作品
+                <SvgIcon name="column" class="icon"></SvgIcon>Column works
             </div>
             <div class="article-box" v-show="releaseInformation?.articleList?.length > 0 || isLoading == false">
                 <Column :uid="spaceData.spaceInfoData.id"
                     :list="releaseInformation.articleList ? releaseInformation.articleList : []"></Column>
             </div>
             <div class="article-empty" v-show="releaseInformation?.articleList?.length == 0 && isLoading == true">
-                <el-empty description="还未发布专栏~" />
+                <el-empty description="No column has been published yet~" />
             </div>
         </div>
-        <!-- 撑开底部 -->
+        <!--Open the bottom -->
         <div class="spread-bottom">
         </div>
     </div>
@@ -59,7 +59,7 @@ import { onMounted } from "vue";
 
 const { spaceData, releaseInformation, isLoading } = useSpaceProp()
 
-//生成占位骨架屏
+//Generate placeholder skeleton screen
 const quickCreationArr = (num: number): Array<VideoInfo> => {
     let arr = []
     for (let i = 0; i < num; i++) {

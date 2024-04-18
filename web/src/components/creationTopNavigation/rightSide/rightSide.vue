@@ -6,7 +6,7 @@
       </router-link>
     </div>
     <div class="tips-calendar-wrap">
-     已经成为 UP {{ day }} 天
+     Has been UP {{ day }} days
     </div>
     <div class="line-divid"></div>
 
@@ -26,7 +26,7 @@ const userInfo = useUserStore();
 const router = useRouter()
 const day = ref(0)
 
-//跳转
+//Jump
 const jump = (name: string) => {
   router.push({
     name

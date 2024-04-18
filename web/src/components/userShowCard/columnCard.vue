@@ -1,7 +1,7 @@
 <template>
     <div class="column">
         <div class="column-list">
-            <!-- 骨架屏 -->
+            <!--Skeleton screen -->
             <el-skeleton style="width: 100%; height: 200px; margin-bottom: 2rem; " class="video-card"
                 v-for="(item, index) in list?.length ? list : quickCreationArr(6) " :key="item.id" :loading="!list?.length"
                 animated>
@@ -15,7 +15,7 @@
                     </div>
                 </template>
                 <template #default>
-                    <!-- 单个卡片 -->
+                    <!--Single card -->
                     <div :class="{ mouseover: item.is_stay, mouseleave: !item.is_stay }" class="column-item shadow-box "
                         @mouseover="mouseOver(item)" @mouseleave="mouseleave(item)" @click="jumpArticle(item.id)">
                         <div :class="{ 'item-image': true, 'right': index % 2 == 1 }">

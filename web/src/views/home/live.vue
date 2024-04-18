@@ -3,15 +3,15 @@
         <div class="head">
             <topNavigation color="#fff" :scroll="true" :displaySearch="false"></topNavigation>
         </div>
-        <!-- 封面图 -->
+        <!--Cover image -->
         <div class="cover-picture">
         </div>
         <div class="title">
-            <SvgIcon name="live" class="icon"></SvgIcon>推荐直播
+            <SvgIcon name="live" class="icon"></SvgIcon>Recommended live broadcast
         </div>
-        <!-- 主体 -->
+        <!--Subject -->
         <div class="middle">
-            <!-- 直播 -->
+            <!--Live Broadcast -->
             <el-skeleton style="width: 100%; height: 13rem;  margin-bottom: 6rem;" class="video-card" v-show="!isLoading"
                 :loading="!beList.length" animated
                 v-for="liveInfo in beList.length || isLoading ? beList : quickCreationArr(15) ">
@@ -32,7 +32,7 @@
         </div>
         <!-- 空状态 -->
         <div class="empty" v-show="beList.length == 0 && isLoading == true">
-            <el-empty description="还没有人开播" />
+            <el-empty description="No one has started broadcasting yet" />
         </div>
     </div>
 </template>
@@ -64,7 +64,7 @@ const loadData = async (beList: Ref<GetBeLiveListRes>) => {
 }
 
 
-//生成占位骨架屏
+//Generate placeholder skeleton screen
 const quickCreationArr = (num: number): Array<BeLiveInfo> => {
     let arr = []
     for (let i = 0; i < num; i++) {

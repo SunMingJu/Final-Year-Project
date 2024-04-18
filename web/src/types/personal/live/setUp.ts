@@ -1,6 +1,6 @@
 import {FileUpload} from "@/types/idnex"
 export  interface  LiveInformation extends FileUpload{
-    title : string, //标题
+    title : string, //title
 }
 
 export interface SaveLiveDataReq {

@@ -1,8 +1,8 @@
 import { FileUpload } from "@/types/idnex"
 export interface CreateCollectRmation extends FileUpload {
     id : number
-    title: string, //标题
-    content: string //内容
+    title: string, //title
+    content: string //content
 }
 
 export interface SaveCreateFavoritesDataReq {
@@ -13,7 +13,7 @@ export interface SaveCreateFavoritesDataReq {
     cover: string
 }
 
-//用于单标题请求
+//for single-title requests
 export  interface createFavoritesReq {
     title : string
 }

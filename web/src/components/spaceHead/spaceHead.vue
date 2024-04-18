@@ -7,16 +7,16 @@
                 </div>
                 <div class="into-text">
                     <div class="name"> {{ userInfo.username }}</div>
-                    <div class="signature"> {{ userInfo.signature ? userInfo.signature : "这个人很勤快什么都没留下~" }}</div>
+                    <div class="signature"> {{ userInfo.signature ? userInfo.signature : "This man is very diligent and leaves nothing behind~" }}</div>
                 </div>
             </div>
             <div class="function">
                 <el-button class="attention" v-if="!userInfo.is_attention" v-removeFocus type="primary" size="small" round
-                    :icon="Plus" @click="attention()">关注</el-button>
+                    :icon="Plus" @click="attention()">focus on</el-button>
                 <el-button class="attention" v-if="userInfo.is_attention" v-removeFocus type="primary" size="small" round
-                    :icon="MoreFilled" color="#F1F2F3" @click="attention()">已关注</el-button>
+                    :icon="MoreFilled" color="#F1F2F3" @click="attention()">Already following</el-button>
                 <div class="button"> <el-button type="primary" size="small" @click="usePersonalLetter(userInfo?.id)" round>
-                        <SvgIcon name="message" class="icon" color="#fff"></SvgIcon>私信
+                        <SvgIcon name="message" class="icon" color="#fff"></SvgIcon>Private letter
                     </el-button></div>
             </div>
         </div>
@@ -24,15 +24,15 @@
         <div class="menu">
             <div class="left">
                 <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-                    <el-menu-item index="SpaceIndividual">Ta的作品</el-menu-item>
-                    <el-menu-item index="MyAttention">关注</el-menu-item>
-                    <el-menu-item index="MyVermicelli">粉丝</el-menu-item>
+                    <el-menu-item index="SpaceIndividual">His works</el-menu-item>
+                    <el-menu-item index="MyAttention">focus on</el-menu-item>
+                    <el-menu-item index="MyVermicelli">fan</el-menu-item>
                 </el-menu>
             </div>
             <div class="right">
                 <div class="item-box">
-                    <div>关注 : {{ userInfo.attention_num }}</div>
-                    <div class="data-item">粉丝 : {{ userInfo.vermicelli_num }}</div>
+                    <div>focus on : {{ userInfo.attention_num }}</div>
+                    <div class="data-item">fan : {{ userInfo.vermicelli_num }}</div>
                 </div>
             </div>
         </div>

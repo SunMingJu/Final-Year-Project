@@ -1,8 +1,8 @@
 <template>
     <div class="video-page">
-        <!-- 主题内容 -->
+       <!--Topic content -->
         <div class="video-content">
-            <!-- 左边部分 -->
+            <!--Left part -->
             <div class="content-left">
                 <div class="vidoe-info">
                     <div class="vidoe-title">
@@ -26,7 +26,7 @@
                                 }}
                             </span>
                             <span class="data-item">
-                                <SvgIcon name="forbid" class="forbid-icon" color="#9499A0"></SvgIcon>未经作者授权，禁止转载
+                                <SvgIcon name="forbid" class="forbid-icon" color="#9499A0"></SvgIcon>Reprinting without authorization from the author is prohibited
                             </span>
 
                             <div class="info-right">
@@ -46,25 +46,25 @@
                         id="dplay" />
                     <div class="video-sending">
                         <div class="live-info">
-                            <span>{{ liveNumber }} 人正在看</span> , <span> 已装填 {{ videoInfo?.videoInfo?.barrageNumber }}
-                                条弹幕 </span>
+                            <span>{{ liveNumber }} People are watching</span>, <span> has been loaded {{ videoInfo?.videoInfo?.barrageNumber }}
+                                barrages </span>
                         </div>
                         <div class="barrage-set" @click="videoBarrage = !videoBarrage">
                             <SvgIcon :name="videoBarrage ? 'barrageOn' : 'barrageOff'" class="barrage-icon" color="#61666D">
                             </SvgIcon>
                             <div class="barrage-input" v-show="userStore.userInfoData.token">
-                                <el-input v-model="barrageInput" placeholder="发个友善的弹幕见证当下">
+                                <el-input v-model="barrageInput" placeholder="Send a friendly comment to witness the moment">
                                     <template #append>
-                                        <div><el-button type="primary" @click="sendBarrageEvent()">发送</el-button></div>
+                                        <div><el-button type="primary" @click="sendBarrageEvent()">send</el-button></div>
                                     </template>
                                 </el-input>
                             </div>
 
                             <div class="barrage-input" v-show="!userStore.userInfoData.token">
-                                <el-input v-model="barrageInput" placeholder="请先登入或者注册再来嗷" readonly>
+                                <el-input v-model="barrageInput" placeholder="Please log in or register before coming again" readonly>
                                     <template #append>
                                         <div><el-button @click="router.push({ name: 'Login' })"
-                                                type="primary">登入</el-button></div>
+                                                type="primary">login</el-button></div>
                                     </template>
                                 </el-input>
                             </div>
@@ -72,11 +72,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- 视频介绍 -->
+                <!--Video introduction -->
                 <videoIntroduce :introduce="videoInfo?.videoInfo?.introduce" :label="videoInfo?.videoInfo?.label">
                 </videoIntroduce>
 
-                <!-- 视频评论 -->
+                <!--Video Comment -->
                 <div class="comments-box">
                     <div class="comments-main">
                         <commentPosting :videoID="videoInfo?.videoInfo?.id" :commentsID="0"
@@ -86,7 +86,7 @@
                     <div class="comments-show">
                         <div class="comments-show-titel"><span>Comments | </span> <span>{{
                             videoInfo?.videoInfo?.comments.length
-                        }} 条评论</span>
+                        }} comments</span>
                         </div>
                         <div class="comments-show-info">
                             <div class="comment-info-detail-box" v-for="commentsItem in videoInfo?.videoInfo?.comments"
@@ -102,14 +102,14 @@
                                             </div>
                                             <div class="commentInfo-reply">
                                                 <el-button type="primary" v-removeFocus round size="small"
-                                                    @click="replyComments(commentsItem.id)">回复</el-button>
+                                                    @click="replyComments(commentsItem.id)">reply</el-button>
                                             </div>
                                         </div>
-                                        <!-- 评论内容部分 -->
+                                        <!--Comment content part -->
                                         <div class="content-info">
                                             {{ commentsItem.context }}
                                         </div>
-                                        <!-- 子评论 -->
+                                        <!--Subcomment -->
                                         <div class="comment-info-detail-child"
                                             v-for="lowerComments in commentsItem.lowerComments" :key="lowerComments.id">
                                             <el-avatar :size="36" :src="lowerComments.photo" />
@@ -124,11 +124,11 @@
                                                     <div class="commentInfo-reply">
                                                         <el-tag effect="dark" round v-removeFocus
                                                             @click="replyComments(lowerComments.id)">
-                                                            回复
+                                                            reply
                                                         </el-tag>
                                                     </div>
                                                 </div>
-                                                <!-- 评论内容部分 -->
+                                               <!--Comment content part -->
                                                 <div class="content-info">
                                                     <span v-if="lowerComments.comment_user_id != commentsItem.uid"><span
                                                             class="at-user">@{{
@@ -143,7 +143,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 回复评论  dialog-->
+                    <!--Reply to comment dialog-->
                     <el-dialog v-model="replyCommentsDialog.show" title="Shipping address">
                         <commentPosting :videoID="videoInfo?.videoInfo?.id" @updateVideoInfo="updateVideoInfo"
                             :commentsID="replyCommentsDialog.commentsID"></commentPosting>
@@ -151,7 +151,7 @@
                 </div>
             </div>
 
-            <!-- 右边部分 -->
+            <!--Right part -->
             <div class="content-right">
 
                 <div class="user-card">
@@ -165,12 +165,12 @@
                         <div class="username">
                             <span>{{ videoInfo?.videoInfo?.creatorInfo?.username }}</span>
                             <div class="private-letter" @click="usePersonalLetter(videoInfo?.videoInfo?.uid)">
-                                <SvgIcon name="message" class="icon" color="#9499A0"></SvgIcon> 私信
+                                <SvgIcon name="message" class="icon" color="#9499A0"></SvgIcon> Private letter
                             </div>
                         </div>
                         <div class="signature">
                             <VueEllipsis3
-                                :text="videoInfo?.videoInfo?.creatorInfo?.signature ? videoInfo.videoInfo.creatorInfo.signature : '这个人很勤快什么都没留下~'">
+                                :text="videoInfo?.videoInfo?.creatorInfo?.signature ? videoInfo.videoInfo.creatorInfo.signature : 'This man is very diligent and leaves nothing behind.~'">
                                 <template v-slot:ellipsisNode>
                                     <span>...</span>
                                 </template>
@@ -178,13 +178,13 @@
                         </div>
                         <div class="btn-list">
                             <el-button v-removeFocus type="primary" size="small" round :icon="House"
-                                @click="jumpSpace()">主页</el-button>
+                                @click="jumpSpace()">Home page</el-button>
                             <el-button class="attention" v-if="!videoInfo?.videoInfo?.creatorInfo?.is_attention"
                                 v-removeFocus type="primary" size="small" round :icon="Plus"
-                                @click="attention()">关注</el-button>
+                                @click="attention()">focus on</el-button>
                             <el-button class="attention" v-if="videoInfo?.videoInfo?.creatorInfo?.is_attention"
                                 v-removeFocus type="primary" size="small" round :icon="MoreFilled" color="#F1F2F3"
-                                @click="attention()">已关注</el-button>
+                                @click="attention()">Already following</el-button>
                         </div>
                     </div>
                 </div>
@@ -192,7 +192,7 @@
 
                 <div class="barrage-box">
                     <div class="barrage-top-navigation">
-                        <div class="box-left"><span>弹幕列表</span>
+                        <div class="box-left"><span>Barrage list</span>
                             <SvgIcon name="dropDown" class="icon" color="#61666D"></SvgIcon>
                         </div>
                         <span @click="barrageListShow = !barrageListShow">
@@ -206,7 +206,7 @@
                                     <span>{{ formattingSecondTime(scope.row.time) }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="text" label="弹幕内容" width="260">
+                            <el-table-column prop="text" label="Barrage content" width="260">
                                 <template #default="scope">
                                     <VueEllipsis3 :text="scope.row.text">
                                         <template v-slot:ellipsisNode>
@@ -215,7 +215,7 @@
                                     </VueEllipsis3>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="sendTime" label="发送时间">
+                            <el-table-column prop="sendTime" label="Send time">
                                 <template #default="scope">
                                     <span>{{ dayjs(rFC3339ToTime(scope.row.sendTime)).format('MM-DD HH:mm') }}</span>
                                 </template>
@@ -235,10 +235,10 @@
             </div>
         </div>
 
-        <!-- 收藏视频 -->
+        <!--Collection video -->
         <div class="dialog-list">
             <div class="dialog">
-                <el-dialog v-model="favoriteVideoShow" title="收藏视频" width="24%" center :close-on-click-modal="true"
+                <el-dialog v-model="favoriteVideoShow" title="Favorite video" width="24%" center :close-on-click-modal="true"
                     :append-to-body="true" :before-close="favoriteVideoShowClose" align-center>
                     <FavoriteVideo @shutDown="shutDown" @success="videoInfo.videoInfo.is_collect = true" :id="videoID">
                     </FavoriteVideo>
@@ -278,7 +278,7 @@ components: {
     FavoriteVideo
 }
 
-var dp = ref(<DPlayer>{})  //播放器配置对象
+var dp = ref(<DPlayer>{})  //Player configuration object
 var socket: WebSocket //socket
 const { videoRef, route, router, userStore, videoID, videoInfo, barrageInput, barrageListShow, liveNumber, replyCommentsDialog, videoBarrage } = useVideoProp()
 
@@ -286,13 +286,13 @@ const sendBarrageEvent = () => {
     useSendBarrage(barrageInput, dp.value, userStore, videoInfo, socket)
 }
 
-//回复二级评论
+//Reply to secondary comments
 const replyComments = (commentsID: number) => {
     replyCommentsDialog.commentsID = commentsID
     replyCommentsDialog.show = !replyCommentsDialog.show
 }
 
-//更新评论数据
+//Update comment data
 const updateVideoInfo = (commentsList: GetVideoCommentRes) => {
     videoInfo.videoInfo.comments = commentsList.comments
     videoInfo.videoInfo.comments_number = commentsList.comments_number
@@ -304,15 +304,15 @@ const attention = async () => {
     }
 }
 
-//跳转用户空间
+//Jump to user space
 const jumpSpace = () => {
     router.push({ name: "SpaceIndividual", params: { "id": videoInfo.videoInfo.creatorInfo.id } })
 }
 
 
-//收藏视频
+//Favorite video
 const favoriteVideoShow = ref(false)
-//关闭createCollectDialogShow
+//Close create collect dialog show
 const shutDown = () => {
     favoriteVideoShow.value = false
 }
@@ -351,7 +351,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-    //销毁监听和socket
+    //Destroy the listener and socket
     watchPath()
     watchDanmaku()
     socket?.close()

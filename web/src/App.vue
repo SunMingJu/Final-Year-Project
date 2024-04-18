@@ -1,5 +1,5 @@
 <template>
-  <!-- 全局loading -->
+  <!--Global loading -->
   <div class="parcel">
     <el-scrollbar ref="scrollbarRef" height="100%" @scroll="handleScroll">
       <div ref="mianRef" class="global-loading" v-loading="global.globalData.loading.loading"
@@ -26,7 +26,7 @@ const global = useGlobalStore();
 const mianRef = ref()
 const scrollbarRef = ref()
 
-//滚动事件
+//scroll event
 const handleScroll = (e: any) => {
   console.log(e)
   global.setScroll(e.scrollLeft, e.scrollTop)
@@ -35,14 +35,14 @@ const handleScroll = (e: any) => {
 let watchsScroll: any
 
 onMounted(() => {
-  //设置最大宽不超过屏幕高度
+  //Set the maximum width to not exceed the screen height
   mianRef.value.style.maxWidth = screen.width + "px"
   if (user.userInfoData.token) {
-    //加载全局socket
+    //Load global socket
     useInitChatSocket()
     useInitNoticeSocket()
   }
-  //路由刷新回到顶部
+  //Route refresh back to top
   watchsScroll = watch(() => route.path, async () => {
     scrollbarRef.value.setScrollTop(0)
     global.setScroll(0, 0)
@@ -52,7 +52,7 @@ onMounted(() => {
 
 
 onUnmounted(() => {
-  //销毁监听
+  //Destroy the listener
   watchsScroll()
 })
 

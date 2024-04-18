@@ -11,42 +11,42 @@
       <el-sub-menu index="UserShow">
         <template #title>
           <SvgIcon name="user" class="icon"></SvgIcon>
-          <span>用户信息</span>
+          <span>User Info</span>
         </template>
         <el-menu-item index="UserInfo">
           <div class="icon-item">
             <SvgIcon name="userData" class="icon-small"></SvgIcon>
-            <span>个人信息</span>
+            <span>personal information</span>
           </div>
         </el-menu-item>
         <el-menu-item index="PictureSetting">
           <div class="icon-item">
             <SvgIcon name="pictures" class="icon-small"></SvgIcon>
-            <span>头像设置</span>
+            <span>Avatar settings</span>
           </div>
         </el-menu-item>
         <el-menu-item index="Safety">
           <div class="icon-item">
             <SvgIcon name="security" class="icon-small"></SvgIcon>
-            <span>用户安全</span>
+            <span>User security</span>
           </div>
         </el-menu-item>
       </el-sub-menu>
       <el-menu-item index="LiveSetUp">
         <div class="icon-item">
           <SvgIcon name="live" class="icon"></SvgIcon>
-          <span>直播设置</span>
+          <span>Live broadcast settings</span>
         </div>
       </el-menu-item>
       <el-sub-menu index="Favorites">
         <template #title>
           <SvgIcon name="collection" class="icon"></SvgIcon>
-          <span>我的收藏</span>
+          <span>my collection</span>
         </template>
         <el-menu-item @click="createCollectDialogShow = true" index="CreateFavorites">
           <div class="icon-item">
             <SvgIcon name="folder" class="icon-smallxl"></SvgIcon>
-            <span>创建收藏夹</span>
+            <span>Create favorites</span>
           </div>
         </el-menu-item>
       </el-sub-menu>
@@ -54,20 +54,20 @@
       <el-sub-menu index="Record">
         <template #title>
           <SvgIcon name="playRecording" class="icon"></SvgIcon>
-          <span>历史记录</span>
+          <span>history record</span>
         </template>
         <el-menu-item @click="clearHistory()" index="ClearHistory">
           <div class="icon-item">
             <SvgIcon name="trashCan" class="icon"></SvgIcon>
-            <span>清空历史</span>
+            <span>Clear history</span>
           </div>
         </el-menu-item>
       </el-sub-menu>
     </el-menu>
 
-    <!-- 消息弹出框 -->
+    <!--Message pop-up box -->
     <div class="dialog">
-      <el-dialog v-model="createCollectDialogShow" title="创建收藏夹" width="50%" center :close-on-click-modal="true"
+      <el-dialog v-model="createCollectDialogShow" title="Create favorites" width="50%" center :close-on-click-modal="true"
         :append-to-body="true" :before-close="createCollectDialogShowClose" align-center>
         <CreateFavorite :type="true" @shutDown="shutDown"></CreateFavorite>
       </el-dialog>
@@ -113,19 +113,19 @@ const createCollectDialogShowClose = (done: () => void) => {
 const clearHistory = () => {
   Swal.fire({
     heightAuto: false,
-    title: '确认清空历史记录嘛?',
+    title: 'Confirm to clear history?',
     icon: 'warning',
     confirmButtonColor: globalScss.colorButtonTheme,
     showCancelButton: true,
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
+    confirmButtonText: 'confirm',
+    cancelButtonText: 'Cancel',
     reverseButtons: true
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
         await clearRecord()
         Swal.fire({
-          title: "清空成功",
+          title: "Cleared successfully",
           confirmButtonColor: globalScss.colorButtonTheme,
           heightAuto: false,
           icon: "success",
@@ -136,18 +136,18 @@ const clearHistory = () => {
       } catch (err: any) {
         console.log(err)
         Swal.fire({
-          title: "清空失败",
+          title: "Clearing failed",
           heightAuto: false,
           confirmButtonColor: globalScss.colorButtonTheme,
           icon: "error",
         })
       }
     } else if (result.dismiss === Swal.DismissReason.cancel) {
-      console.log("取消")
+      console.log("Cancel")
     }
   })
 }
-//关闭createCollectDialogShow
+//Close create collect dialog show
 const shutDown = () => {
   createCollectDialogShow.value = false
 }

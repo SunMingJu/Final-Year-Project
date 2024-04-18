@@ -1,6 +1,6 @@
 <template>
     <div class="overall">
-        <pageHeader title="历史记录" icon-nmae="playRecording"></pageHeader>
+        <pageHeader title="history record" icon-nmae="playRecording"></pageHeader>
         <div class="content" v-loading="isLoading">
             <div class="timeline" v-show="recordList.length > 0" v-infinite-scroll="scrollBottom"
                 infinite-scroll-delay="1000">
@@ -36,11 +36,11 @@
                 </el-timeline>
             </div>
             <div class="record-empty" v-show="recordList.length == 0 && isLoading == false">
-                <el-empty description="暂无历史记录,快去逛逛叭~" />
+                <el-empty description="There is no history record yet. Go and have a look.~" />
             </div>
             <div class="load-more" v-show="recordList.length > 0 && isLoadMore" v-loading="true">
             </div>
-            <!-- 撑开底部 -->
+            <!--Open the bottom -->
             <div class="spread-bottom">
             </div>
         </div>
@@ -71,9 +71,9 @@ const jump = (item: GetRecordListItem) => {
     useJump(item, router)
 }
 
-//加载底部
+//load bottom
 const scrollBottom = async () => {
-    //无数据时取消加载更多
+    //Cancel loading more when there is no data
     if (isTheEnd.value) return false
     isLoadMore.value = true
     if (recordList.value.length <= 0) return false

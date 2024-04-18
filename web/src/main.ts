@@ -21,7 +21,7 @@ pinia.use(piniaPluginPersistedstate);
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
-app.use(Particles) //粒子动画
+app.use(Particles) //particle animation
 
 
 
@@ -29,7 +29,7 @@ app.use(Particles) //粒子动画
 app.component('svg-icon', svgIcon)
 
 const global = useGlobalStore()
-//挂载全局
+//Mount global
 app.provide('global', {
     global
 })

@@ -15,7 +15,7 @@ export  interface GetRecordListItem {
 	type :string
     updated_at :string
 
-	is_delete : boolean //用于伪删除
+	is_delete : boolean //for pseudo deletion
 }
 
 export type GetRecordListRes = Array<GetRecordListItem>

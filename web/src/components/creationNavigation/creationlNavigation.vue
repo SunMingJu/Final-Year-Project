@@ -1,49 +1,49 @@
 <template>
   <div class="side-navigation">
     <div class="contribute">
-      <el-button class="btn" v-removeFocus type="primary" @click="jump('Contribute')" round>投稿</el-button>
+      <el-button class="btn" v-removeFocus type="primary" @click="jump('Contribute')" round>Post</el-button>
     </div>
     <el-menu class="el-menu-vertical" :collapse-transition="false" @open="handleOpen" @close="handleClose"
       @select="handleSelect">
       <!-- <el-menu-item index="pictureSetting">
         <div class="icon-item">
           <SvgIcon name="home" class="icon"></SvgIcon>
-          <span>首页</span>
+          <span>front page</span>
         </div>
       </el-menu-item> -->
       <el-sub-menu index="Manuscript">
         <template #title>
           <SvgIcon name="eg" class="icon"></SvgIcon>
-          <span>稿件管理</span>
+          <span>Manuscript management</span>
         </template>
         <el-menu-item index="VideoManagement">
           <div class="icon-item">
             <SvgIcon name="video" class="icon"></SvgIcon>
-            <span>视频稿件</span>
+            <span>Video manuscript</span>
           </div>
         </el-menu-item>
         <el-menu-item index="ArticleManagement">
           <div class="icon-item">
             <SvgIcon name="column" class="icon"></SvgIcon>
-            <span>专栏稿件</span>
+            <span>Column manuscript</span>
           </div>
         </el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="Discuss">
         <template #title>
           <SvgIcon name="discuss" class="icon"></SvgIcon>
-          <span>互动管理</span>
+          <span>Interactive management</span>
         </template>
         <el-menu-item index="CommentDiscuss">
           <div class="icon-item">
             <SvgIcon name="comment" class="icon-xl"></SvgIcon>
-            <span>评论管理</span>
+            <span>Comment management</span>
           </div>
         </el-menu-item>
         <el-menu-item index="BarrageDiscuss">
           <div class="icon-item">
             <SvgIcon name="barrage" class="icon-small"></SvgIcon>
-            <span>弹幕管理</span>
+            <span>Barrage management</span>
           </div>
         </el-menu-item>
       </el-sub-menu>
@@ -75,7 +75,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
 
 }
 
-//跳转
+//Jump
 const jump = (name: string) => {
   router.push({
     name

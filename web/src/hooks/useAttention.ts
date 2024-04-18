@@ -10,7 +10,7 @@ export default async (tid: number): Promise<boolean> => {
         console.log(userStore.userInfoData.id, tid)
         if (userStore.userInfoData.id == tid) {
             Swal.fire({
-                title: "不能对自己操作哟!",
+                title: "You can't do it to yourself!",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -23,7 +23,7 @@ export default async (tid: number): Promise<boolean> => {
         return Promise.resolve(true)
     } catch (err: any) {
         Swal.fire({
-            title: "操作失败",
+            title: "operation failed",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",

@@ -28,12 +28,12 @@ export const useFavoritesProp = () => {
 export const useDelFavorites = (id: number , favoritesList : Ref<GetFavoritesListRes>) => {
     Swal.fire({
         heightAuto: false,
-        title: '确认删除该收藏夹嘛?',
+        title: 'Are you sure you want to delete this favorite?',
         icon: 'warning',
         confirmButtonColor: globalScss.colorButtonTheme,
         showCancelButton: true,
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
         reverseButtons: true
     }).then(async (result) => {
         if (result.isConfirmed) {
@@ -42,7 +42,7 @@ export const useDelFavorites = (id: number , favoritesList : Ref<GetFavoritesLis
                     id
                 })
                 Swal.fire({
-                    title: "删除成功",
+                    title: "successfully deleted",
                     confirmButtonColor: globalScss.colorButtonTheme,
                     heightAuto: false,
                     icon: "success",
@@ -53,14 +53,14 @@ export const useDelFavorites = (id: number , favoritesList : Ref<GetFavoritesLis
             } catch (err: any) {
                 console.log(err)
                 Swal.fire({
-                    title: "删除失败",
+                    title: "failed to delete",
                     heightAuto: false,
                     confirmButtonColor: globalScss.colorButtonTheme,
                     icon: "error",
                 })
             }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-            console.log("取消")
+            console.log("Cancel")
         }
     })
 }
@@ -68,12 +68,12 @@ export const useDelFavorites = (id: number , favoritesList : Ref<GetFavoritesLis
 export const useUpdateFavorites = (item: GetFavoritesListItem ,createCollectDialogShow :Ref<boolean> ,updataInfo :Ref<GetFavoritesListItem>) => {
     updataInfo.value = item
     createCollectDialogShow.value = true
-    console.log("更新", item)
+    console.log("renew", item)
 }
 
 export const useInit = async (favoritesList: Ref<GetFavoritesListRes> ,isLoading :Ref<boolean>) => {
     try {
-        //获取收藏夹列表 
+        //Get list of favorites 
         const response = await getFavoritesList();
         if (!response.data) return false
         favoritesList.value = response.data
@@ -82,7 +82,7 @@ export const useInit = async (favoritesList: Ref<GetFavoritesListRes> ,isLoading
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "获取失败",
+            title: "Failed to obtain",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",

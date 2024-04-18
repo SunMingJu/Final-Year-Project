@@ -13,7 +13,7 @@ export const useArticleShowProp = () => {
     const router = useRouter()
     const route = useRoute()
 
-    //回复二级评论
+    //Reply to secondary comments
     const replyCommentsDialog = reactive({
         show: false,
         commentsID: 0,
@@ -32,7 +32,7 @@ export const useInit = async (articleID: Ref<number>, articleInfo: Ref<GetArticl
         if (!route.query.articleID) {
             router.back()
             Swal.fire({
-                title: "缺少文章ID",
+                title: "Missing article id",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -47,12 +47,12 @@ export const useInit = async (articleID: Ref<number>, articleInfo: Ref<GetArticl
             canvasSnow.width = String(window.innerWidth);
             canvasSnow.height = String(window.innerHeight);
         }
-        //获取文章内容
+        //Get article content
         const response = await getArticleContributionByID(<GetArticleContributionByIDReq>{
             articleID: articleID.value
         })
 
-        if (!response.data) throw "文章内容为空"
+        if (!response.data) throw "The article content is empty"
         articleInfo.value = response.data
         articleInfo.value.comments = response.data?.comments
 

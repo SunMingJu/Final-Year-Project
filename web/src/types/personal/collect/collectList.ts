@@ -3,7 +3,7 @@ export interface GetFavoriteVideoListReq {
 }
 
 
-//视频信息
+//Video information
 export interface VideoInfo {
     id : number
 	uid :number 

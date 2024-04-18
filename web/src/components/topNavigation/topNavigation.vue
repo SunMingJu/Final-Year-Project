@@ -10,15 +10,15 @@
       <div class="menu-choose">
         <el-menu :default-active="globaStore.globalData.router.currentRouter" class="el-menu" mode="horizontal"
           @select="handleSelect">
-          <el-menu-item :style="{ color: scrollTopNotTop ? color : '#18191C' }" index="/"> 首页 </el-menu-item>
-          <el-menu-item :style="{ color: scrollTopNotTop ? color : '#18191C' }" index="/column"> 专栏 </el-menu-item>
-          <el-menu-item :style="{ color: scrollTopNotTop ? color : '#18191C' }" index="/live"> 直播 </el-menu-item>
+          <el-menu-item :style="{ color: scrollTopNotTop ? color : '#18191C' }" index="/"> front page </el-menu-item>
+          <el-menu-item :style="{ color: scrollTopNotTop ? color : '#18191C' }" index="/column"> Column </el-menu-item>
+          <el-menu-item :style="{ color: scrollTopNotTop ? color : '#18191C' }" index="/live"> live streaming </el-menu-item>
         </el-menu>
       </div>
     </el-col>
     <el-col :span="11">
       <div class="search" v-show="displaySearch">
-        <el-input v-model="searchText" placeholder="最近新鲜事" size="large" @keyup.enter.native="searchChange">
+        <el-input v-model="searchText" placeholder="latest news" size="large" @keyup.enter.native="searchChange">
           <template #suffix>
             <el-icon @click="search">
               <Search />
@@ -49,7 +49,7 @@ const emit = defineProps({
     required: false,
     default: false,
   },
-  //是否固定颜色
+  //Whether to fix the color
   color: {
     type: String,
     required: false,
@@ -74,11 +74,11 @@ components: {
 const globaStore = useGlobalStore()
 const router = useRouter();
 const searchText = ref("");
-const scrollTopNotTop = ref(true) // 滚动条是否在顶部
+const scrollTopNotTop = ref(true) // Whether the scroll bar is at the top
 const elRowRef = ref()
-//屏幕最大宽
+//Maximum screen width
 const screenWidth = screen.width + 'px'
-//选项卡点击
+//tab click
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
   router.push(key);

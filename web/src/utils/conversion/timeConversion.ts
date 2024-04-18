@@ -69,10 +69,10 @@ export const timestampFormat = (timestamp: number | string) => {
 		return (String(num).length == 1 ? '0' : '') + num;
 	}
 
-	const curTimestamp = Date.parse(new Date().toDateString()); //当前时间戳
-	const timestampDiff = curTimestamp - timestamp; // 参数时间戳与当前时间戳相差毫秒数
-	const curDate = new Date(curTimestamp); // 当前时间日期对象
-	const tmDate = new Date(timestamp); // 参数时间戳转换成的日期对象
+	const curTimestamp = Date.parse(new Date().toDateString());//Current timestamp
+const timestampDiff = curTimestamp -timestamp; //The difference in milliseconds between the parameter timestamp and the current timestamp
+const curDate = new Date(curTimestamp); //Current time and date object
+const tmDate = new Date(timestamp); //The date object converted from the parameter timestamp
 
 	let Y = tmDate.getFullYear(),
 		m = tmDate.getMonth() + 1,
@@ -80,20 +80,20 @@ export const timestampFormat = (timestamp: number | string) => {
 	let H = tmDate.getHours(),
 		i = tmDate.getMinutes(),
 		s = tmDate.getSeconds();
-	if (timestampDiff < 60) { // 一分钟以内
-		return "刚刚";
-	} else if (timestampDiff < 3600) { // 一小时前之内
-		return Math.floor(timestampDiff / 60) + "分钟前";
+	if (timestampDiff < 60) { // within one minute
+		return "just";
+	} else if (timestampDiff < 3600) { // less than an hour ago
+		return Math.floor(timestampDiff / 60) + "minutes ago";
 	} else if (curDate.getFullYear() == Y && curDate.getMonth() + 1 == m && curDate.getDate() == d) {
-		return '今天' + zeroize(H) + ':' + zeroize(i);
+		return 'today' + zeroize(H) + ':' + zeroize(i);
 	} else {
-		let newDate = new Date((curTimestamp - 86400) * 1000); // 参数中的时间戳加一天转换成的日期对象
+		let newDate = new Date((curTimestamp - 86400) * 1000); // The date object converted from the timestamp in the parameter plus one day
 		if (newDate.getFullYear() == Y && newDate.getMonth() + 1 == m && newDate.getDate() == d) {
-			return '昨天' + zeroize(H) + ':' + zeroize(i);
+			return 'yesterday' + zeroize(H) + ':' + zeroize(i);
 		} else if (curDate.getFullYear() == Y) {
-			return zeroize(m) + '月' + zeroize(d) + '日 ' + zeroize(H) + ':' + zeroize(i);
+			return zeroize(m) + '' + zeroize(d) + ' ' + zeroize(H) + ':' + zeroize(i);
 		} else {
-			return Y + '年' + zeroize(m) + '月' + zeroize(d) + '日 ' + zeroize(H) + ':' + zeroize(i);
+			return Y + '' + zeroize(m) + '' + zeroize(d) + ' ' + zeroize(H) + ':' + zeroize(i);
 		}
 	}
 }

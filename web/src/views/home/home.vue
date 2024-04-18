@@ -3,15 +3,15 @@
     <div class="head">
       <topNavigation color="#fff" scroll :displaySearch="true"></topNavigation>
     </div>
-    <!-- 封面图 -->
+    <!--Cover image -->
     <div class="cover-picture">
     </div>
-    <!-- 顶部通道 热门分类 -->
+    <!--Top channel popular categories -->
     <homeHeaderChannel></homeHeaderChannel>
-    <!-- 主体 -->
+    <!--Subject -->
     <div class="middle" :infinite-scroll-distance="770" v-infinite-scroll="scrollBottom" :record-empty="40"
       :infinite-scroll-delay="1000">
-      <!-- 轮播图架屏 -->
+      <!--Carousel frame screen -->
       <div class="rotograph-skeleton">
         <el-skeleton style="width: 100%; height: 70%;" class="video-card" :loading="!homeInfo.rotograph.length" animated>
           <template #template>
@@ -21,14 +21,14 @@
             </div>
           </template>
           <template #default>
-            <!-- 轮播图 -->
+            <!--Carousel image -->
             <homeRotograph :rotograph="homeInfo?.rotograph"></homeRotograph>
           </template>
         </el-skeleton>
       </div>
 
-      <!-- 视频 -->
-      <!-- 视频骨架屏 -->
+      <!--Video -->
+      <!--Video skeleton screen -->
       <div class="video-card" v-for="(videoInfo, index) in videoList.length ? videoList : quickCreationArr(11)"
         :key="videoInfo.id">
         <el-skeleton style="width: 100%; height: 13rem;" class="video-card" :loading="!videoInfo.id" animated>
@@ -84,11 +84,11 @@ let homeInfo = ref<GetHomeInfoRes>({
 
 const videoList = computed(() => {
   let list = [] as Array<VideoInfo>
-  //判断当前页面数量 为第二页
+  //Judge the current page number to be the second page
   if (pageInfo.page_info.page == 2) {
     if (homeInfo.value.videoList.length % 11 == 0) {
       list = [...list, ...homeInfo.value.videoList, ...quickCreationArr(15)]
-      //并且加载数据
+      //and load data
       loadData(homeInfo, pageInfo)
     } else {
       list = [...homeInfo.value.videoList]
@@ -107,7 +107,7 @@ const videoList = computed(() => {
 })
 
 
-//生成占位骨架屏
+//Generate placeholder skeleton screen
 const quickCreationArr = (num: number): Array<VideoInfo> => {
   let arr = []
   for (let i = 0; i < num; i++) {
@@ -122,16 +122,16 @@ const loadData = async (homeInfo: Ref<GetHomeInfoRes>, pageInfo: UnwrapNestedRef
   if (!response.data) return
   homeInfo.value.rotograph = response.data.rotograph
   homeInfo.value.videoList = [...homeInfo.value.videoList, ...response.data.videoList]
-  //请求成功后下次分页+1
+//Next paging +1 after successful request
   pageInfo.page_info.page = pageInfo.page_info.page + 1
 }
 
 let timer: NodeJS.Timeout | null = null
 
-//加载底部
+//load bottom
 const scrollBottom = () => {
-  console.log("触底")
-  //无数据时取消加载更多
+  console.log("bottom")
+  //Cancel loading more when there is no data
   if (homeInfo.value.videoList.length <= 0) return false
   loadData(homeInfo, pageInfo)
 

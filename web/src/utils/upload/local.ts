@@ -5,15 +5,15 @@ import { ref, watch } from "vue";
 import { fileHash, fileSuffix } from "./fileManipulation";
 import { getSliceFile } from "./getSliceFile";
 /**
- * 往本地上传文件
- * @param file File对象
+ * Upload files locally
+ * @param file File object
  * @returns {Promise<{name:string,host:string}>}
  */
 export const localUpload = async (file: File, uploadConfig: FileUpload, fragment?: boolean): Promise<any> => {
     if (!fragment) {
-        //直接上传
+        //Upload directly
         return new Promise(async (resolve, reject) => {
-            // 计算文件Hash 避免多余的文件上传，这样做的目的是尽量少占用的空间
+            // Calculate file Hash to avoid redundant file uploads. The purpose of doing this is to occupy as little space as possible
             const name = await fileHash(file) + fileSuffix(file.name)
             const formData = new FormData()
             const key = `${name}`
@@ -31,9 +31,9 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, fragment
         })
     } else {
         const uploadCheckFun = async () => {
-            // 计算文件Hash 避免多余的文件上传，这样做的目的是尽量少占用的空间
+            // Calculate file Hash to avoid redundant file uploads. The purpose of doing this is to occupy as little space as possible
             const name = await fileHash(file) + fileSuffix(file.name)
-            //总切片
+            //total slices
             let sliceArr = await getSliceFile(file, 1, name)
             let sliceList = ref(<UploadSliceList>[])
             sliceArr.filter((item) => {
@@ -56,19 +56,19 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, fragment
             uploadCheckResponse.data?.list.filter((item) => {
                 notUploadIndex.push(item.index)
             })
-            //取未上传的分片
+            //Get unuploaded shards
             const notUploadSlice = sliceArr.filter((item) => {
                 return (notUploadIndex.includes(item.index))
             })
-            //将已经上传的进度设置成100%
+            //Set the upload progress to 100%
             sliceArr = sliceArr.filter((item) => {
                 if (!notUploadIndex.includes(item.index)) {
                     item.progress = 100
                 }
                 return item
             })
-            console.log("所以需要上传的切片", sliceArr)
-            console.log("未上传的切片", notUploadSlice)
+            console.log("So the slices that need to be uploaded", sliceArr)
+            console.log("Unuploaded slices", notUploadSlice)
 
             for (let i = 0; i < notUploadSlice.length; i++) {
                 const formData = new FormData()
@@ -78,11 +78,11 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, fragment
                 try {
                     const slice = ref(<FileSliceUpload>{
                         index: i,
-                        progress: 0, //上传进度
+                        progress: 0, //Upload progress
                         size: notUploadSlice[i].size
                     })
                     let w = watch(() => { slice.value.progress }, () => {
-                        //计算
+                        //calculate
                         sliceArr.filter((item, index, arr) => {
                             if (item.index === notUploadSlice[i].index) {
                                 sliceArr[index].progress = slice.value.progress
@@ -99,13 +99,13 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, fragment
                     notUploadSlice.reverse()
                 } catch (err) {
                     console.log(err)
-                    //如果失败等待3秒进行重试
+                    //If failed wait 3 seconds to try again
                     setTimeout(() => { uploadCheckFun() }, 3000)
                     break
                 }
             }
             try {
-                //分片全部上传成功进行合并
+                //All shards were successfully uploaded and merged
                 const uploadMergeResponse = await uploadMerge(<UploadMergeReq>{
                     file_name: name,
                     interface: uploadConfig.interface,
@@ -117,7 +117,7 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, fragment
                 })
             } catch (err) {
                 return new Promise((_, reject) => {
-                    reject({ msg: "上传失败" })
+                    reject({ msg: "upload failed" })
                 })
             }
 
@@ -128,7 +128,7 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, fragment
             let loadSize = 0
 
             sliceArr.filter((item) => {
-                //计算每片上传大小
+                //Calculate the upload size of each piece
                 loadSize += (item.sliceSizeInByte * item.progress) / 100
             })
             let progress = Math.round(loadSize / totalSize * 100)

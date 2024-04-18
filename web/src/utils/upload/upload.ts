@@ -3,7 +3,7 @@ import { localUpload } from "./local";
 import { ossUpload } from "./oss";
 export const uploadFile = (config: FileUpload, rawFile: File, fragment?: boolean): Promise<{ path: string }> => {
     let res
-    //默认false
+    //Default false
     if (fragment == undefined) fragment = false
     switch (config.uploadType) {
         case "aliyunOss":

@@ -10,16 +10,16 @@ export const useInitNoticeSocket = () => {
     const userStore = useUserStore()
     let socket: WebSocket
     const open = () => {
-        console.log("通知websocket连接成功 ")
+        console.log("Notify websocket connection is successful ")
     }
     const error = () => {
-        console.error("通知websocket连接失败")
+        console.error("Notify websocket connection failed")
     }
     const getMessage = async (msg: any) => {
         let data = JSON.parse(msg.data)
         switch (data.type) {
             case "error":
-                console.error("通知socket返回错误")
+                console.error("Notification socket returns error")
                 break;
             case "messageNotice":
                 messageNotice(data.data.unread, userStore)
@@ -29,7 +29,7 @@ export const useInitNoticeSocket = () => {
 
     if (typeof (WebSocket) === "undefined") {
         Swal.fire({
-            title: "您的浏览器不支持socket",
+            title: "Your browser does not support socket",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -37,19 +37,19 @@ export const useInitNoticeSocket = () => {
         router.back()
         return
     } else {
-        // 实例化socket
+        //Instantiate socket
         socket = new WebSocket(import.meta.env.VITE_SOCKET_URL + "/ws/noticeSocket?token=" + userStore.userInfoData.token)
-        // 监听socket连接
+        //Listen to socket connection
         socket.onopen = open
-        // 监听socket错误信息
+        //Listen for socket error messages
         socket.onerror = error
-        // 监听socket消息
+        //Listen to socket messages
         socket.onmessage = getMessage
     }
 }
 
 
-//消息处理函数
+//Message processing function
 
 const messageNotice = (num: number, userStore: any) => {
     userStore.setUnreadNotice(num)

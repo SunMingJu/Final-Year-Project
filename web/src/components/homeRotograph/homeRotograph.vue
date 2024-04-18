@@ -9,7 +9,7 @@
                 </div>
             </el-carousel-item>
             <div class="gradient" :style="{ background: `linear-gradient(rgba(0,0,0,0),${color})` }"></div>
-            <!-- 轮播图底部 -->
+            <!--Bottom of the carousel -->
             <div class="carousel-bottom" :style="{ backgroundColor: `${color}` }">
                 <div class="carousel-title">{{ carouselTitle ? carouselTitle : props.rotograph[0]?.title }}</div>
                 <div class="toggle-button">
@@ -43,7 +43,7 @@ const props = defineProps({
 const carouselRef = ref()
 const carouselTitle = ref("")
 const color = ref("")
-//切换轮播图 true 下一张 false 上一张
+//Switch carousel image true next false previous
 const carouselSwitch = (is: boolean) => {
     if (is) {
         carouselRef.value.next()
@@ -54,7 +54,7 @@ const carouselSwitch = (is: boolean) => {
 }
 
 
-//轮播图变化事件
+//Carousel chart change event
 const change = (index: number) => {
     carouselTitle.value = props.rotograph[index].title
     color.value = props.rotograph[index].color

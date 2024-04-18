@@ -2,7 +2,7 @@ export default [{
   path: 'personal',
   name: 'Personal',
   meta: {
-    title: '用户信息',
+    title: 'User Info',
     requireAuth: false,
     keepAlive: false
   },
@@ -12,7 +12,7 @@ export default [{
       path: '',
       name: 'UserShow',
       meta: {
-        title: '首页',
+        title: 'front page',
         requireAuth: false,
         keepAlive: false
       },
@@ -22,7 +22,7 @@ export default [{
       path: 'userinfo',
       name: 'UserInfo',
       meta: {
-        title: '用户信息',
+        title: 'User Info',
         requireAuth: false,
         keepAlive: false
       },
@@ -31,7 +31,7 @@ export default [{
       path: 'picturesetting',
       name: 'PictureSetting',
       meta: {
-        title: '用户信息',
+        title: 'User Info',
         requireAuth: false,
         keepAlive: false
       },
@@ -40,7 +40,7 @@ export default [{
       path: 'safety',
       name: 'Safety',
       meta: {
-        title: '安全',
+        title: 'Safety',
         requireAuth: false,
         keepAlive: false
       },
@@ -49,7 +49,7 @@ export default [{
       path: 'livesetup',
       name: 'LiveSetUp',
       meta: {
-        title: '直播设置',
+        title: 'Live broadcast settings',
         requireAuth: false,
         keepAlive: false
       },
@@ -59,7 +59,7 @@ export default [{
       path: 'favorites',
       name: 'Favorites',
       meta: {
-        title: '我的收藏',
+        title: 'my collection',
         requireAuth: false,
         keepAlive: false
       },
@@ -69,7 +69,7 @@ export default [{
       path: 'collectList/:id',
       name: 'CollectList',
       meta: {
-        title: '收藏夹',
+        title: 'Favorites',
         requireAuth: false,
         keepAlive: false
       },
@@ -78,7 +78,7 @@ export default [{
       path: 'record',
       name: 'Record',
       meta: {
-        title: '历史记录',
+        title: 'history record',
         requireAuth: false,
         keepAlive: false
       },

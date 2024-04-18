@@ -11,7 +11,7 @@
                         <div class="time"><span>{{ dayjs(item.created_at).format('YYYY.MM.DD.hh.mm') }}</span></div>
                     </div>
                     <div class="comment-text">
-                        <div class="comment-content">评论内容 : </div>
+                        <div class="comment-content">comments : </div>
                         <VueEllipsis3 :visibleLine="1" :text="item.comment">
                         </VueEllipsis3>
                     </div>
@@ -30,7 +30,7 @@
 
         <div class="load-more" v-show="commentList.length > 0 && isLoadMore" v-loading="true">
         </div>
-        <!-- 撑开底部 -->
+        <!--Open the bottom -->
         <div class="spread-bottom">
         </div>
     </div>
@@ -58,11 +58,11 @@ const pageInfo = ref(<PageInfo>{
 })
 const scrollHeight = ref(0)
 const scrollRef = ref()
-//是否首次加载
+//Whether it is loaded for the first time
 const isLoading = ref(true)
-//是否正在加载更多
+//Is loading more
 const isLoadMore = ref(false)
-//是否全部加载完成
+//Whether all loading is completed
 const isTheEnd = ref(false)
 
 
@@ -80,7 +80,7 @@ const loadData = async () => {
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "加载数据失败",
+            title: "Failed to load data",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -88,9 +88,9 @@ const loadData = async () => {
     }
 }
 
-//加载底部
+//Load bottom
 const scrollBottom = async () => {
-    // //无数据时取消加载更多
+    // //Cancel loading when no dataMore
     if (isLoading.value == true) return false
     isLoadMore.value = true
     if (commentList.value.length <= 0) return false

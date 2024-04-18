@@ -9,12 +9,12 @@ export const getLiveRoom = () => {
     return httpRequest.post<GetLiveRoomRes>('/live/getLiveRoom');
 }
 
-//获取直播信息
+//Get Live Streaming Information
 export const getLiveRoomInfo = (params: GetLiveRoomInfoReq) => {
     return httpRequest.post<GetLiveRoomInfoRes>('/live/getLiveRoomInfo', params);
 }
 
-//获取正在直播的列表
+//Get a list of what's being streamed
 export const getBeLiveList = () => {
     return httpRequest.post<GetBeLiveListRes>('/live/getBeLiveList');
 }

@@ -3,20 +3,20 @@ package barrage;
 option go_package = "/pb";
 
 
-// 总的消息体
+// total message body
 message Message {
   string msgType  = 1;
   bytes data = 2;
 }
 
-// 接收弹幕消息内容请求
+// Receive barrage message content request
 message WebClientSendBarrageReq {
   string text = 1;
   string  color = 2;
   string type = 3;
 }
 
-// 客户端弹幕消息内容响应
+// Client barrage message content response
 message WebClientSendBarrageRes {
   float msg_id= 1;
   float user_id = 2;
@@ -27,7 +27,7 @@ message WebClientSendBarrageRes {
   string type = 7;
 }
 
-// 客户端弹幕消息内容响应
+// Client barrage message content response
 message WebClientHistoricalBarrageRes {
   repeated WebClientSendBarrageRes  list = 1;
 }
@@ -39,7 +39,7 @@ message EnterLiveRoom {
   string  avatar = 3;
 }
 
-// 客户端在线人数
+// Number of clients online
 message WebClientEnterLiveRoomRes {
   float user_id = 1;
   string username = 2;

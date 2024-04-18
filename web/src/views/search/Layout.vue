@@ -4,7 +4,7 @@
             <topNavigation color="#000" :displaySearch="false"></topNavigation>
         </div>
         <div class="search-box">
-            <el-input v-model="searchText" placeholder="最近新鲜事" size="large" @keyup.enter.native="searchChange">
+            <el-input v-model="searchText" placeholder="latest news" size="large" @keyup.enter.native="searchChange">
                 <template #suffix>
                     <el-icon @click="search">
                         <Search />
@@ -14,8 +14,8 @@
         </div>
         <div class="menu">
             <el-menu :default-active="menuIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-                <el-menu-item index="VideoSearch">视频</el-menu-item>
-                <el-menu-item index="UserSearch">用户</el-menu-item>
+                <el-menu-item index="VideoSearch">video</el-menu-item>
+                <el-menu-item index="UserSearch">user</el-menu-item>
             </el-menu>
         </div>
         <div class="content">
@@ -66,7 +66,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
 
 watch(() => route.path, async () => {
     searchText.value = route.params.text as string
-    //光标切换
+    //Cursor switching
     if (route.path.split("/")[route.path.split("/").length - 1] == "video") {
         menuIndex.value = "VideoSearch"
     } else if (route.path.split("/")[route.path.split("/").length - 1] == "user") {

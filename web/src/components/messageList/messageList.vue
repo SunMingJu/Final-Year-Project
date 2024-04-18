@@ -2,7 +2,7 @@
     <div class="message-box" v-click-outside="clickOutside">
         <div class="box-left">
             <div class="title">
-                私信列表
+                Private message list
             </div>
             <div class="message-list">
                 <div class="message-item" v-for="item in messageList" :key="item.to_id" @click="toChat(item.to_id)">
@@ -31,7 +31,7 @@
                 <div class="title-left">{{ chatListStore.tUsername }}</div>
                 <div class="title-right">
                     <el-button class="exit" type="primary" size="small" round
-                        @click="chatListStore.tid = 0">退出会话</el-button>
+                        @click="chatListStore.tid = 0">Exit session</el-button>
                     <el-popover :width="100" :teleported="false"
                         popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 8px;">
                         <template #reference>
@@ -41,7 +41,7 @@
                         </template>
                         <template #default>
                             <div class="more-box">
-                                <div class="more-item" @click="deleteChat">删除聊天</div>
+                                <div class="more-item" @click="deleteChat">delete chat</div>
                             </div>
                         </template>
                     </el-popover>
@@ -55,7 +55,7 @@
             <ChatBox :tid="chatListStore.tid" :msg-list="tMessageList"></ChatBox>
         </div>
         <div class="empty" v-if="!chatListStore.tid">
-            <el-empty image="/src/components/messageList/static/img/unselectedMsg.png" description="快选择一位好友聊天叭~" />
+            <el-empty image="/src/components/messageList/static/img/unselectedMsg.png" description="Quickly choose a friend to chat~" />
         </div>
     </div>
 </template>

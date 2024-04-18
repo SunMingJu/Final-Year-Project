@@ -22,7 +22,7 @@ export  interface GetVideoManagementListItem {
 	comments_number :number
 	created_at : string
 
-	is_delete : boolean //用于伪删除
+	is_delete : boolean //for pseudo deletion
 }
 
 export type GetVideoManagementListRes = Array<GetVideoManagementListItem>

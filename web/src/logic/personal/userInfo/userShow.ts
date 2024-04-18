@@ -29,7 +29,7 @@ export const useInit = async (id : number ,releaseInformation: Ref<GetReleaseInf
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "获取视频专栏信息失败",
+            title: "Failed to obtain video column information",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",

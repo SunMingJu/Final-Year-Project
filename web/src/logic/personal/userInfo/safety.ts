@@ -20,7 +20,7 @@ export const useSafetyProp = () => {
     });
 
     const sendVerificationCodeInfo = reactive<sendEmailInfo>({
-        btnText: "发送",
+        btnText: "send",
         isPleaseClick: true
     })
 
@@ -45,7 +45,7 @@ export const useSafetyMethod = (form: changePasswordReq) => {
             loading.loading = false
 
             Swal.fire({
-                title: "验证码已发送！",
+                title: "Verification code has been sent!",
                 heightAuto: false,
                 icon: "success",
                 confirmButtonColor: globalScss.colorButtonTheme,
@@ -53,7 +53,7 @@ export const useSafetyMethod = (form: changePasswordReq) => {
             sendVerificationCodeInfo.btnText = "60"
             const interval = setInterval(() => {
                 if (Number(sendVerificationCodeInfo.btnText) <= 0) {
-                    sendVerificationCodeInfo.btnText = "发送"
+                    sendVerificationCodeInfo.btnText = "send"
                     sendVerificationCodeInfo.isPleaseClick = true
                     clearInterval(interval)
                 } else {
@@ -73,7 +73,7 @@ export const useSafetyMethod = (form: changePasswordReq) => {
             loading.loading = true
             let res = await changePassword(form)
             Swal.fire({
-                title: "修改成功",
+                title: "Successfully modified",
                 heightAuto: false,
                 icon: "success",
                 confirmButtonColor: globalScss.colorButtonTheme,
@@ -103,7 +103,7 @@ export const useSafetyMethod = (form: changePasswordReq) => {
 }
 
 
-//表单验证
+//form validation
 export const useRules = () => {
     const changePasswor = reactive({
         verificationCode: [{ validator: validateVarCode, trigger: 'change' }],

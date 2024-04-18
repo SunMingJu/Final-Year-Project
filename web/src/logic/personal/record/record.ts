@@ -16,11 +16,11 @@ export const useRecordProp = () => {
             page: 1,
             size: 8,
     })
-    //是否首次加载
+    //Whether it is loaded for the first time
     const isLoading = ref(true)
-    //是否正在加载更多
+    //Is loading more
     const isLoadMore = ref(false)
-    //是否全部加载完成
+    //Whether all loading is completed
     const isTheEnd = ref(false)
     return {
         recordList,
@@ -35,9 +35,9 @@ export const useRecordProp = () => {
 }
 
 export const useJump = (item: GetRecordListItem, router: Router) => {
-    if (item.type == "视频") {
+    if (item.type == "video") {
         router.push({ name: "VideoShow", query: { videoID: item.to_id } })
-    } else if (item.type == "专栏") {
+    } else if (item.type == "Column") {
         router.push({ name: "ArticleShow", query: { articleID: item.to_id } })
     } else {
         router.push({ name: "liveRoom", query: { roomID: item.to_id } })
@@ -64,7 +64,7 @@ export const useDelRecord = async (recordList: Ref<GetRecordListRes>, id: number
     } catch (err) {
         loading.loading = false
         Swal.fire({
-            title: "删除失败",
+            title: "failed to delete",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -92,7 +92,7 @@ export const useLoadData = async (recordList: Ref<GetRecordListRes>, isLoading: 
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "获取历史记录失败",
+            title: "Failed to get history",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",

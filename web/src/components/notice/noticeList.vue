@@ -1,7 +1,7 @@
 <template>
   <div class="notice-box">
     <div class="title">
-      <div class="text">消息通知</div>
+      <div class="text">notification</div>
       <div class="select">
         <el-dropdown :hide-on-click="false" :teleported="false">
           <span class="ropdown-link">
@@ -9,9 +9,9 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="switchMessageType('all')">全部消息</el-dropdown-item>
-              <el-dropdown-item @click="switchMessageType('comment')">评论消息</el-dropdown-item>
-              <el-dropdown-item @click="switchMessageType('like')">点赞消息</el-dropdown-item>
+              <el-dropdown-item @click="switchMessageType('all')">All news</el-dropdown-item>
+              <el-dropdown-item @click="switchMessageType('comment')">Comment message</el-dropdown-item>
+              <el-dropdown-item @click="switchMessageType('like')">Like the message</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -50,7 +50,7 @@
       </div>
 
       <div class="record-empty" v-show="noticeList.length == 0 && isLoading == false">
-        <el-empty description="还没有通知~" />
+        <el-empty description="No notification yet~" />
       </div>
     </div>
   </div>
@@ -73,22 +73,22 @@ components: {
 const userStore = useUserStore()
 const router = useRouter()
 const messageType = ref("")
-const messageTypeText = ref("全部消息")
+const messageTypeText = ref("All news")
 const noticeList = ref(<GetNoticeListRes>[])
 
 const pageInfo = ref(<PageInfo>{
   page: 1,
   size: 9,
 })
-//是否首次加载
+//Whether to load for the first time
 const isLoading = ref(true)
-//是否正在加载更多
+//Is loading more
 const isLoadMore = ref(false)
-//是否全部加载完成
+//Whether all loading is completed
 const isTheEnd = ref(false)
 
 
-//加载底部
+//Load bottom
 const scrollBottom = async () => {
   if (isTheEnd.value) return
   if (isLoadMore.value) return
@@ -110,13 +110,13 @@ const loadData = async () => {
     response.data = response.data.filter((item) => {
       switch (item.type) {
         case "videoComment":
-          // item.type_rompt = "评论了你的视频"
+          //item.type_rompt = "Commented on your video"
           break
         case "videoLike":
           item.type_rompt = ""
           break
         case "articleComment":
-          // item.type_rompt = "评论了你的专栏"
+          //item.type_rompt = "Commented on your column"
           break
         case "articleLike":
           item.type_rompt = ""
@@ -128,7 +128,7 @@ const loadData = async () => {
     noticeList.value = [...noticeList.value, ...response.data]
     pageInfo.value.page++
 
-    //清除消息提示
+    //Clear message prompt
     userStore.setUnreadNotice(0)
 
   } catch (err) {
@@ -139,11 +139,11 @@ const loadData = async () => {
 
 const switchMessageType = (type: string) => {
   if (type == "comment") {
-    messageTypeText.value = "评论消息"
+    messageTypeText.value = "Comment message"
   } else if (type == "like") {
-    messageTypeText.value = "点赞消息"
+    messageTypeText.value = "Like the message"
   } else {
-    messageTypeText.value = "全部消息"
+    messageTypeText.value = "All news"
   }
   messageType.value = type
   end()

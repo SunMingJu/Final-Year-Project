@@ -1,8 +1,8 @@
 <template>
     <div class="left-box" width="200px">
         <el-tabs v-model="activeName" stretch class="demo-tabs" @tab-click="handleClick">
-            <!-- 弹幕留言 -->
-            <el-tab-pane label="弹幕留言" name="first">
+            <!-- Barrage message -->
+            <el-tab-pane label="Barrage message" name="first">
                 <div class="barrage" @scroll="onScroll" ref="barrageMsgListRef">
                     <div>
                         <div class="barrage-msg-list">
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="barrage-prompt" v-show="prompt.show" @click="theBottom">
-                    <div class="prompt"> 新弹幕来辽 {{prompt.num}} <SvgIcon name="drop-down" class="icon"></SvgIcon></div>
+                    <div class="prompt"> New barrage coming {{prompt.num}} <SvgIcon name="drop-down" class="icon"></SvgIcon></div>
                     </div>
                     <div class="barrage-send">
                         <el-input v-model="barrage" resize="none" />
@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <!-- 在线人数 -->
+            <!--Number of people online -->
             <el-tab-pane label="在线用户" name="second">
                 <div class="online">
                     <div class="online-list">
@@ -136,12 +136,12 @@ const onScroll = () => {
 defineExpose({
     addBarrage(msg: WebClientSendBarrageRes) {
         if (barrageMsgListPositioning.windowHeight + barrageMsgListPositioning.scrollTop < barrageMsgListPositioning.scrollHeight) {
-            //未在顶部
+            //not at the top
             dataList.baeeage = [...dataList.baeeage, msg];
             prompt.show = true
             prompt.num++
         } else {
-            //在底部的话显示下一行
+            //If it is at the bottom, display the next line
             dataList.baeeage = [...dataList.baeeage, msg];
             setTimeout(()=>{
                 barrageMsgListRef.value.scrollTop = barrageMsgListRef.value.scrollHeight;

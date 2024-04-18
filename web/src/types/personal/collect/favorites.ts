@@ -38,8 +38,8 @@ export interface GetFavoritesListByFavoriteVideoItem {
     userInfo : UserInfo
     present :number
     max :number
-    selected : boolean //是否已经收藏
-    choose : boolean | undefined //用于收藏视频时选择器
+    selected : boolean //Whether it has been collected
+    choose: boolean | undefined //Selector for favorite videos
 }
 
 

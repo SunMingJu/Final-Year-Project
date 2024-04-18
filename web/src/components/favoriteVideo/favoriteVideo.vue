@@ -9,14 +9,14 @@
             </div>
         </div>
         <div class="create">
-            <el-input v-model="createInput" placeholder="创建收藏夹" :prefix-icon="Plus">
+            <el-input v-model="createInput" placeholder="Create favorites" :prefix-icon="Plus">
                 <template #append>
-                    <el-button type="primary" round @click="createFavorite()">创建</el-button>
+                    <el-button type="primary" round @click="createFavorite()">create</el-button>
                 </template>
             </el-input>
         </div>
         <div class="function">
-            <el-button type="primary" v-removeFocus round @click="confirmedCollection">确认收藏</el-button>
+            <el-button type="primary" v-removeFocus round @click="confirmedCollection">Confirm collection</el-button>
         </div>
     </div>
 </template>
@@ -47,7 +47,7 @@ const isChoneIds = ref(<Array<number>>[])
 
 const loadData = async (favoritesList: Ref<GetFavoritesListRes>, isLoading: Ref<boolean>) => {
     try {
-        //获取收藏夹列表 
+        //Get list of favorites 
         isLoading.value = true
         const response = await getFavoritesListByFavoriteVideo(<GetFavoritesListByFavoriteVideoReq>{
             video_id: props.id
@@ -69,7 +69,7 @@ const loadData = async (favoritesList: Ref<GetFavoritesListRes>, isLoading: Ref<
     }
 }
 
-//创建收藏夹
+//Create favorites
 const createFavorite = async () => {
     try {
         await createFavorites(<createFavoritesReq>{
@@ -79,7 +79,7 @@ const createFavorite = async () => {
         createInput.value = ""
     } catch (err: any) {
         Swal.fire({
-            title: "创建失败",
+            title: "Creation failed",
             confirmButtonColor: globalScss.colorButtonTheme,
             heightAuto: false,
             icon: "error",
@@ -87,16 +87,16 @@ const createFavorite = async () => {
     }
 }
 
-//确认收藏
+//Confirm collection
 const confirmedCollection = async () => {
     try {
-        //得到确认收藏的收藏夹
+        //Get confirmed favorites
         let ids: Array<number> = []
         favoritesList.value.filter((item) => {
             if (item.choose) ids.push(item.id);
         })
         if (JSON.stringify(isChoneIds.value) === JSON.stringify(ids)) {
-            throw new Error("未选择收藏夹");
+            throw new Error("No favorites selected");
         }
         console.log(ids)
         await favoriteVideo(<FavoriteVideoReq>{
@@ -106,7 +106,7 @@ const confirmedCollection = async () => {
         emits("success")
         emits("shutDown")
         Swal.fire({
-            title: "收藏成功",
+            title: "Collection successful",
             confirmButtonColor: globalScss.colorButtonTheme,
             heightAuto: false,
             icon: "success",

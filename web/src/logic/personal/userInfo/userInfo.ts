@@ -42,7 +42,7 @@ export const useUserInfoMethod = (form: UserInfoRes) => {
         try {
             let data = await setUserInfoRequist(form)
             Swal.fire({
-                title: "修改成功",
+                title: "Successfully modified",
                 heightAuto: false,
                 icon: "success",
                 confirmButtonColor: globalScss.colorButtonTheme,
@@ -61,7 +61,7 @@ export const useUserInfoMethod = (form: UserInfoRes) => {
 }
 
 
-//表单验证
+//form validation
 export const useRules = () => {
     const userInfoRules = reactive({
         username: [{ validator: validateRepeatName, trigger: 'change' }],

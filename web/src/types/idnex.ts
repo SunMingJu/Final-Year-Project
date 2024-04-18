@@ -3,7 +3,7 @@ export interface Result {
   code: number;
   msg: string
 }
-// 请求响应参数，包含data
+// Request response parameters, including data
 export interface ResultData<T = any> extends Result {
   data?: T;
 }
@@ -12,13 +12,13 @@ export interface ResultWs {
   type: string;
   message: string;
 }
-// 请求响应参数，包含data
+// Request response parameters, including data
 export interface ResultDataWs<T = any> extends ResultWs {
   data?: T;
 }
 
 
-// oss配置
+// Oss configuration
 export interface OssConfig {
   access_id: string;
   host: string;
@@ -38,27 +38,27 @@ export interface OssSTSInfo {
 }
 
 
-// 文件上传配置必须
+// File upload configuration is required
 export interface FileUpload {
-  progress: number; //上传进度
-  FileUrl: string; //返回文件路径
-  interface: string; //上传接口名
-  uploadUrl: string; //上传路径 
-  uploadType: string; //上传类型
-  action: string; //请求地址
+  progress: number; //Upload progress
+  FileUrl: string; //return file path
+  interface: string; //Upload interface name
+  uploadUrl: string; //Upload path
+  uploadType: string; //Upload type
+  action: string; //Request address
 }
 
 
-// 文件上传配置必须
+//File upload configuration is required
 export interface FileSliceUpload {
   index: number;
-  progress: number; //上传进度
+  progress: number; //Upload progress
   size: number;
 }
 
-//分页配置
+//Paging configuration
 export interface PageInfo {
-  page: number;   // 页码
-  size: number; // 每页大小
-  keyword?: string; //关键字
+  page: number; //page number
+  size: number; //size of each page
+  keyword?: string; //keyword
 }

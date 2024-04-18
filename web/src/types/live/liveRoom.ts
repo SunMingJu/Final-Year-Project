@@ -2,7 +2,7 @@ import DPlayer from "dplayer"
 
 
 export interface LiveRoomProp {
-    dp?: DPlayer   //未初始化时的定义
+    dp?: DPlayer   //Definition when not initialized
 }
 
 export interface GetArticleContributionListByUserResItem {

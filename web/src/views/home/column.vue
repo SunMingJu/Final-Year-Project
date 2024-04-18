@@ -3,10 +3,10 @@
         <div class="head">
             <topNavigation color="#fff" scroll :displaySearch="false"></topNavigation>
         </div>
-        <!-- 封面图 -->
+        <!--Cover image -->
         <div class="cover-picture">
             <div class="centre-box">
-                <div>你看对面的青山多漂亮</div>
+                <div>Look how beautiful the green hills opposite are</div>
                 <div class="type-box">{{ obj.output }}<span class="cursor">|</span></div>
             </div>
             <div class="bannerWave1"></div>
@@ -41,7 +41,7 @@ components: {
     Column
     SideCard
 }
-// 实例化
+// Instantiate
 const obj = reactive({
     output: '',
     isEnd: false,
@@ -55,7 +55,7 @@ const obj = reactive({
 
 
 const fetchData = () => {
-    // 一言Api进行打字机循环输出效果
+    // Yiyan API performs typewriter loop output effect
     fetch('https://v1.hitokoto.cn')
         .then(res => {
             return res.json()
@@ -70,7 +70,7 @@ const fetchData = () => {
 
 
 const initTyped = (input: string) => {
-    // @ts-ignore 不需要后面两个参数
+    // @ts-ignore The last two parameters are not required
     const typed = new EasyTyper(obj, input, () => {
         setTimeout(() => {
             fetchData()

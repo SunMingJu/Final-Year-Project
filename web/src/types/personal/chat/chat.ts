@@ -32,7 +32,7 @@ export interface DeleteChatItemReq {
 
 export interface GetChatHistoryMsgReq {
     tid: number;
-    last_time: number; //最后时间
+    last_time: number; //last minute
 }
 
 export type GetChatHistoryMsgRes = Array<MessageInfo>

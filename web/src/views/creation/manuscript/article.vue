@@ -1,6 +1,6 @@
 <template>
     <div class="overall">
-        <pageHeader title="专栏稿件" icon-nmae="column" :animate="false" :whiteWhale="false"></pageHeader>
+        <pageHeader title="Column manuscript" icon-nmae="column" :animate="false" :whiteWhale="false"></pageHeader>
         <div class="content" v-loading="isLoading" :infinite-scroll-disabled="isTheEnd">
             <div class="article-list" v-show="articleList.length > 0" v-infinite-scroll="scrollBottom"
                 infinite-scroll-delay="1000" :infinite-scroll-disabled="isTheEnd">
@@ -18,7 +18,7 @@
                                 </div>
                                 <div class="item-info">
                                     <div class="icon-item">
-                                        阅读数量 : {{ item.heat }}
+                                        Number of reads : {{ item.heat }}
                                     </div>
                                 </div>
                             </div>
@@ -31,11 +31,11 @@
                 </div>
             </div>
             <div class="record-empty" v-show="articleList.length == 0 && isLoading == false">
-                <el-empty description="还未发布专栏,快去发布吧~" />
+                <el-empty description="The column has not been published yet, please publish it soon~" />
             </div>
             <div class="load-more" v-show="articleList.length > 0 && isLoadMore" v-loading="true">
             </div>
-            <!-- 撑开底部 -->
+            <!--Open the bottom -->
             <div class="spread-bottom">
             </div>
         </div>
@@ -69,9 +69,9 @@ const editRecord = (item: GetArticleManagementListItem) => {
     useEditRecord(item, loading, editArticleStore, router)
 }
 
-//加载底部
+//load bottom
 const scrollBottom = async () => {
-    //无数据时取消加载更多
+    //Cancel loading more when there is no data
     isLoadMore.value = true
     if (articleList.value.length <= 0) return false
     useLoadData(articleList, isLoading, pageInfo, isTheEnd)

@@ -2,7 +2,7 @@ export default [{
     path: "/search/:text",
     name: "Search",
     meta: {
-        title: '搜索',
+        title: 'search',
         requireAuth: false,
         keepAlive: false
     },
@@ -12,7 +12,7 @@ export default [{
             path: 'video',
             name: 'VideoSearch',
             meta: {
-                title: '视频搜索',
+                title: 'Video search',
                 requireAuth: false,
                 keepAlive: false
             },
@@ -22,7 +22,7 @@ export default [{
             path: 'user',
             name: 'UserSearch',
             meta: {
-                title: '用户搜索',
+                title: 'User search',
                 requireAuth: false,
                 keepAlive: false
             },

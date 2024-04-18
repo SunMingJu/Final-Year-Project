@@ -2,7 +2,7 @@
     <div class="column">
         <div class="column-list">
 
-        <!-- 骨架屏 -->
+        <!--Skeleton screen -->
         <el-skeleton style="width: 100%; height: 18rem; margin-bottom: 8rem; " class="video-card"  v-for="(item,index) in list?.length ? list : quickCreationArr(6) "
                 :key="item.id" :loading="!list?.length"
           animated>
@@ -16,7 +16,7 @@
             </div>
           </template>
           <template #default>
-           <!-- 单个卡片 -->
+           <!--Single card -->
             <div :class="{ mouseover: item.is_stay, mouseleave: !item.is_stay }" class="column-item shadow-box "
                 @mouseover="mouseOver(item)" @mouseleave="mouseleave(item)" @click="jumpArticle(item.id)">
                 <div :class="{ 'item-image': true, 'right': index % 2 == 1 }">
@@ -24,22 +24,22 @@
                 </div>
                 <div class="item-text">
                     <div class="post-meta">
-                        <SvgIcon name="camera" class="icon-small"></SvgIcon> " 发布于
+                        <SvgIcon name="camera" class="icon-small"></SvgIcon> " posted on
                         {{ dayjs(item.created_at).format('YYYY.MM.DD.hh.mm') }} "
                     </div>
                     <h3>{{ item.title }}</h3>
                     <div class="post-meta" style="margin-bottom: 15px;">
                         <SvgIcon name="hot" class="icon-small"></SvgIcon>
                         <span>
-                            {{ item.heat }} 热度
+                            {{ item.heat }} heat
                         </span>
                         <SvgIcon name="comments" class="icon-small"></SvgIcon>
                         <span>
-                            {{ item.comments_number }} 条评论
+                            {{ item.comments_number }} comments
                         </span>
                         <SvgIcon name="like" class="icon-small"></SvgIcon>
                         <span>
-                            {{ item.likes_number }}点赞
+                            {{ item.likes_number }}like
                         </span>
                     </div>
                     <div class="recent-post-desc">

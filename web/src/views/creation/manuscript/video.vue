@@ -1,6 +1,6 @@
 <template>
     <div class="overall">
-        <pageHeader title="视频稿件" icon-nmae="video" :animate="false" :whiteWhale="false"></pageHeader>
+        <pageHeader title="Video manuscript" icon-nmae="video" :animate="false" :whiteWhale="false"></pageHeader>
         <div class="content" v-loading="isLoading">
             <div class="video-list" v-show="videoList.length > 0" v-infinite-scroll="scrollBottom"
                 infinite-scroll-delay="1000">
@@ -40,11 +40,11 @@
                 </div>
             </div>
             <div class="record-empty" v-show="videoList.length == 0 && isLoading == false">
-                <el-empty description="还未发布视频,快去发布吧~" />
+                <el-empty description="The video has not been released yet, please post it soon~" />
             </div>
             <div class="load-more" v-show="videoList.length > 0 && isLoadMore" v-loading="true">
             </div>
-            <!-- 撑开底部 -->
+            <!--Open the bottom -->
             <div class="spread-bottom">
             </div>
         </div>
@@ -77,9 +77,9 @@ const editRecord = (item: GetVideoManagementListItem) =>{
     useEditRecord(item, loading,editVideoStore,router)
 }
 
-//加载底部
+//load bottom
 const scrollBottom = async () => {
-    //无数据时取消加载更多
+    //Cancel loading more when there is no data
     if (isTheEnd.value) return false
     isLoadMore.value = true
     if (videoList.value.length <= 0) return false

@@ -18,9 +18,9 @@ import { Router, useRouter } from 'vue-router';
 export const useArticleContributionProp = () => {
     const editArticleStore = useEditArticleStore()
     const router = useRouter()
-    //富文本组件ref
+    //Rich text component ref
     const myQuillEditor = ref()
-    //内容
+    //content
     const form = reactive(<ArticleContribution>{
         id: 0,
         isShow: true,
@@ -36,7 +36,7 @@ export const useArticleContributionProp = () => {
     })
 
     const labelInputRef = ref<InstanceType<typeof ElInput>>()
-    //配置
+    //Configuration
     const options = reactive(<QuillOptionsStatic>{
         modules: {
             toolbar: {
@@ -54,8 +54,8 @@ export const useArticleContributionProp = () => {
                     image: function (value: any) {
                         console.log("value", value)
                         if (value) {
-                            // 触发自定义的上传
-                            console.log("触发自定义的上传")
+                            // Trigger a custom upload
+                            console.log("Trigger a custom upload")
                             console.log(uploadBtnRef.value.$el.click())
                         } else {
                             myQuillEditor.value.format("image", false);
@@ -76,12 +76,12 @@ export const useArticleContributionProp = () => {
             },
         },
     });
-    //上传组件ref
+    //Upload component ref
     const uploadRef = ref()
     const uploadBtnRef = ref()
     const ruleFormRef = ref<FormInstance>()
     const uploadProgressRef = ref<HTMLElement | null>()
-    //富文本图片上传
+    //Rich text image upload
     const uploadFileformation = reactive(<uploadFileformation>{
         progress: 0,
         FileUrl: '',
@@ -90,7 +90,7 @@ export const useArticleContributionProp = () => {
         uploadType: "",
         action: "#",
     })
-    //文章封面上传
+    //Article cover upload
     const uploadCoveration = reactive(<uploadFileformation>{
         progress: 0,
         FileUrl: '',
@@ -129,7 +129,7 @@ export const useArticleContributionProp = () => {
     }
 }
 
-//上传文件处理
+//Upload file processing
 export const useHandleFileMethod = (uploadFileformation: uploadFileformation, form: ArticleContribution, myQuillEditor: Ref, uploadProgressRef: Ref) => {
 
     const handleFileSuccess: UploadProps['onSuccess'] = async (
@@ -137,15 +137,15 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
         uploadFile
     ) => {
         uploadFileformation.FileUrl = URL.createObjectURL(uploadFile.raw!)
-        //拼接完整路径
+        //Splice full path
         const path = await getFullPathOfImage({ path: uploadFileformation.uploadUrl, type: uploadFileformation.uploadType })
-        // 获取富文本实例
+        // Get rich text instance
         let quill = toRaw(myQuillEditor.value).getQuill()
-        // 获取光标位置
+        // Get cursor position
         let length = quill.selection.savedRange.index;
-        // 插入图片 
+        // Insert picture 
         quill.insertEmbed(length, "image", path.data);
-        // 调整光标到最后 
+        // Adjust the cursor to the end 
         quill.setSelection(length + 1);
 
         Swal.close()
@@ -154,9 +154,9 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
     const handleFileError: UploadProps['onError'] = (
         response,
     ) => {
-        console.log("上传失败")
+        console.log("upload failed")
         Swal.fire({
-            title: "上传失败",
+            title: "upload failed",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -166,18 +166,18 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
 
     }
 
-    //上传前处理
+    //Processing before uploading
     const beforeFileUpload: UploadProps['beforeUpload'] = async (rawFile: UploadRawFile) => {
         return true
     }
 
-    //修改默认请求
+    //Modify default request
     const RedefineUploadFile = async (params: UploadRequestOptions) => {
         try {
             console.log(uploadProgressRef.value.$el)
             uploadProgressRef.value.$el.style.display = "";
             Swal.fire({
-                title: '文件上传中...',
+                title: 'File uploading...',
                 html: uploadProgressRef.value.$el,
                 showClass: {
                     popup: 'animate__animated animate__fadeInDown'
@@ -190,13 +190,13 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
             })
             const response = await uploadFile(uploadFileformation, params.file)
 
-            console.log("上传成功")
+            console.log("Upload successful")
             console.log(response)
             uploadFileformation.uploadUrl = response.path
         } catch (err) {
             console.log(err)
             Swal.fire({
-                title: "获取上传节点失败",
+                title: "Failed to obtain upload node",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -212,7 +212,7 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
     }
 
 }
-//上传封面处理
+//Upload cover processing
 export const useHandleCoverMethod = (uploadCoveration: uploadFileformation) => {
 
     const handleFileSuccess: UploadProps['onSuccess'] = (
@@ -225,9 +225,9 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation) => {
     const handleFileError: UploadProps['onError'] = (
         response,
     ) => {
-        console.log("上传失败")
+        console.log("upload failed")
         Swal.fire({
-            title: "上传失败",
+            title: "upload failed",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -237,24 +237,24 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation) => {
 
     }
 
-    //上传前处理
+    //Processing before uploading
     const beforeFileUpload: UploadProps['beforeUpload'] = async (rawFile: UploadRawFile) => {
         return await new Promise<boolean>((resolve, reject) => {
-            //判断大小
+            //Determine size
             if (rawFile.size / 1024 / 1024 > 2) {
                 Swal.fire({
-                    title: "封面大小不能大于2M",
+                    title: "Cover size cannot be larger than 2 m",
                     heightAuto: false,
                     icon: "error",
 
                 })
                 reject(false);
             }
-            //判断尺寸
+            //Determine size
             let reader = new FileReader();
             reader.readAsDataURL(rawFile);
             reader.onload = () => {
-                // 让页面中的img标签的src指向读取的路径
+                // Let the src of the img tag in the page point to the read path
                 let img = new Image();
                 img.src = reader.result as string;
                 img.onload = () => {
@@ -262,7 +262,7 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation) => {
                     console.log(img.height);
                     if (img.width < 960 || img.height < 600) {
                         Swal.fire({
-                            title: "请上传 960*600 尺寸以上图片",
+                            title: "Please upload images above 960*600 size",
                             heightAuto: false,
                             confirmButtonColor: globalScss.colorButtonTheme,
                             icon: "error",
@@ -276,7 +276,7 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation) => {
         })
     }
 
-    //修改默认请求
+    //Modify default request
     const RedefineUploadFile = async (params: UploadRequestOptions) => {
         try {
             const response = await uploadFile(uploadCoveration, params.file)
@@ -285,7 +285,7 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation) => {
         } catch (err) {
             console.log(err)
             Swal.fire({
-                title: "获取上传节点失败",
+                title: "Failed to obtain upload node",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -302,7 +302,7 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation) => {
 
 }
 
-//标签处理
+//Tag handling
 export const userLabelHandlMethod = (form: ArticleContribution, labelInputRef: Ref) => {
     const handleClose = (tag: string) => {
         form.label.splice(form.label.indexOf(tag), 1)
@@ -337,7 +337,7 @@ export const useSaveData = async (form: ArticleContribution, formEl: FormInstanc
             try {
                 if (!uploadCoveration.uploadUrl) {
                     Swal.fire({
-                        title: "请先上传封面",
+                        title: "Please upload the cover first",
                         confirmButtonColor: globalScss.colorButtonTheme,
                         heightAuto: false,
                         icon: "warning",
@@ -347,7 +347,7 @@ export const useSaveData = async (form: ArticleContribution, formEl: FormInstanc
                 console.log(form.classification_id, form.classification_id == 0)
                 if (form.classification_id === 0) {
                     Swal.fire({
-                        title: "请选择分类",
+                        title: "please select a type",
                         confirmButtonColor: globalScss.colorButtonTheme,
                         heightAuto: false,
                         icon: "warning",
@@ -360,7 +360,7 @@ export const useSaveData = async (form: ArticleContribution, formEl: FormInstanc
                     form.date1time = timetoRFC3339(new Date(form.date1time))
                 }
                 if (props.type == "edit") {
-                    //更新模式
+                    //update mode
                     let updateRequistData = <UpdateArticleContributionReq>{
                         id: form.id,
                         cover: uploadCoveration.uploadUrl,
@@ -389,7 +389,7 @@ export const useSaveData = async (form: ArticleContribution, formEl: FormInstanc
                     }
                     await createArticleContribution(createRequistData)
                 }
-                let swalTitle = props.type == "edit" ? "更新成功" : "发布成功"
+                let swalTitle = props.type == "edit" ? "update completed" : "Posted successfully"
                 Swal.fire({
                     title: swalTitle,
                     confirmButtonColor: globalScss.colorButtonTheme,
@@ -420,7 +420,7 @@ export const useSaveData = async (form: ArticleContribution, formEl: FormInstanc
 
 export const useInit = async (uploadFileformation: uploadFileformation, uploadCoveration: uploadFileformation, cascader: Ref<GetArticleClassificationListRes>, form: UnwrapNestedRefs<ArticleContribution>, editArticleStore: any, props: any, myQuillEditor: Ref<any>, cascaderValue: Ref<Array<number>>) => {
     try {
-        //获取当前接口的请求方法
+        //Get the request method of the current interface
         const updataMenhod = (await getuploadingMethod(<GetUploadingMethodReq>{
             method: uploadFileformation.interface
         })).data as GetUploadingMethodRes
@@ -429,11 +429,11 @@ export const useInit = async (uploadFileformation: uploadFileformation, uploadCo
             method: uploadCoveration.interface
         })).data as GetUploadingMethodRes
         uploadCoveration.uploadType = updataMenhod.type
-        //获取文章分类
+        //Get article classification
         const cn = await getArticleClassificationList()
         if (cn.data?.length == 0) {
             Swal.fire({
-                title: "获取文章分类为空",
+                title: "Get the article category is empty",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -443,7 +443,7 @@ export const useInit = async (uploadFileformation: uploadFileformation, uploadCo
         cascader.value = cn.data as GetArticleClassificationListRes
 
         if (props.type == "edit") {
-            //编辑模式
+            //edit mode
             form.id = editArticleStore.editArticleData.articleID
             form.title = editArticleStore.editArticleData.title
             myQuillEditor.value.setContents(editArticleStore.editArticleData.content)
@@ -453,7 +453,7 @@ export const useInit = async (uploadFileformation: uploadFileformation, uploadCo
             uploadCoveration.uploadType = editArticleStore.editArticleData.cover_upload_type
             uploadCoveration.uploadUrl = editArticleStore.editArticleData.cover_url
             uploadCoveration.FileUrl = editArticleStore.editArticleData.cover
-            //将多维数组转化为一维数组
+            //Convert multidimensional array to one-dimensional array
             let oneDimensionalArr: Array<GetArticleClassificationListResItem> = []
             classificationSuperior(oneDimensional(cascader.value, oneDimensionalArr), cascaderValue.value, form.classification_id)
         }
@@ -461,7 +461,7 @@ export const useInit = async (uploadFileformation: uploadFileformation, uploadCo
     } catch (err) {
         console.log(err)
         Swal.fire({
-            title: "获取上传方法失败",
+            title: "Failed to get upload method",
             heightAuto: false,
             confirmButtonColor: globalScss.colorButtonTheme,
             icon: "error",
@@ -470,7 +470,7 @@ export const useInit = async (uploadFileformation: uploadFileformation, uploadCo
 }
 
 
-//表单验证
+//form validation
 export const useRules = () => {
     const articleContributionRules = reactive({
         title: [{ validator: validateArticleTitle, trigger: 'change' }],
@@ -482,7 +482,7 @@ export const useRules = () => {
 
 
 
-//寻分类发的上级节点
+//Find the superior node for distribution
 function classificationSuperior(data: GetArticleClassificationListRes, arr: Array<number>, aid: number) {
     if (aid == 0) return arr
     let node = data.filter((item) => {
