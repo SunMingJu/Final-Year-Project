@@ -1,6 +1,6 @@
 package discuss
 
-import "easy-video-net/models/common"
+import "simple-video-net/models/common"
 
 type GetDiscussVideoListReceiveStruct struct {
 	PageInfo common.PageInfo `json:"page_info"`

@@ -1,15 +1,15 @@
 package live
 
 import (
-	"easy-video-net/global"
-	receive "easy-video-net/interaction/receive/live"
-	response "easy-video-net/interaction/response/live"
-	"easy-video-net/models/users"
-	"easy-video-net/models/users/record"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"simple-video-net/global"
+	receive "simple-video-net/interaction/receive/live"
+	response "simple-video-net/interaction/response/live"
+	"simple-video-net/models/users"
+	"simple-video-net/models/users/record"
 	"strconv"
 	"strings"
 )

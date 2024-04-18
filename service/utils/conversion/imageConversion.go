@@ -1,13 +1,13 @@
 package conversion
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
 	"encoding/json"
 	"fmt"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
 )
 
-//FormattingSrc 
+// FormattingSrc
 func FormattingSrc(src string) string {
 	api := global.Config.ProjectUrl
 	return fmt.Sprintf("%s/%s", api, src)
@@ -26,7 +26,7 @@ func FormattingJsonSrc(str []byte) (url string, err error) {
 	return path, nil
 }
 
-//SwitchIngStorageFun 
+// SwitchIngStorageFun
 func SwitchIngStorageFun(tp string, path string) (url string, err error) {
 	prefix, err := SwitchTypeAsUrlPrefix(tp)
 	if err != nil {
@@ -35,7 +35,7 @@ func SwitchIngStorageFun(tp string, path string) (url string, err error) {
 	return fmt.Sprintf("%s/%s", prefix, path), nil
 }
 
-//SwitchTypeAsUrlPrefix 
+// SwitchTypeAsUrlPrefix
 func SwitchTypeAsUrlPrefix(tp string) (url string, err error) {
 	switch tp {
 	case "local":

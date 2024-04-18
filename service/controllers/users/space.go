@@ -1,9 +1,10 @@
 package users
 
 import (
-	"easy-video-net/controllers"
-	receive "easy-video-net/interaction/receive/users"
-	"easy-video-net/logic/users"
+	"simple-video-net/controllers"
+	receive "simple-video-net/interaction/receive/users"
+	"simple-video-net/logic/users"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +12,7 @@ type SpaceControllers struct {
 	controllers.BaseControllers
 }
 
-//GetSpaceIndividual 
+// GetSpaceIndividual
 func (sp SpaceControllers) GetSpaceIndividual(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetSpaceIndividualReceiveStruct)); err == nil {
@@ -20,7 +21,7 @@ func (sp SpaceControllers) GetSpaceIndividual(ctx *gin.Context) {
 	}
 }
 
-//GetReleaseInformation 
+// GetReleaseInformation
 func (sp SpaceControllers) GetReleaseInformation(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetReleaseInformationReceiveStruct)); err == nil {
 		results, err := users.GetReleaseInformation(rec)
@@ -28,7 +29,7 @@ func (sp SpaceControllers) GetReleaseInformation(ctx *gin.Context) {
 	}
 }
 
-//GetAttentionList 
+// GetAttentionList
 func (sp SpaceControllers) GetAttentionList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetAttentionListReceiveStruct)); err == nil {
@@ -37,7 +38,7 @@ func (sp SpaceControllers) GetAttentionList(ctx *gin.Context) {
 	}
 }
 
-//GetVermicelliList 
+// GetVermicelliList
 func (sp SpaceControllers) GetVermicelliList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetVermicelliListReceiveStruct)); err == nil {

@@ -1,10 +1,10 @@
 package chatList
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/users"
 	"fmt"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/users"
 	"time"
 )
 
@@ -25,7 +25,7 @@ func (ChatsListInfo) TableName() string {
 	return "lv_users_chat_list"
 }
 
-//AddChat 
+// AddChat
 func (i *ChatsListInfo) AddChat() error {
 	//Determine the presence or absence of
 	is := &ChatsListInfo{}
@@ -42,12 +42,12 @@ func (i *ChatsListInfo) AddChat() error {
 	}
 }
 
-//DeleteChat 
+// DeleteChat
 func (i *ChatsListInfo) DeleteChat(tid uint, uid uint) error {
 	return global.Db.Where("uid = ? and tid = ?", uid, tid).Delete(i).Error
 }
 
-//GetListByIO 
+// GetListByIO
 func (cl *ChatList) GetListByIO(uid uint) error {
 	return global.Db.Where("uid", uid).Preload("ToUserInfo").Order("updated_at desc").Find(cl).Error
 }
@@ -80,7 +80,7 @@ func (i *ChatsListInfo) FindByID(uid uint, tid uint) error {
 	return global.Db.Where(ChatsListInfo{Uid: uid, Tid: tid}).Find(i).Error
 }
 
-//GetUnreadNumber 
+// GetUnreadNumber
 func (i ChatsListInfo) GetUnreadNumber(uid uint) *int64 {
 	num := new(int64)
 	err := global.Db.Model(i).Select("SUM(unread) as total_unread").Where(ChatsListInfo{Uid: uid}).Scan(num).Error

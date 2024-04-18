@@ -1,14 +1,15 @@
 package noticeSocket
 
 import (
-	"easy-video-net/consts"
-	"easy-video-net/global"
-	receive "easy-video-net/interaction/receive/socket"
-	socketResponse "easy-video-net/interaction/response/socket"
-	userModel "easy-video-net/models/users"
-	"easy-video-net/models/users/notice"
-	"easy-video-net/utils/response"
 	"encoding/json"
+	"simple-video-net/consts"
+	"simple-video-net/global"
+	receive "simple-video-net/interaction/receive/socket"
+	socketResponse "simple-video-net/interaction/response/socket"
+	userModel "simple-video-net/models/users"
+	"simple-video-net/models/users/notice"
+	"simple-video-net/utils/response"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -25,7 +26,7 @@ type ChanInfo struct {
 	Data interface{}
 }
 
-//UserChannel 
+// UserChannel
 type UserChannel struct {
 	UserInfo *userModel.User
 	Socket   *websocket.Conn
@@ -72,7 +73,7 @@ func CreateNoticeSocket(uid uint, conn *websocket.Conn) (err error) {
 
 }
 
-//Writer Listening for write data
+// Writer Listening for write data
 func (lre *UserChannel) Writer() {
 	for {
 		select {
@@ -82,7 +83,7 @@ func (lre *UserChannel) Writer() {
 	}
 }
 
-//Read retrieve data
+// Read retrieve data
 func (lre *UserChannel) Read() {
 	//Link broken for offline
 	defer func() {

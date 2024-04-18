@@ -1,14 +1,14 @@
 package testing
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/global/config"
-	"easy-video-net/global/live"
 	"net"
+	"simple-video-net/global"
+	"simple-video-net/global/config"
+	"simple-video-net/global/live"
 	"time"
 )
 
-// LiveSeverTesting 
+// LiveSeverTesting
 func LiveSeverTesting() {
 	//Get the live service port address
 	var liveConfig = config.Config.LiveConfig
@@ -23,7 +23,7 @@ func LiveSeverTesting() {
 	}
 }
 
-// CheckPortsAsLocalHost 
+// CheckPortsAsLocalHost
 func CheckPortsAsLocalHost(ip string, Ports []string) []string {
 	//unenabled port
 	untenablePort := make([]string, 10)

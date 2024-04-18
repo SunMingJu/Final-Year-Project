@@ -1,4 +1,4 @@
-module easy-video-net
+module simple-video-net
 
 go 1.18
 

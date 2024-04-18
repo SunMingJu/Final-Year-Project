@@ -1,10 +1,11 @@
 package comments
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/users"
-	"easy-video-net/models/users/notice"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/users"
+	"simple-video-net/models/users/notice"
+
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
@@ -40,12 +41,12 @@ func (Article) TableName() string {
 	return "lv_article_contribution"
 }
 
-//Find Query by id
+// Find Query by id
 func (c *Comment) Find(id uint) {
 	_ = global.Db.Where("id", id).Find(&c).Error
 }
 
-//Create Add Data
+// Create Add Data
 func (c *Comment) Create() bool {
 
 	err := global.Db.Transaction(func(tx *gorm.DB) error {
@@ -77,7 +78,7 @@ func (c *Comment) Create() bool {
 	return true
 }
 
-//GetCommentFirstID Get the topmost comment id
+// GetCommentFirstID Get the topmost comment id
 func (c *Comment) GetCommentFirstID() uint {
 	_ = global.Db.Where("id", c.ID).Find(&c).Error
 	if c.CommentID != 0 {
@@ -87,7 +88,7 @@ func (c *Comment) GetCommentFirstID() uint {
 	return c.ID
 }
 
-//GetCommentUserID Get user with comment id
+// GetCommentUserID Get user with comment id
 func (c *Comment) GetCommentUserID() uint {
 	_ = global.Db.Where("id", c.ID).Find(&c).Error
 	return c.Uid

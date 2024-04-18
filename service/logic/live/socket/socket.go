@@ -1,11 +1,12 @@
 package socket
 
 import (
-	"easy-video-net/consts"
-	"easy-video-net/global"
-	userModel "easy-video-net/models/users"
-	"easy-video-net/proto/pb"
-	"easy-video-net/utils/response"
+	"simple-video-net/consts"
+	"simple-video-net/global"
+	userModel "simple-video-net/models/users"
+	"simple-video-net/proto/pb"
+	"simple-video-net/utils/response"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
@@ -22,14 +23,14 @@ type Engine struct {
 
 type UserMapChannel map[uint]*UserChannel
 
-//UserChannel 
+// UserChannel
 type UserChannel struct {
 	UserInfo userModel.User
 	Socket   *websocket.Conn
 	MsgList  chan []byte
 }
 
-//LiveRoomEvent 
+// LiveRoomEvent
 type LiveRoomEvent struct {
 	RoomID  uint
 	Channel *UserChannel
@@ -41,7 +42,7 @@ var Severe = &Engine{
 	Cancellation: make(chan LiveRoomEvent, 10),
 }
 
-// Start 
+// Start
 func (e *Engine) Start() {
 	//Create live sockets for each user
 	type userList []userModel.User

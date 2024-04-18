@@ -1,10 +1,10 @@
 package collect
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/users"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/users"
 )
 
 type Collect struct {
@@ -23,7 +23,7 @@ func (Collect) TableName() string {
 	return "lv_users_collect"
 }
 
-//Create 
+// Create
 func (c *Collect) Create() bool {
 	err := global.Db.Create(c).Error
 	if err != nil {
@@ -32,7 +32,7 @@ func (c *Collect) Create() bool {
 	return true
 }
 
-//DetectByFavoritesID 
+// DetectByFavoritesID
 func (c *Collect) DetectByFavoritesID(id uint) bool {
 	err := global.Db.Where("favorites_id", id).Delete(c).Error
 	if err != nil {
@@ -51,7 +51,7 @@ func (l *CollectsList) GetVideoInfo(id uint) error {
 	return err
 }
 
-//FindIsCollectByFavorites 
+// FindIsCollectByFavorites
 func (l *CollectsList) FindIsCollectByFavorites(videoID uint, ids []uint) bool {
 	//False if no favourite is created
 	if len(ids) == 0 {

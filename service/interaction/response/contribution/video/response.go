@@ -1,16 +1,16 @@
 package response
 
 import (
-	"easy-video-net/models/common"
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/contribution/video/barrage"
-	"easy-video-net/models/users"
-	"easy-video-net/utils/conversion"
 	"encoding/json"
+	"simple-video-net/models/common"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/contribution/video/barrage"
+	"simple-video-net/models/users"
+	"simple-video-net/utils/conversion"
 	"time"
 )
 
-//video info
+// video info
 type Info struct {
 	ID             uint             `json:"id"`
 	Uid            uint             `json:"uid" `
@@ -30,7 +30,7 @@ type Info struct {
 	CreatedAt      time.Time        `json:"created_at"`
 }
 
-//creatorInfo
+// creatorInfo
 type creatorInfo struct {
 	ID          uint   `json:"id"`
 	Username    string `json:"username"`
@@ -39,7 +39,7 @@ type creatorInfo struct {
 	IsAttention bool   `json:"is_attention"`
 }
 
-//recommendVideo info
+// recommendVideo info
 type recommendVideo struct {
 	ID            uint      `json:"id"`
 	Uid           uint      `json:"uid" `
@@ -154,7 +154,7 @@ func GetVideoBarrageResponse(list *barrage.BarragesList) interface{} {
 	return barrageInfoList
 }
 
-//Get video pop-up response
+// Get video pop-up response
 type barrageInfo struct {
 	Time     int       `json:"time"`
 	Text     string    `json:"text"`
@@ -176,7 +176,7 @@ func GetVideoBarrageListResponse(list *barrage.BarragesList) interface{} {
 	return barrageList
 }
 
-//Comments
+// Comments
 type commentsInfo struct {
 	ID              uint             `json:"id"`
 	CommentID       uint             `json:"comment_id"`
@@ -199,7 +199,7 @@ type GetArticleContributionCommentsResponseStruct struct {
 	CommentsNumber int              `json:"comments_number"`
 }
 
-//Getting the hierarchical structure
+// Getting the hierarchical structure
 func (l commentsInfoList) getChildComment() commentsInfoList {
 	topList := commentsInfoList{}
 	for _, v := range l {
@@ -211,7 +211,7 @@ func (l commentsInfoList) getChildComment() commentsInfoList {
 	return commentsInfoListSecondTree(topList, l)
 }
 
-//Spanning Tree Structure
+// Spanning Tree Structure
 func commentsInfoListTree(menus commentsInfoList, allData commentsInfoList) commentsInfoList {
 	//Cycle through all first level menus
 	for k, v := range menus {

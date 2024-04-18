@@ -2,27 +2,28 @@ package users
 
 import (
 	"crypto/md5"
-	"easy-video-net/consts"
-	"easy-video-net/global"
-	receive "easy-video-net/interaction/receive/users"
-	response "easy-video-net/interaction/response/users"
-	"easy-video-net/models/common"
-	userModel "easy-video-net/models/users"
-	"easy-video-net/utils/conversion"
-	"easy-video-net/utils/email"
-	"easy-video-net/utils/jwt"
-	"easy-video-net/utils/location"
 	"encoding/json"
 	"fmt"
-	"github.com/go-redis/redis"
 	"io"
 	"math/rand"
 	"net/http"
+	"simple-video-net/consts"
+	"simple-video-net/global"
+	receive "simple-video-net/interaction/receive/users"
+	response "simple-video-net/interaction/response/users"
+	"simple-video-net/models/common"
+	userModel "simple-video-net/models/users"
+	"simple-video-net/utils/conversion"
+	"simple-video-net/utils/email"
+	"simple-video-net/utils/jwt"
+	"simple-video-net/utils/location"
 	"time"
+
+	"github.com/go-redis/redis"
 )
 
 func WxAuthorization(data *receive.WxAuthorizationReceiveStruct) (results interface{}, err error) {
-	
+
 	type WXLoginResp struct {
 		OpenID     string `json:"openid"`
 		SessionKey string `json:"session_key"`
@@ -33,8 +34,8 @@ func WxAuthorization(data *receive.WxAuthorizationReceiveStruct) (results interf
 		Auth       uint32 `json:"auth"`
 		Name       string `json:"name"`
 		Phone      string `json:"phone"`
-		Nickname   string `json:"nickname"`  
-		HeadImage  string `json:"headImage"` 
+		Nickname   string `json:"nickname"`
+		HeadImage  string `json:"headImage"`
 	}
 	url := "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code"
 	url = fmt.Sprintf(url, "wxfbd9d7966fc9796c", "92fbe8e2921e00fc3ba68e34d5d0b986", data.Code)

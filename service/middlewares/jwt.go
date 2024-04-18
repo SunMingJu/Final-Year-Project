@@ -1,19 +1,20 @@
 package middlewares
 
 import (
-	"easy-video-net/models/users"
-	"easy-video-net/utils/jwt"
-	ControllersCommon "easy-video-net/utils/response"
-	Response "easy-video-net/utils/response"
-	"easy-video-net/utils/validator"
-	"github.com/gorilla/websocket"
 	"net/http"
+	"simple-video-net/models/users"
+	"simple-video-net/utils/jwt"
+	ControllersCommon "simple-video-net/utils/response"
+	Response "simple-video-net/utils/response"
+	"simple-video-net/utils/validator"
+
+	"github.com/gorilla/websocket"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
 
-//VerificationToken Carrying a token in the request header
+// VerificationToken Carrying a token in the request header
 func VerificationToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
@@ -36,7 +37,7 @@ func VerificationToken() gin.HandlerFunc {
 	}
 }
 
-//VerificationTokenAsParameter Carrying a token in the body parameter
+// VerificationTokenAsParameter Carrying a token in the body parameter
 func VerificationTokenAsParameter() gin.HandlerFunc {
 	type qu struct {
 		Token string `json:"token"`
@@ -67,7 +68,7 @@ func VerificationTokenAsParameter() gin.HandlerFunc {
 	}
 }
 
-//VerificationTokenNotNecessary Carrying a token in the request header (not required)
+// VerificationTokenNotNecessary Carrying a token in the request header (not required)
 func VerificationTokenNotNecessary() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")

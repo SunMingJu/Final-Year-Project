@@ -1,13 +1,13 @@
 package response
 
 import (
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/home/rotograph"
-	"easy-video-net/utils/conversion"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/home/rotograph"
+	"simple-video-net/utils/conversion"
 	"time"
 )
 
-//Home Rotator
+// Home Rotator
 type rotographInfo struct {
 	Title string `json:"title"`
 	Cover string `json:"cover"`
@@ -17,7 +17,7 @@ type rotographInfo struct {
 }
 type rotographInfoList []rotographInfo
 
-//VideoInfo 
+// VideoInfo
 type VideoInfo struct {
 	ID            uint      `json:"id"`
 	Uid           uint      `json:"uid" `

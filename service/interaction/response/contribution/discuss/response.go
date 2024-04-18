@@ -1,10 +1,10 @@
 package discuss
 
 import (
-	articleComments "easy-video-net/models/contribution/article/comments"
-	"easy-video-net/models/contribution/video/barrage"
-	videoComments "easy-video-net/models/contribution/video/comments"
-	"easy-video-net/utils/conversion"
+	articleComments "simple-video-net/models/contribution/article/comments"
+	"simple-video-net/models/contribution/video/barrage"
+	videoComments "simple-video-net/models/contribution/video/comments"
+	"simple-video-net/utils/conversion"
 	"time"
 )
 

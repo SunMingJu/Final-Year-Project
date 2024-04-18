@@ -1,8 +1,9 @@
 package liveInfo
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+
 	"gorm.io/datatypes"
 )
 
@@ -17,7 +18,7 @@ func (LiveInfo) TableName() string {
 	return "lv_live_info"
 }
 
-//Update 
+// Update
 func (li *LiveInfo) Update() bool {
 	err := global.Db.Where("uid", li.Uid).Updates(&li).Error
 	if err != nil {
@@ -26,7 +27,7 @@ func (li *LiveInfo) Update() bool {
 	return true
 }
 
-//Create 
+// Create
 func (li *LiveInfo) Create() bool {
 	err := global.Db.Create(&li).Error
 	if err != nil {
@@ -44,7 +45,7 @@ func (li *LiveInfo) UpdateInfo() bool {
 	}
 }
 
-//IsExistByField 
+// IsExistByField
 func (li *LiveInfo) IsExistByField(field string, value any) bool {
 	err := global.Db.Where(field, value).Find(&li).Error
 	if err != nil {

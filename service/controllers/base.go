@@ -1,16 +1,17 @@
 package controllers
 
 import (
-	"easy-video-net/utils/response"
-	"easy-video-net/utils/validator"
 	"fmt"
+	"simple-video-net/utils/response"
+	"simple-video-net/utils/validator"
+
 	"github.com/gin-gonic/gin"
 )
 
 type BaseControllers struct {
 }
 
-//Response 
+// Response
 func (c BaseControllers) Response(ctx *gin.Context, results interface{}, err error) {
 	if err != nil {
 		response.Error(ctx, err.Error())
@@ -19,7 +20,7 @@ func (c BaseControllers) Response(ctx *gin.Context, results interface{}, err err
 	response.Success(ctx, results)
 }
 
-//ShouldBind 
+// ShouldBind
 func ShouldBind[T interface{}](ctx *gin.Context, data T) (t T, err error) {
 	if err := ctx.ShouldBind(data); err != nil {
 		fmt.Println(err)

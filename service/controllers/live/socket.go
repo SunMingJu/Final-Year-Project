@@ -1,10 +1,10 @@
 package live
 
 import (
-	"easy-video-net/consts"
-	"easy-video-net/logic/live/socket"
-	"easy-video-net/proto/pb"
-	"easy-video-net/utils/response"
+	"simple-video-net/consts"
+	"simple-video-net/logic/live/socket"
+	"simple-video-net/proto/pb"
+	"simple-video-net/utils/response"
 	"strconv"
 
 	"github.com/gin-gonic/gin"

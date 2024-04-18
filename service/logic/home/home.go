@@ -1,10 +1,10 @@
 package home
 
 import (
-	receive "easy-video-net/interaction/receive/home"
-	response "easy-video-net/interaction/response/home"
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/home/rotograph"
+	receive "simple-video-net/interaction/receive/home"
+	response "simple-video-net/interaction/response/home"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/home/rotograph"
 )
 
 func GetHomeInfo(data *receive.GetHomeInfoReceiveStruct) (results interface{}, err error) {

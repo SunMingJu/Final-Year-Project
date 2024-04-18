@@ -1,15 +1,15 @@
 package main
 
 import (
-	_ "easy-video-net/global/database/mysql"
-	_ "easy-video-net/global/database/redis"
-	"easy-video-net/logic/contribution/videoSocket"
-	liveSocket "easy-video-net/logic/live/socket"
-	"easy-video-net/logic/users/chatByUserSocket"
-	"easy-video-net/logic/users/chatSocket"
-	"easy-video-net/logic/users/noticeSocket"
-	"easy-video-net/router"
-	"easy-video-net/utils/testing"
+	_ "simple-video-net/global/database/mysql"
+	_ "simple-video-net/global/database/redis"
+	"simple-video-net/logic/contribution/videoSocket"
+	liveSocket "simple-video-net/logic/live/socket"
+	"simple-video-net/logic/users/chatByUserSocket"
+	"simple-video-net/logic/users/chatSocket"
+	"simple-video-net/logic/users/noticeSocket"
+	"simple-video-net/router"
+	"simple-video-net/utils/testing"
 )
 
 func main() {

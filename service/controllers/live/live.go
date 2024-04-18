@@ -1,9 +1,10 @@
 package live
 
 import (
-	"easy-video-net/controllers"
-	receive "easy-video-net/interaction/receive/live"
-	"easy-video-net/logic/live"
+	"simple-video-net/controllers"
+	receive "simple-video-net/interaction/receive/live"
+	"simple-video-net/logic/live"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,14 +12,14 @@ type LivesControllers struct {
 	controllers.BaseControllers
 }
 
-//GetLiveRoom 
+// GetLiveRoom
 func (lv LivesControllers) GetLiveRoom(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := live.GetLiveRoom(uid)
 	lv.Response(ctx, results, err)
 }
 
-//GetLiveRoomInfo 
+// GetLiveRoomInfo
 func (lv LivesControllers) GetLiveRoomInfo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetLiveRoomInfoReceiveStruct)); err == nil {
@@ -27,7 +28,7 @@ func (lv LivesControllers) GetLiveRoomInfo(ctx *gin.Context) {
 	}
 }
 
-//GetBeLiveList 
+// GetBeLiveList
 func (lv LivesControllers) GetBeLiveList(ctx *gin.Context) {
 	results, err := live.GetBeLiveList()
 	lv.Response(ctx, results, err)

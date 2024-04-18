@@ -1,13 +1,14 @@
 package socket
 
 import (
-	"easy-video-net/consts"
-	"easy-video-net/proto/pb"
-	"easy-video-net/utils/response"
+	"simple-video-net/consts"
+	"simple-video-net/proto/pb"
+	"simple-video-net/utils/response"
+
 	"google.golang.org/protobuf/proto"
 )
 
-//Read read data
+// Read read data
 func (lre LiveRoomEvent) Read() {
 	//Link broken for offline
 	defer func() {

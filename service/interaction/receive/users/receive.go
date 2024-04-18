@@ -1,11 +1,11 @@
 package receive
 
 import (
-	"easy-video-net/models/common"
+	"simple-video-net/models/common"
 	"time"
 )
 
-// WxAuthorizationReceiveStruct 
+// WxAuthorizationReceiveStruct
 type WxAuthorizationReceiveStruct struct {
 	AvatarUrl string `json:"avatarUrl" binding:"required"`
 	Code      string `json:"code" binding:"required"`
@@ -13,7 +13,7 @@ type WxAuthorizationReceiveStruct struct {
 	NickName  string `json:"nickName" binding:"required"`
 }
 
-// RegisterReceiveStruct 
+// RegisterReceiveStruct
 type RegisterReceiveStruct struct {
 	UserName         string `json:"username" binding:"required"`
 	Password         string `json:"password" binding:"required"`
@@ -21,18 +21,18 @@ type RegisterReceiveStruct struct {
 	VerificationCode string `json:"verificationCode" binding:"required"`
 }
 
-//LoginReceiveStruct 
+// LoginReceiveStruct
 type LoginReceiveStruct struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
-//SendEmailVerCodeReceiveStruct 
+// SendEmailVerCodeReceiveStruct
 type SendEmailVerCodeReceiveStruct struct {
 	Email string `json:"email" binding:"required,email"`
 }
 
-// ForgetReceiveStruct 
+// ForgetReceiveStruct
 type ForgetReceiveStruct struct {
 	Password         string `json:"password" binding:"required"`
 	Email            string `json:"email" binding:"required,email"`
@@ -42,7 +42,7 @@ type DetermineNameExistsStruct struct {
 	Username string `json:"username" binding:"required"`
 }
 
-//SetUserInfoReceiveStruct 
+// SetUserInfoReceiveStruct
 type SetUserInfoReceiveStruct struct {
 	Username  string    `json:"username" binding:"required"`
 	Gender    *int      `json:"gender" binding:"required"`
@@ -51,13 +51,13 @@ type SetUserInfoReceiveStruct struct {
 	Signature string    `json:"signature" binding:"required"`
 }
 
-//UpdateAvatarStruct 
+// UpdateAvatarStruct
 type UpdateAvatarStruct struct {
 	ImgUrl string `json:"imgUrl" binding:"required"`
 	Tp     string `json:"type" binding:"required"`
 }
 
-//SaveLiveDataReceiveStruct 
+// SaveLiveDataReceiveStruct
 type SaveLiveDataReceiveStruct struct {
 	Tp     string `json:"type" binding:"required"`
 	ImgUrl string `json:"imgUrl" binding:"required"`

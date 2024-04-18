@@ -1,11 +1,12 @@
 package contribution
 
 import (
-	"easy-video-net/controllers"
-	receive "easy-video-net/interaction/receive/contribution/video"
-	"easy-video-net/logic/contribution"
-	"easy-video-net/utils/response"
-	"easy-video-net/utils/validator"
+	"simple-video-net/controllers"
+	receive "simple-video-net/interaction/receive/contribution/video"
+	"simple-video-net/logic/contribution"
+	"simple-video-net/utils/response"
+	"simple-video-net/utils/validator"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -14,7 +15,7 @@ type Controllers struct {
 	controllers.BaseControllers
 }
 
-//CreateVideoContribution 
+// CreateVideoContribution
 func (c Controllers) CreateVideoContribution(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.CreateVideoContributionReceiveStruct)); err == nil {
@@ -23,7 +24,7 @@ func (c Controllers) CreateVideoContribution(ctx *gin.Context) {
 	}
 }
 
-//UpdateVideoContribution 
+// UpdateVideoContribution
 func (c Controllers) UpdateVideoContribution(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.UpdateVideoContributionReceiveStruct)); err == nil {
@@ -32,7 +33,7 @@ func (c Controllers) UpdateVideoContribution(ctx *gin.Context) {
 	}
 }
 
-// GetVideoContributionByID  
+// GetVideoContributionByID
 func (c Controllers) GetVideoContributionByID(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetVideoContributionByIDReceiveStruct)); err == nil {
@@ -42,7 +43,7 @@ func (c Controllers) GetVideoContributionByID(ctx *gin.Context) {
 
 }
 
-// SendVideoBarrage  
+// SendVideoBarrage
 func (c Controllers) SendVideoBarrage(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	SendVideoBarrageReceive := new(receive.SendVideoBarrageReceiveStruct)
@@ -59,7 +60,7 @@ func (c Controllers) SendVideoBarrage(ctx *gin.Context) {
 	}
 }
 
-// GetVideoBarrage  
+// GetVideoBarrage
 func (c Controllers) GetVideoBarrage(ctx *gin.Context) {
 	GetVideoBarrageReceive := new(receive.GetVideoBarrageReceiveStruct)
 	GetVideoBarrageReceive.ID = ctx.Query("id")
@@ -72,7 +73,7 @@ func (c Controllers) GetVideoBarrage(ctx *gin.Context) {
 
 }
 
-// GetVideoBarrageList  
+// GetVideoBarrageList
 func (c Controllers) GetVideoBarrageList(ctx *gin.Context) {
 	GetVideoBarrageReceive := new(receive.GetVideoBarrageListReceiveStruct)
 	GetVideoBarrageReceive.ID = ctx.Query("id")
@@ -84,7 +85,7 @@ func (c Controllers) GetVideoBarrageList(ctx *gin.Context) {
 	response.BarrageSuccess(ctx, results)
 }
 
-//VideoPostComment 
+// VideoPostComment
 func (c Controllers) VideoPostComment(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.VideosPostCommentReceiveStruct)); err == nil {
@@ -93,7 +94,7 @@ func (c Controllers) VideoPostComment(ctx *gin.Context) {
 	}
 }
 
-//GetVideoComment 
+// GetVideoComment
 func (c Controllers) GetVideoComment(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetVideoCommentReceiveStruct)); err == nil {
 		results, err := contribution.GetVideoComment(rec)
@@ -101,7 +102,7 @@ func (c Controllers) GetVideoComment(ctx *gin.Context) {
 	}
 }
 
-//GetVideoManagementList 
+// GetVideoManagementList
 func (c Controllers) GetVideoManagementList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetVideoManagementListReceiveStruct)); err == nil {
@@ -110,7 +111,7 @@ func (c Controllers) GetVideoManagementList(ctx *gin.Context) {
 	}
 }
 
-//DeleteVideoByID 
+// DeleteVideoByID
 func (c Controllers) DeleteVideoByID(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DeleteVideoByIDReceiveStruct)); err == nil {
@@ -119,7 +120,7 @@ func (c Controllers) DeleteVideoByID(ctx *gin.Context) {
 	}
 }
 
-//LikeVideo 
+// LikeVideo
 func (c Controllers) LikeVideo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.LikeVideoReceiveStruct)); err == nil {

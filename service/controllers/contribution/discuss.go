@@ -1,13 +1,14 @@
 package contribution
 
 import (
-	"easy-video-net/controllers"
-	receive "easy-video-net/interaction/receive/contribution/discuss"
-	"easy-video-net/logic/contribution"
+	"simple-video-net/controllers"
+	receive "simple-video-net/interaction/receive/contribution/discuss"
+	"simple-video-net/logic/contribution"
+
 	"github.com/gin-gonic/gin"
 )
 
-//GetDiscussVideoList 
+// GetDiscussVideoList
 func (c Controllers) GetDiscussVideoList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetDiscussVideoListReceiveStruct)); err == nil {
@@ -16,7 +17,7 @@ func (c Controllers) GetDiscussVideoList(ctx *gin.Context) {
 	}
 }
 
-//GetDiscussArticleList 
+// GetDiscussArticleList
 func (c Controllers) GetDiscussArticleList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetDiscussArticleListReceiveStruct)); err == nil {
@@ -25,7 +26,7 @@ func (c Controllers) GetDiscussArticleList(ctx *gin.Context) {
 	}
 }
 
-//GetDiscussBarrageList 
+// GetDiscussBarrageList
 func (c Controllers) GetDiscussBarrageList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetDiscussBarrageListReceiveStruct)); err == nil {

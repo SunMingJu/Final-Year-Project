@@ -1,13 +1,14 @@
 package chatMsg
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/users"
-	"easy-video-net/models/users/chat/chatList"
 	"fmt"
-	"gorm.io/gorm"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/users"
+	"simple-video-net/models/users/chat/chatList"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Msg struct {
@@ -60,14 +61,14 @@ func (m *Msg) AddMessage() error {
 	return err
 }
 
-//FindList Get List
+// FindList Get List
 func (ml *MsgList) FindList(uid uint, tid uint) error {
 	ids := make([]uint, 0)
 	ids = append(ids, uid, tid)
 	return global.Db.Where("uid", ids).Where("tid", ids).Preload("UInfo").Preload("TInfo").Order("created_at desc").Limit(30).Find(ml).Error
 }
 
-//GetLastMessage 
+// GetLastMessage
 func (m *Msg) GetLastMessage(uid uint, tid uint) error {
 	err := global.Db.Where("uid = ? or  tid  = ? and tid = ? or tid = ? ", uid, uid, tid, tid).Order("created_at desc").Find(m).Error
 	if err != nil {
@@ -76,12 +77,12 @@ func (m *Msg) GetLastMessage(uid uint, tid uint) error {
 	return nil
 }
 
-//FindByID 
+// FindByID
 func (m *Msg) FindByID(id uint) error {
 	return global.Db.Where("id", id).Preload("UInfo").Preload("TInfo").Find(m).Error
 }
 
-//FindHistoryMsg 
+// FindHistoryMsg
 func (ml *MsgList) FindHistoryMsg(uid, tid uint, lastTime time.Time) error {
 	ids := make([]uint, 0)
 	ids = append(ids, uid, tid)

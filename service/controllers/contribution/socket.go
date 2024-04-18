@@ -1,14 +1,15 @@
 package contribution
 
 import (
-	"easy-video-net/logic/contribution/videoSocket"
-	"easy-video-net/utils/response"
+	"simple-video-net/logic/contribution/videoSocket"
+	"simple-video-net/utils/response"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"strconv"
 )
 
-// VideoSocket  
+// VideoSocket
 func (c Controllers) VideoSocket(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	conn, _ := ctx.Get("conn")

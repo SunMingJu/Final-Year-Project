@@ -1,12 +1,12 @@
 package record
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/contribution/article"
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/users"
 	"fmt"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/contribution/article"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/users"
 )
 
 type Record struct {
@@ -26,12 +26,12 @@ func (Record) TableName() string {
 	return "lv_users_record"
 }
 
-//ClearRecord 
+// ClearRecord
 func (r *Record) ClearRecord(uid uint) error {
 	return global.Db.Where("uid", uid).Delete(r).Error
 }
 
-//DeleteRecordByID 
+// DeleteRecordByID
 func (r *Record) DeleteRecordByID(id uint, uid uint) error {
 	err := global.Db.Where("id", id).Find(r).Error
 	if err != nil {

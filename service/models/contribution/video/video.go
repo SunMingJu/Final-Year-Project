@@ -1,15 +1,16 @@
 package video
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/contribution/video/barrage"
-	"easy-video-net/models/contribution/video/comments"
-	"easy-video-net/models/contribution/video/like"
-	"easy-video-net/models/users"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/contribution/video/barrage"
+	"simple-video-net/models/contribution/video/comments"
+	"simple-video-net/models/contribution/video/like"
+	"simple-video-net/models/users"
+	"time"
+
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
-	"time"
 )
 
 type VideosContribution struct {
@@ -38,7 +39,7 @@ func (VideosContribution) TableName() string {
 	return "lv_video_contribution"
 }
 
-//Create 
+// Create
 func (vc *VideosContribution) Create() bool {
 	err := global.Db.Create(&vc).Error
 	if err != nil {
@@ -47,7 +48,7 @@ func (vc *VideosContribution) Create() bool {
 	return true
 }
 
-//Delete 
+// Delete
 func (vc *VideosContribution) Delete(id uint, uid uint) bool {
 	if global.Db.Where("id", id).Find(&vc).Error != nil {
 		return false
@@ -61,7 +62,7 @@ func (vc *VideosContribution) Delete(id uint, uid uint) bool {
 	return true
 }
 
-//Update 
+// Update
 func (vc *VideosContribution) Update(info map[string]interface{}) bool {
 	err := global.Db.Model(vc).Updates(info).Error
 	if err != nil {
@@ -70,14 +71,14 @@ func (vc *VideosContribution) Update(info map[string]interface{}) bool {
 	return true
 }
 
-//FindByID 
+// FindByID
 func (vc *VideosContribution) FindByID(id uint) error {
 	return global.Db.Where("id", id).Preload("Likes").Preload("Comments", func(db *gorm.DB) *gorm.DB {
 		return db.Preload("UserInfo").Order("created_at desc")
 	}).Preload("Barrage").Preload("UserInfo").Order("created_at desc").Find(&vc).Error
 }
 
-//GetVideoComments 
+// GetVideoComments
 func (vc *VideosContribution) GetVideoComments(ID uint, info common.PageInfo) bool {
 	err := global.Db.Where("id", ID).Preload("Likes").Preload("Comments", func(db *gorm.DB) *gorm.DB {
 		return db.Preload("UserInfo").Order("created_at desc").Limit(info.Size).Offset((info.Page - 1) * info.Size)
@@ -88,17 +89,17 @@ func (vc *VideosContribution) GetVideoComments(ID uint, info common.PageInfo) bo
 	return true
 }
 
-//Watch 
+// Watch
 func (vc *VideosContribution) Watch(id uint) error {
 	return global.Db.Model(vc).Where("id", id).Updates(map[string]interface{}{"heat": gorm.Expr("Heat  + ?", 1)}).Error
 }
 
-//GetVideoListBySpace 
+// GetVideoListBySpace
 func (vl *VideosContributionList) GetVideoListBySpace(id uint) error {
 	return global.Db.Where("uid", id).Preload("Likes").Preload("Comments").Preload("Barrage").Order("created_at desc").Find(&vl).Error
 }
 
-//GetDiscussVideoCommentList 
+// GetDiscussVideoCommentList
 func (vl *VideosContributionList) GetDiscussVideoCommentList(id uint) error {
 	return global.Db.Where("uid", id).Preload("Comments").Find(&vl).Error
 }
@@ -117,7 +118,7 @@ func (vl *VideosContributionList) GetHoneVideoList(info common.PageInfo) error {
 	return global.Db.Preload("Likes").Preload("Comments").Preload("Barrage").Preload("UserInfo").Limit(info.Size).Offset(offset).Order("created_at desc").Find(&vl).Error
 }
 
-//GetRecommendList 
+// GetRecommendList
 func (vl *VideosContributionList) GetRecommendList() error {
 	return global.Db.Preload("Likes").Preload("Comments").Preload("Barrage").Preload("UserInfo").Order("created_at desc").Limit(7).Find(&vl).Error
 }

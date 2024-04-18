@@ -1,15 +1,15 @@
 package chatByUserSocket
 
 import (
-	"easy-video-net/consts"
-	"easy-video-net/global"
-	receive "easy-video-net/interaction/receive/socket"
-	"easy-video-net/interaction/response/socket"
-	"easy-video-net/logic/users/chatSocket"
-	"easy-video-net/models/users/chat/chatList"
-	"easy-video-net/models/users/chat/chatMsg"
-	"easy-video-net/utils/conversion"
-	"easy-video-net/utils/response"
+	"simple-video-net/consts"
+	"simple-video-net/global"
+	receive "simple-video-net/interaction/receive/socket"
+	"simple-video-net/interaction/response/socket"
+	"simple-video-net/logic/users/chatSocket"
+	"simple-video-net/models/users/chat/chatList"
+	"simple-video-net/models/users/chat/chatMsg"
+	"simple-video-net/utils/conversion"
+	"simple-video-net/utils/response"
 )
 
 func sendChatMsgText(ler *UserChannel, uid uint, tid uint, info *receive.Receive) {

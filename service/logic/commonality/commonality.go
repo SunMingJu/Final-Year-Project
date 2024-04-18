@@ -1,22 +1,23 @@
 package commonality
 
 import (
-	"easy-video-net/global"
-	receive "easy-video-net/interaction/receive/commonality"
-	response "easy-video-net/interaction/response/commonality"
-	"easy-video-net/models/config/uploadMethod"
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/users"
-	"easy-video-net/models/users/attention"
-	"easy-video-net/utils/conversion"
-	"easy-video-net/utils/location"
-	"easy-video-net/utils/oss"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"mime/multipart"
 	"os"
+	"simple-video-net/global"
+	receive "simple-video-net/interaction/receive/commonality"
+	response "simple-video-net/interaction/response/commonality"
+	"simple-video-net/models/config/uploadMethod"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/users"
+	"simple-video-net/models/users/attention"
+	"simple-video-net/utils/conversion"
+	"simple-video-net/utils/location"
+	"simple-video-net/utils/oss"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 var (

@@ -1,11 +1,12 @@
 package videoSocket
 
 import (
-	"easy-video-net/consts"
-	receive "easy-video-net/interaction/receive/socket"
-	userModel "easy-video-net/models/users"
-	"easy-video-net/utils/response"
 	"encoding/json"
+	"simple-video-net/consts"
+	receive "simple-video-net/interaction/receive/socket"
+	userModel "simple-video-net/models/users"
+	"simple-video-net/utils/response"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -24,14 +25,14 @@ type ChanInfo struct {
 	Data interface{}
 }
 
-//UserChannel 
+// UserChannel
 type UserChannel struct {
 	UserInfo userModel.User
 	Socket   *websocket.Conn
 	MsgList  chan ChanInfo
 }
 
-//VideoRoomEvent 
+// VideoRoomEvent
 type VideoRoomEvent struct {
 	VideoID uint
 	Channel *UserChannel
@@ -43,7 +44,7 @@ var Severe = &Engine{
 	Cancellation: make(chan VideoRoomEvent, 10),
 }
 
-// Start 
+// Start
 func (e *Engine) Start() {
 	for {
 		select {
@@ -110,7 +111,7 @@ func CreateVideoSocket(userID uint, videoID uint, conn *websocket.Conn) (err err
 
 }
 
-//Writer Listening for write data
+// Writer Listening for write data
 func (lre VideoRoomEvent) Writer() {
 	for {
 		select {
@@ -120,7 +121,7 @@ func (lre VideoRoomEvent) Writer() {
 	}
 }
 
-//Read 
+// Read
 func (lre VideoRoomEvent) Read() {
 	//Link broken for offline
 	defer func() {

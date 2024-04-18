@@ -1,8 +1,9 @@
 package mysql
 
 import (
-	"easy-video-net/global/config"
 	"fmt"
+	"simple-video-net/global/config"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

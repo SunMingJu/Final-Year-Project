@@ -1,6 +1,6 @@
 package commonality
 
-import "easy-video-net/models/common"
+import "simple-video-net/models/common"
 
 type UploadingMethodStruct struct {
 	Method string `json:"method"  binding:"required"`

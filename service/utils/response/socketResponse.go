@@ -1,8 +1,9 @@
 package response
 
 import (
-	"easy-video-net/consts"
-	"easy-video-net/proto/pb"
+	"simple-video-net/consts"
+	"simple-video-net/proto/pb"
+
 	"github.com/gorilla/websocket"
 	"google.golang.org/protobuf/proto"
 )
@@ -13,7 +14,7 @@ type DataWs struct {
 	Code    MyCode      `json:"code"`
 	Type    string      `json:"type,omitempty"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"` 
+	Data    interface{} `json:"data,omitempty"`
 }
 
 func NotLoginWs(ws *websocket.Conn, msg string) {

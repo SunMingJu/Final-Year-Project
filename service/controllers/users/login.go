@@ -1,9 +1,10 @@
 package users
 
 import (
-	"easy-video-net/controllers"
-	receive "easy-video-net/interaction/receive/users"
-	"easy-video-net/logic/users"
+	"simple-video-net/controllers"
+	receive "simple-video-net/interaction/receive/users"
+	"simple-video-net/logic/users"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +12,7 @@ type LoginControllers struct {
 	controllers.BaseControllers
 }
 
-//WxAuthorization 
+// WxAuthorization
 func (lg LoginControllers) WxAuthorization(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.WxAuthorizationReceiveStruct)); err == nil {
 		results, err := users.WxAuthorization(rec)
@@ -19,7 +20,7 @@ func (lg LoginControllers) WxAuthorization(ctx *gin.Context) {
 	}
 }
 
-//Login 
+// Login
 func (lg LoginControllers) Login(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.LoginReceiveStruct)); err == nil {
 		results, err := users.Login(rec)
@@ -27,7 +28,7 @@ func (lg LoginControllers) Login(ctx *gin.Context) {
 	}
 }
 
-//Register 
+// Register
 func (lg LoginControllers) Register(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.RegisterReceiveStruct)); err == nil {
 		results, err := users.Register(rec)
@@ -35,7 +36,7 @@ func (lg LoginControllers) Register(ctx *gin.Context) {
 	}
 }
 
-//SendEmailVerCode)
+// SendEmailVerCode)
 func (lg LoginControllers) SendEmailVerCode(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.SendEmailVerCodeReceiveStruct)); err == nil {
 		results, err := users.SendEmailVerCode(rec)
@@ -43,7 +44,7 @@ func (lg LoginControllers) SendEmailVerCode(ctx *gin.Context) {
 	}
 }
 
-//SendEmailVerCodeByForget 
+// SendEmailVerCodeByForget
 func (lg LoginControllers) SendEmailVerCodeByForget(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.SendEmailVerCodeReceiveStruct)); err == nil {
 		results, err := users.SendEmailVerCodeByForget(rec)
@@ -51,7 +52,7 @@ func (lg LoginControllers) SendEmailVerCodeByForget(ctx *gin.Context) {
 	}
 }
 
-//Forget 
+// Forget
 func (lg LoginControllers) Forget(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.ForgetReceiveStruct)); err == nil {
 		results, err := users.Forget(rec)

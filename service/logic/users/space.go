@@ -1,13 +1,13 @@
 package users
 
 import (
-	receive "easy-video-net/interaction/receive/users"
-	response "easy-video-net/interaction/response/users"
-	"easy-video-net/models/contribution/article"
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/users"
-	"easy-video-net/models/users/attention"
 	"fmt"
+	receive "simple-video-net/interaction/receive/users"
+	response "simple-video-net/interaction/response/users"
+	"simple-video-net/models/contribution/article"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/users"
+	"simple-video-net/models/users/attention"
 )
 
 func GetSpaceIndividual(data *receive.GetSpaceIndividualReceiveStruct, uid uint) (results interface{}, err error) {

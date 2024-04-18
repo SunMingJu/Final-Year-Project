@@ -1,16 +1,17 @@
 package users
 
 import (
-	"easy-video-net/logic/users/chatByUserSocket"
-	"easy-video-net/logic/users/chatSocket"
-	"easy-video-net/logic/users/noticeSocket"
-	"easy-video-net/utils/response"
+	"simple-video-net/logic/users/chatByUserSocket"
+	"simple-video-net/logic/users/chatSocket"
+	"simple-video-net/logic/users/noticeSocket"
+	"simple-video-net/utils/response"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"strconv"
 )
 
-// NoticeSocket  
+// NoticeSocket
 func (us UserControllers) NoticeSocket(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	conn, _ := ctx.Get("conn")
@@ -21,7 +22,7 @@ func (us UserControllers) NoticeSocket(ctx *gin.Context) {
 	}
 }
 
-// ChatSocket   
+// ChatSocket
 func (us UserControllers) ChatSocket(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	conn, _ := ctx.Get("conn")

@@ -1,8 +1,8 @@
 package response
 
 import (
-	"easy-video-net/models/users"
-	"easy-video-net/utils/conversion"
+	"simple-video-net/models/users"
+	"simple-video-net/utils/conversion"
 )
 
 type GetLiveRoomResponseStruct struct {

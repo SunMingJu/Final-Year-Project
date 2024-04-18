@@ -1,9 +1,10 @@
 package like
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/users/notice"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/users/notice"
+
 	"gorm.io/gorm"
 )
 

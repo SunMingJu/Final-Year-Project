@@ -1,12 +1,12 @@
 package live
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/utils/location"
 	"io"
 	"io/ioutil"
 	"log"
 	"os/exec"
+	"simple-video-net/global"
+	"simple-video-net/utils/location"
 )
 
 func init() {

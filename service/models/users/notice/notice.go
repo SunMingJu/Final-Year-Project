@@ -1,10 +1,11 @@
 package notice
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/users"
 	"fmt"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/users"
+
 	"gorm.io/datatypes"
 )
 
@@ -23,11 +24,10 @@ type Notice struct {
 }
 
 var (
-	VideoComment   = "videoComment"   
-	VideoLike      = "videoLike"      
-	ArticleComment = "articleComment" 
-	ArticleLike    = "articleLike"    
-
+	VideoComment   = "videoComment"
+	VideoLike      = "videoLike"
+	ArticleComment = "articleComment"
+	ArticleLike    = "articleLike"
 )
 
 type NoticesList []Notice
@@ -36,7 +36,7 @@ func (Notice) TableName() string {
 	return "lv_users_notice"
 }
 
-//VideoInfo 
+// VideoInfo
 type VideoInfo struct {
 	common.PublicModel
 	Uid   uint           `json:"uid" gorm:"uid"`

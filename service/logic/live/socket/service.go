@@ -1,16 +1,17 @@
 package socket
 
 import (
-	"easy-video-net/consts"
-	"easy-video-net/global"
-	"easy-video-net/proto/pb"
-	"easy-video-net/utils/conversion"
 	"fmt"
-	"google.golang.org/protobuf/proto"
+	"simple-video-net/consts"
+	"simple-video-net/global"
+	"simple-video-net/proto/pb"
+	"simple-video-net/utils/conversion"
 	"strconv"
+
+	"google.golang.org/protobuf/proto"
 )
 
-//Send a pop-up message
+// Send a pop-up message
 func serviceSendBarrage(lre LiveRoomEvent, text []byte) error {
 	barrageInfo := &pb.WebClientSendBarrageReq{}
 	if err := proto.Unmarshal(text, barrageInfo); err != nil {
@@ -59,7 +60,7 @@ func serviceSendBarrage(lre LiveRoomEvent, text []byte) error {
 	return nil
 }
 
-//User offline alerts
+// User offline alerts
 func serviceOnlineAndOfflineRemind(lre LiveRoomEvent, isOnlineOndOffline bool) error {
 	//Get all current users
 	type userListStruct []*pb.EnterLiveRoom
@@ -104,7 +105,7 @@ func serviceOnlineAndOfflineRemind(lre LiveRoomEvent, isOnlineOndOffline bool) e
 	return nil
 }
 
-//Responding to history message pop-ups
+// Responding to history message pop-ups
 func serviceResponseLiveRoomHistoricalBarrage(lre LiveRoomEvent) error {
 	//Get the history.
 	val, err := global.RedisDb.LRange(consts.LiveRoomHistoricalBarrage+strconv.Itoa(int(lre.RoomID)), 0, -1).Result()

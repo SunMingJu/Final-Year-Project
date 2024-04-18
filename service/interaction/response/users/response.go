@@ -1,23 +1,24 @@
 package response
 
 import (
-	"easy-video-net/models/common"
-	"easy-video-net/models/contribution/article"
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/users"
-	"easy-video-net/models/users/attention"
-	"easy-video-net/models/users/chat/chatList"
-	"easy-video-net/models/users/chat/chatMsg"
-	"easy-video-net/models/users/collect"
-	"easy-video-net/models/users/favorites"
-	"easy-video-net/models/users/liveInfo"
-	"easy-video-net/models/users/notice"
-	"easy-video-net/models/users/record"
-	"easy-video-net/utils/conversion"
 	"encoding/json"
 	"fmt"
-	"github.com/dlclark/regexp2"
+	"simple-video-net/models/common"
+	"simple-video-net/models/contribution/article"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/users"
+	"simple-video-net/models/users/attention"
+	"simple-video-net/models/users/chat/chatList"
+	"simple-video-net/models/users/chat/chatMsg"
+	"simple-video-net/models/users/collect"
+	"simple-video-net/models/users/favorites"
+	"simple-video-net/models/users/liveInfo"
+	"simple-video-net/models/users/notice"
+	"simple-video-net/models/users/record"
+	"simple-video-net/utils/conversion"
 	"time"
+
+	"github.com/dlclark/regexp2"
 )
 
 type UserInfoResponseStruct struct {
@@ -28,7 +29,7 @@ type UserInfoResponseStruct struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-//UserInfoResponse  Generate a return user information structure
+// UserInfoResponse  Generate a return user information structure
 func UserInfoResponse(us *users.User, token string) UserInfoResponseStruct {
 	//Determine whether the user is a WeChat user for image processing
 	photo, _ := conversion.FormattingJsonSrc(us.Photo)
@@ -50,7 +51,7 @@ type UserSetInfoResponseStruct struct {
 	Signature string    `json:"signature"`
 }
 
-//UserSetInfoResponse  Set user information return result
+// UserSetInfoResponse  Set user information return result
 func UserSetInfoResponse(us *users.User) UserSetInfoResponseStruct {
 	return UserSetInfoResponseStruct{
 		ID:        us.ID,
@@ -67,7 +68,7 @@ type GetLiveDataResponseStruct struct {
 	Title string `json:"title"`
 }
 
-//GetLiveDataResponse Responding to setup information
+// GetLiveDataResponse Responding to setup information
 func GetLiveDataResponse(li *liveInfo.LiveInfo) (data any, err error) {
 	src, errs := conversion.FormattingJsonSrc(li.Img)
 	if errs != nil {
@@ -89,7 +90,7 @@ type GetSpaceIndividualResponseStruct struct {
 	VermicelliNum *int64 `json:"vermicelli_num"`
 }
 
-//GetSpaceIndividualResponse 
+// GetSpaceIndividualResponse
 func GetSpaceIndividualResponse(us *users.User, isAttention bool, attentionNum *int64, vermicelliNum *int64) (data any, err error) {
 	photo, _ := conversion.FormattingJsonSrc(us.Photo)
 	return GetSpaceIndividualResponseStruct{
@@ -142,7 +143,7 @@ type GetReleaseInformationResponseStruct struct {
 	ArticleList ReleaseInformationArticleInfoList `json:"articleList"`
 }
 
-//GetReleaseInformationResponse 
+// GetReleaseInformationResponse
 func GetReleaseInformationResponse(videoList *video.VideosContributionList, articleList *article.ArticlesContributionList) (data interface{}, err error) {
 	//Processing video
 	vl := make(ReleaseInformationVideoInfoList, 0)

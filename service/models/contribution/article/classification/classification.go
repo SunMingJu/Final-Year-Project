@@ -1,8 +1,8 @@
 package classification
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
 )
 
 type Classification struct {

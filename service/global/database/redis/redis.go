@@ -1,8 +1,9 @@
 package redis
 
 import (
-	"easy-video-net/global/config"
 	"fmt"
+	"simple-video-net/global/config"
+
 	"github.com/go-redis/redis"
 )
 

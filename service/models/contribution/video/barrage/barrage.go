@@ -1,9 +1,10 @@
 package barrage
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/users"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/users"
+
 	"gorm.io/datatypes"
 )
 
@@ -27,7 +28,7 @@ func (Barrage) TableName() string {
 	return "lv_video_contribution_barrage"
 }
 
-//VideoInfo Temporarily add a video model to solve the dependency loop
+// VideoInfo Temporarily add a video model to solve the dependency loop
 type VideoInfo struct {
 	common.PublicModel
 	Uid   uint           `json:"uid" gorm:"uid"`
@@ -48,7 +49,7 @@ func (b *Barrage) Create() bool {
 	return true
 }
 
-//GetVideoBarrageByID Enquire about video pop-ups
+// GetVideoBarrageByID Enquire about video pop-ups
 func (bl *BarragesList) GetVideoBarrageByID(id uint) bool {
 	err := global.Db.Where("video_id", id).Find(&bl).Error
 	if err != nil {

@@ -1,9 +1,10 @@
 package users
 
 import (
-	"easy-video-net/controllers"
-	receive "easy-video-net/interaction/receive/users"
-	"easy-video-net/logic/users"
+	"simple-video-net/controllers"
+	receive "simple-video-net/interaction/receive/users"
+	"simple-video-net/logic/users"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,14 +12,14 @@ type UserControllers struct {
 	controllers.BaseControllers
 }
 
-//GetUserInfo 
+// GetUserInfo
 func (us UserControllers) GetUserInfo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.GetUserInfo(uid)
 	us.Response(ctx, results, err)
 }
 
-//SetUserInfo  
+// SetUserInfo
 func (us UserControllers) SetUserInfo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.SetUserInfoReceiveStruct)); err == nil {
@@ -27,7 +28,7 @@ func (us UserControllers) SetUserInfo(ctx *gin.Context) {
 	}
 }
 
-//DetermineNameExists 
+// DetermineNameExists
 func (us UserControllers) DetermineNameExists(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DetermineNameExistsStruct)); err == nil {
@@ -36,7 +37,7 @@ func (us UserControllers) DetermineNameExists(ctx *gin.Context) {
 	}
 }
 
-//UpdateAvatar 
+// UpdateAvatar
 func (us UserControllers) UpdateAvatar(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.UpdateAvatarStruct)); err == nil {
@@ -45,14 +46,14 @@ func (us UserControllers) UpdateAvatar(ctx *gin.Context) {
 	}
 }
 
-//GetLiveData 
+// GetLiveData
 func (us UserControllers) GetLiveData(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.GetLiveData(uid)
 	us.Response(ctx, results, err)
 }
 
-//SaveLiveData 
+// SaveLiveData
 func (us UserControllers) SaveLiveData(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.SaveLiveDataReceiveStruct)); err == nil {
@@ -61,14 +62,14 @@ func (us UserControllers) SaveLiveData(ctx *gin.Context) {
 	}
 }
 
-//SendEmailVerificationCodeByChangePassword 
+// SendEmailVerificationCodeByChangePassword
 func (us UserControllers) SendEmailVerificationCodeByChangePassword(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.SendEmailVerificationCodeByChangePassword(uid)
 	us.Response(ctx, results, err)
 }
 
-//ChangePassword 
+// ChangePassword
 func (us UserControllers) ChangePassword(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.ChangePasswordReceiveStruct)); err == nil {
@@ -77,7 +78,7 @@ func (us UserControllers) ChangePassword(ctx *gin.Context) {
 	}
 }
 
-//Attention 
+// Attention
 func (us UserControllers) Attention(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.AttentionReceiveStruct)); err == nil {
@@ -86,7 +87,7 @@ func (us UserControllers) Attention(ctx *gin.Context) {
 	}
 }
 
-//CreateFavorites 
+// CreateFavorites
 func (us UserControllers) CreateFavorites(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.CreateFavoritesReceiveStruct)); err == nil {
@@ -95,7 +96,7 @@ func (us UserControllers) CreateFavorites(ctx *gin.Context) {
 	}
 }
 
-//DeleteFavorites 
+// DeleteFavorites
 func (us UserControllers) DeleteFavorites(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DeleteFavoritesReceiveStruct)); err == nil {
@@ -104,14 +105,14 @@ func (us UserControllers) DeleteFavorites(ctx *gin.Context) {
 	}
 }
 
-//GetFavoritesList 
+// GetFavoritesList
 func (us UserControllers) GetFavoritesList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.GetFavoritesList(uid)
 	us.Response(ctx, results, err)
 }
 
-//FavoriteVideo 
+// FavoriteVideo
 func (us UserControllers) FavoriteVideo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.FavoriteVideoReceiveStruct)); err == nil {
@@ -120,7 +121,7 @@ func (us UserControllers) FavoriteVideo(ctx *gin.Context) {
 	}
 }
 
-//GetFavoritesListByFavoriteVideo 
+// GetFavoritesListByFavoriteVideo
 func (us UserControllers) GetFavoritesListByFavoriteVideo(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetFavoritesListByFavoriteVideoReceiveStruct)); err == nil {
@@ -129,7 +130,7 @@ func (us UserControllers) GetFavoritesListByFavoriteVideo(ctx *gin.Context) {
 	}
 }
 
-//GetFavoriteVideoList 
+// GetFavoriteVideoList
 func (us UserControllers) GetFavoriteVideoList(ctx *gin.Context) {
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetFavoriteVideoListReceiveStruct)); err == nil {
 		results, err := users.GetFavoriteVideoList(rec)
@@ -137,7 +138,7 @@ func (us UserControllers) GetFavoriteVideoList(ctx *gin.Context) {
 	}
 }
 
-//GetRecordList 
+// GetRecordList
 func (us UserControllers) GetRecordList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetRecordListReceiveStruct)); err == nil {
@@ -146,14 +147,14 @@ func (us UserControllers) GetRecordList(ctx *gin.Context) {
 	}
 }
 
-//ClearRecord 
+// ClearRecord
 func (us UserControllers) ClearRecord(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.ClearRecord(uid)
 	us.Response(ctx, results, err)
 }
 
-//DeleteRecordByID 
+// DeleteRecordByID
 func (us UserControllers) DeleteRecordByID(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DeleteRecordByIDReceiveStruct)); err == nil {
@@ -162,7 +163,7 @@ func (us UserControllers) DeleteRecordByID(ctx *gin.Context) {
 	}
 }
 
-//GetNoticeList 
+// GetNoticeList
 func (us UserControllers) GetNoticeList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetNoticeListReceiveStruct)); err == nil {
@@ -171,14 +172,14 @@ func (us UserControllers) GetNoticeList(ctx *gin.Context) {
 	}
 }
 
-//GetChatList 
+// GetChatList
 func (us UserControllers) GetChatList(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	results, err := users.GetChatList(uid)
 	us.Response(ctx, results, err)
 }
 
-//GetChatHistoryMsg 
+// GetChatHistoryMsg
 func (us UserControllers) GetChatHistoryMsg(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.GetChatHistoryMsgStruct)); err == nil {
@@ -187,7 +188,7 @@ func (us UserControllers) GetChatHistoryMsg(ctx *gin.Context) {
 	}
 }
 
-//PersonalLetter 
+// PersonalLetter
 func (us UserControllers) PersonalLetter(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.PersonalLetterReceiveStruct)); err == nil {
@@ -196,7 +197,7 @@ func (us UserControllers) PersonalLetter(ctx *gin.Context) {
 	}
 }
 
-//DeleteChatItem 
+// DeleteChatItem
 func (us UserControllers) DeleteChatItem(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	if rec, err := controllers.ShouldBind(ctx, new(receive.DeleteChatItemReceiveStruct)); err == nil {

@@ -3,23 +3,22 @@ package oss
 import (
 	"crypto/hmac"
 	"crypto/sha1"
-	"easy-video-net/global"
-	"easy-video-net/models/config/uploadMethod"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"hash"
+	"io"
+	"simple-video-net/global"
+	"simple-video-net/models/config/uploadMethod"
+	"time"
+
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	sts20150401 "github.com/alibabacloud-go/sts-20150401/v2/client"
 	util "github.com/alibabacloud-go/tea-utils/v2/service"
 	"github.com/alibabacloud-go/tea/tea"
-	"hash"
-	"io"
-	"time"
 )
 
-
 var accessKeyId = global.Config.AliyunOss.AccessKeyId
-
 
 var accessKeySecret = global.Config.AliyunOss.AccessKeySecret
 
@@ -35,8 +34,7 @@ var durationSeconds = global.Config.AliyunOss.DurationSeconds
 
 var endpoint = global.Config.AliyunOss.Endpoint
 
-
-//var uploadDir string = "upload/img/user/liveCover/"
+// var uploadDir string = "upload/img/user/liveCover/"
 var expireTime int64 = 30
 
 type ConfigStruct struct {
@@ -119,10 +117,10 @@ func GetPolicyToken(_interface string) (results interface{}, err error) {
 // * @param accessKeySecret
 // * @return Client
 // * @throws Exception
-///**
+// /**
 func CreateClient(accessKeyId *string, accessKeySecret *string) (_result *sts20150401.Client, _err error) {
 	config := &openapi.Config{
-		AccessKeyId: accessKeyId,
+		AccessKeyId:     accessKeyId,
 		AccessKeySecret: accessKeySecret,
 	}
 	config.Endpoint = tea.String(endpoint)

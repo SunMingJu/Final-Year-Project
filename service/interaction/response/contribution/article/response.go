@@ -1,18 +1,19 @@
 package response
 
 import (
-	"easy-video-net/consts"
-	"easy-video-net/models/common"
-	"easy-video-net/models/contribution/article"
-	"easy-video-net/models/contribution/article/classification"
-	"easy-video-net/models/users"
-	"easy-video-net/utils/conversion"
 	"encoding/json"
-	"github.com/dlclark/regexp2"
+	"simple-video-net/consts"
+	"simple-video-net/models/common"
+	"simple-video-net/models/contribution/article"
+	"simple-video-net/models/contribution/article/classification"
+	"simple-video-net/models/users"
+	"simple-video-net/utils/conversion"
 	"time"
+
+	"github.com/dlclark/regexp2"
 )
 
-//Comments Info
+// Comments Info
 type commentsInfo struct {
 	ID              uint             `json:"id"`
 	CommentID       uint             `json:"comment_id"`
@@ -67,7 +68,7 @@ type GetArticleContributionCommentsResponseStruct struct {
 	CommentsNumber int              `json:"comments_number"`
 }
 
-//Getting the hierarchical structure
+// Getting the hierarchical structure
 func (l commentsInfoList) getChildComment() commentsInfoList {
 	topList := commentsInfoList{}
 	for _, v := range l {
@@ -79,7 +80,7 @@ func (l commentsInfoList) getChildComment() commentsInfoList {
 	return commentsInfoListSecondTree(topList, l)
 }
 
-//Spanning Tree Structure
+// Spanning Tree Structure
 func commentsInfoListTree(menus commentsInfoList, allData commentsInfoList) commentsInfoList {
 	//Cycle through all first level menus
 	for k, v := range menus {
@@ -279,7 +280,7 @@ func GetArticleContributionCommentsResponse(vc *article.ArticlesContribution) Ge
 	return response
 }
 
-//ArticleClassificationInfo 
+// ArticleClassificationInfo
 type ArticleClassificationInfo struct {
 	ID       uint                          `json:"id"`
 	AID      uint                          `json:"aid"`
@@ -289,7 +290,7 @@ type ArticleClassificationInfo struct {
 
 type ArticleClassificationInfoList []*ArticleClassificationInfo
 
-//Getting the hierarchical structure
+// Getting the hierarchical structure
 func (l ArticleClassificationInfoList) getChildComment() ArticleClassificationInfoList {
 	topList := ArticleClassificationInfoList{}
 	for _, v := range l {
@@ -306,7 +307,7 @@ func (l ArticleClassificationInfoList) getChildComment() ArticleClassificationIn
 	return classificationInfoListTree(topList, l)
 }
 
-//Spanning Tree Structure
+// Spanning Tree Structure
 func classificationInfoListTree(menus ArticleClassificationInfoList, allData ArticleClassificationInfoList) ArticleClassificationInfoList {
 	//Cycle through all first level menus
 	for k, v := range menus {

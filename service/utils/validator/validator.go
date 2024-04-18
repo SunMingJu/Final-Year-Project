@@ -5,14 +5,15 @@ package validator
 //将验证器错误翻译成中文
 
 import (
-	"easy-video-net/utils/response"
+	"regexp"
+	"simple-video-net/utils/response"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/locales/zh"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	zhTranslations "github.com/go-playground/validator/v10/translations/zh"
-	"regexp"
 )
 
 var ValidTrans ut.Translator
@@ -42,7 +43,7 @@ func CheckParams(ctx *gin.Context, err error) {
 	}
 }
 
-//VerifyMobileFormat 
+// VerifyMobileFormat
 func VerifyMobileFormat(mobileNum string) bool {
 	regular := "^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$"
 	reg := regexp.MustCompile(regular)

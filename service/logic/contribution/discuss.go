@@ -1,14 +1,14 @@
 package contribution
 
 import (
-	receive "easy-video-net/interaction/receive/contribution/discuss"
-	response "easy-video-net/interaction/response/contribution/discuss"
-	"easy-video-net/models/contribution/article"
-	articleComments "easy-video-net/models/contribution/article/comments"
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/contribution/video/barrage"
-	videoComments "easy-video-net/models/contribution/video/comments"
 	"fmt"
+	receive "simple-video-net/interaction/receive/contribution/discuss"
+	response "simple-video-net/interaction/response/contribution/discuss"
+	"simple-video-net/models/contribution/article"
+	articleComments "simple-video-net/models/contribution/article/comments"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/contribution/video/barrage"
+	videoComments "simple-video-net/models/contribution/video/comments"
 )
 
 func GetDiscussVideoList(data *receive.GetDiscussVideoListReceiveStruct, uid uint) (results interface{}, err error) {

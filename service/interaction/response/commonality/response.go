@@ -1,14 +1,15 @@
 package commonality
 
 import (
-	"easy-video-net/global"
-	receive "easy-video-net/interaction/receive/commonality"
-	"easy-video-net/models/contribution/video"
-	"easy-video-net/models/users"
-	"easy-video-net/utils/calculate"
-	"easy-video-net/utils/conversion"
-	sts20150401 "github.com/alibabacloud-go/sts-20150401/v2/client"
+	"simple-video-net/global"
+	receive "simple-video-net/interaction/receive/commonality"
+	"simple-video-net/models/contribution/video"
+	"simple-video-net/models/users"
+	"simple-video-net/utils/calculate"
+	"simple-video-net/utils/conversion"
 	"time"
+
+	sts20150401 "github.com/alibabacloud-go/sts-20150401/v2/client"
 )
 
 func UploadingMethodResponse(tp string) interface{} {
@@ -29,7 +30,7 @@ func UploadingDirResponse(dir string) interface{} {
 	}
 }
 
-//VideoInfo 
+// VideoInfo
 type VideoInfo struct {
 	ID            uint      `json:"id"`
 	Uid           uint      `json:"uid" `

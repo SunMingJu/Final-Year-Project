@@ -1,9 +1,9 @@
 package attention
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/users"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/users"
 )
 
 type Attention struct {
@@ -21,7 +21,7 @@ func (Attention) TableName() string {
 	return "lv_users_attention"
 }
 
-//Create 
+// Create
 func (at *Attention) Create() bool {
 	err := global.Db.Create(&at).Error
 	if err != nil {
@@ -30,7 +30,7 @@ func (at *Attention) Create() bool {
 	return true
 }
 
-//Delete 
+// Delete
 func (at *Attention) Delete() bool {
 	err := global.Db.Where("uid", at.Uid).Updates(&at).Error
 	if err != nil {
@@ -39,7 +39,7 @@ func (at *Attention) Delete() bool {
 	return true
 }
 
-//Attention 
+// Attention
 func (at *Attention) Attention(uid uint, aid uint) bool {
 	err := global.Db.Where(Attention{Uid: uid, AttentionID: aid}).Find(&at).Error
 	if at.ID > 0 {
@@ -56,7 +56,7 @@ func (at *Attention) Attention(uid uint, aid uint) bool {
 	return true
 }
 
-//IsAttention  
+// IsAttention
 func (at *Attention) IsAttention(uid uint, aid uint) bool {
 	_ = global.Db.Where(Attention{Uid: uid, AttentionID: aid}).Find(&at).Error
 	if at.ID > 0 {
@@ -66,7 +66,7 @@ func (at *Attention) IsAttention(uid uint, aid uint) bool {
 	}
 }
 
-//GetAttentionNum 
+// GetAttentionNum
 func (at *Attention) GetAttentionNum(uid uint) (*int64, error) {
 	num := new(int64)
 	err := global.Db.Model(at).Where(Attention{Uid: uid}).Count(num).Error
@@ -76,7 +76,7 @@ func (at *Attention) GetAttentionNum(uid uint) (*int64, error) {
 	return num, nil
 }
 
-//GetVermicelliNum 
+// GetVermicelliNum
 func (at *Attention) GetVermicelliNum(uid uint) (*int64, error) {
 	num := new(int64)
 	err := global.Db.Model(at).Where(Attention{AttentionID: uid}).Count(num).Error
@@ -86,7 +86,7 @@ func (at *Attention) GetVermicelliNum(uid uint) (*int64, error) {
 	return num, nil
 }
 
-//GetAttentionList 
+// GetAttentionList
 func (al *AttentionsList) GetAttentionList(uid uint) error {
 	err := global.Db.Where("uid", uid).Preload("AttentionUserInfo").Find(al).Error
 	if err != nil {
@@ -95,7 +95,7 @@ func (al *AttentionsList) GetAttentionList(uid uint) error {
 	return nil
 }
 
-//GetVermicelliList 
+// GetVermicelliList
 func (al *AttentionsList) GetVermicelliList(uid uint) error {
 	err := global.Db.Where("attention_id", uid).Preload("UserInfo").Find(al).Error
 	if err != nil {
@@ -104,7 +104,7 @@ func (al *AttentionsList) GetVermicelliList(uid uint) error {
 	return nil
 }
 
-//GetAttentionListByIdArr 
+// GetAttentionListByIdArr
 func (al *AttentionsList) GetAttentionListByIdArr(uid uint) (arr []uint, err error) {
 	arr = make([]uint, 0)
 	err = global.Db.Where("uid", uid).Find(al).Error

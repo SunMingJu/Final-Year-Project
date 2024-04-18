@@ -1,8 +1,8 @@
 package uploadMethod
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
 )
 
 type UploadMethod struct {
@@ -16,7 +16,7 @@ func (UploadMethod) TableName() string {
 	return "lv_upload_method"
 }
 
-//IsExistByField Determine if a user exists based on a field
+// IsExistByField Determine if a user exists based on a field
 func (um *UploadMethod) IsExistByField(field string, value any) bool {
 	err := global.Db.Where(field, value).Find(&um).Error
 	if err != nil {

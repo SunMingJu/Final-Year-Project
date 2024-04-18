@@ -1,19 +1,19 @@
 package contribution
 
 import (
-	"easy-video-net/consts"
-	receive "easy-video-net/interaction/receive/contribution/article"
-	response "easy-video-net/interaction/response/contribution/article"
-	"easy-video-net/logic/users/noticeSocket"
-	"easy-video-net/models/common"
-	"easy-video-net/models/contribution/article"
-	"easy-video-net/models/contribution/article/classification"
-	"easy-video-net/models/contribution/article/comments"
-	"easy-video-net/models/users/notice"
-	"easy-video-net/models/users/record"
-	"easy-video-net/utils/conversion"
 	"encoding/json"
 	"fmt"
+	"simple-video-net/consts"
+	receive "simple-video-net/interaction/receive/contribution/article"
+	response "simple-video-net/interaction/response/contribution/article"
+	"simple-video-net/logic/users/noticeSocket"
+	"simple-video-net/models/common"
+	"simple-video-net/models/contribution/article"
+	"simple-video-net/models/contribution/article/classification"
+	"simple-video-net/models/contribution/article/comments"
+	"simple-video-net/models/users/notice"
+	"simple-video-net/models/users/record"
+	"simple-video-net/utils/conversion"
 
 	"github.com/dlclark/regexp2"
 )
@@ -21,7 +21,7 @@ import (
 func CreateArticleContribution(data *receive.CreateArticleContributionReceiveStruct, uid uint) (results interface{}, err error) {
 	//Make content judgements
 	for _, v := range data.Label {
-		vRune := []rune(v) 
+		vRune := []rune(v)
 		if len(vRune) > 7 {
 			return nil, fmt.Errorf("Label length cannot be greater than 7 bits")
 		}

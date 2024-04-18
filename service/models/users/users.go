@@ -2,15 +2,16 @@ package users
 
 import (
 	"crypto/md5"
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/users/liveInfo"
 	"fmt"
-	"gorm.io/datatypes"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/users/liveInfo"
 	"time"
+
+	"gorm.io/datatypes"
 )
 
-//User 表结构体
+// User 表结构体
 type User struct {
 	common.PublicModel
 	Email     string         `json:"email" gorm:"email"`
@@ -33,7 +34,7 @@ func (User) TableName() string {
 	return "lv_users"
 }
 
-//Update 
+// Update
 func (us *User) Update() bool {
 	err := global.Db.Where("id", us.ID).Updates(&us).Error
 	if err != nil {
@@ -42,7 +43,7 @@ func (us *User) Update() bool {
 	return true
 }
 
-//UpdatePureZero 
+// UpdatePureZero
 func (us *User) UpdatePureZero(user map[string]interface{}) bool {
 	err := global.Db.Model(&us).Where("id", us.ID).Updates(user).Error
 	if err != nil {
@@ -51,7 +52,7 @@ func (us *User) UpdatePureZero(user map[string]interface{}) bool {
 	return true
 }
 
-//Create 
+// Create
 func (us *User) Create() bool {
 	err := global.Db.Create(&us).Error
 	if err != nil {
@@ -60,7 +61,7 @@ func (us *User) Create() bool {
 	return true
 }
 
-//IsExistByField 
+// IsExistByField
 func (us *User) IsExistByField(field string, value any) bool {
 	err := global.Db.Where(field, value).Find(&us).Error
 	if err != nil {
@@ -72,7 +73,7 @@ func (us *User) IsExistByField(field string, value any) bool {
 	return true
 }
 
-//IfPasswordCorrect 
+// IfPasswordCorrect
 func (us *User) IfPasswordCorrect(password string) bool {
 	passwordImport := fmt.Sprintf("%s%s%s", us.Salt, password, us.Salt)
 	passwordImport = fmt.Sprintf("%x", md5.Sum([]byte(passwordImport)))
@@ -82,12 +83,12 @@ func (us *User) IfPasswordCorrect(password string) bool {
 	return true
 }
 
-//Find  
+// Find
 func (us *User) Find(id uint) {
 	_ = global.Db.Where("id", id).Find(&us).Error
 }
 
-//FindLiveInfo 
+// FindLiveInfo
 func (us *User) FindLiveInfo(id uint) {
 	_ = global.Db.Where("id", id).Preload("LiveInfo").Find(&us).Error
 }

@@ -1,7 +1,7 @@
 package article
 
 import (
-	"easy-video-net/models/common"
+	"simple-video-net/models/common"
 	"time"
 )
 

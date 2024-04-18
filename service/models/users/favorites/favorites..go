@@ -1,11 +1,12 @@
 package favorites
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/users"
-	"easy-video-net/models/users/collect"
 	"fmt"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/users"
+	"simple-video-net/models/users/collect"
+
 	"gorm.io/datatypes"
 )
 
@@ -27,7 +28,7 @@ func (Favorites) TableName() string {
 	return "lv_users_favorites"
 }
 
-//Find 
+// Find
 func (f *Favorites) Find(id uint) bool {
 	err := global.Db.Where("id", id).Preload("CollectList").Order("created_at desc").Find(&f).Error
 	if err != nil {
@@ -36,7 +37,7 @@ func (f *Favorites) Find(id uint) bool {
 	return true
 }
 
-//Create 
+// Create
 func (f *Favorites) Create() bool {
 	err := global.Db.Create(&f).Error
 	if err != nil {
@@ -45,7 +46,7 @@ func (f *Favorites) Create() bool {
 	return true
 }
 
-//AloneTitleCreate 
+// AloneTitleCreate
 func (f *Favorites) AloneTitleCreate() bool {
 	err := global.Db.Create(&f).Error
 	if err != nil {
@@ -54,7 +55,7 @@ func (f *Favorites) AloneTitleCreate() bool {
 	return true
 }
 
-//Update 
+// Update
 func (f *Favorites) Update() bool {
 	err := global.Db.Updates(&f).Error
 	if err != nil {
@@ -63,7 +64,7 @@ func (f *Favorites) Update() bool {
 	return true
 }
 
-//Delete 
+// Delete
 func (f *Favorites) Delete(id uint, uid uint) error {
 	err := global.Db.Where("id", id).Find(&f).Error
 	if err != nil {

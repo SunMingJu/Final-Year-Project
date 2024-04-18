@@ -1,12 +1,12 @@
 package article
 
 import (
-	"easy-video-net/global"
-	"easy-video-net/models/common"
-	"easy-video-net/models/contribution/article/classification"
-	"easy-video-net/models/contribution/article/comments"
-	"easy-video-net/models/contribution/article/like"
-	"easy-video-net/models/users"
+	"simple-video-net/global"
+	"simple-video-net/models/common"
+	"simple-video-net/models/contribution/article/classification"
+	"simple-video-net/models/contribution/article/comments"
+	"simple-video-net/models/contribution/article/like"
+	"simple-video-net/models/users"
 	"time"
 
 	"gorm.io/datatypes"
@@ -41,7 +41,7 @@ func (ArticlesContribution) TableName() string {
 	return "lv_article_contribution"
 }
 
-//Create Add Data
+// Create Add Data
 func (vc *ArticlesContribution) Create() bool {
 	err := global.Db.Create(&vc).Error
 	if err != nil {
@@ -50,7 +50,7 @@ func (vc *ArticlesContribution) Create() bool {
 	return true
 }
 
-//GetList Query Data Type
+// GetList Query Data Type
 func (l *ArticlesContributionList) GetList(info common.PageInfo) bool {
 	err := global.Db.Preload("Likes").Preload("Classification").Preload("UserInfo").Preload("Comments").Limit(info.Size).Offset((info.Page - 1) * info.Size).Order("created_at desc").Find(l).Error
 	if err != nil {
@@ -67,7 +67,7 @@ func (vc *ArticlesContribution) Update(info map[string]interface{}) bool {
 	return true
 }
 
-//GetListByUid 查single user
+// GetListByUid 查single user
 func (l *ArticlesContributionList) GetListByUid(uid uint) bool {
 	err := global.Db.Where("uid", uid).Preload("Likes").Preload("Classification").Preload("Comments").Order("created_at desc").Find(l).Error
 	if err != nil {
@@ -76,7 +76,7 @@ func (l *ArticlesContributionList) GetListByUid(uid uint) bool {
 	return true
 }
 
-//GetAllCount Query the number of all articles
+// GetAllCount Query the number of all articles
 func (l *ArticlesContributionList) GetAllCount(cu *int64) bool {
 	err := global.Db.Find(l).Count(cu).Error
 	if err != nil {
@@ -85,7 +85,7 @@ func (l *ArticlesContributionList) GetAllCount(cu *int64) bool {
 	return true
 }
 
-//GetInfoByID Search for individual articles
+// GetInfoByID Search for individual articles
 func (vc *ArticlesContribution) GetInfoByID(ID uint) bool {
 	err := global.Db.Where("id", ID).Preload("Likes").Preload("UserInfo").Preload("Classification").Preload("Comments", func(db *gorm.DB) *gorm.DB {
 		return db.Preload("UserInfo").Order("created_at desc")
@@ -96,7 +96,7 @@ func (vc *ArticlesContribution) GetInfoByID(ID uint) bool {
 	return true
 }
 
-//GetArticleComments Get Comments
+// GetArticleComments Get Comments
 func (vc *ArticlesContribution) GetArticleComments(ID uint, info common.PageInfo) bool {
 	err := global.Db.Where("id", ID).Preload("Likes").Preload("Classification").Preload("Comments", func(db *gorm.DB) *gorm.DB {
 		return db.Preload("UserInfo").Order("created_at desc").Limit(info.Size).Offset((info.Page - 1) * info.Size)
@@ -107,7 +107,7 @@ func (vc *ArticlesContribution) GetArticleComments(ID uint, info common.PageInfo
 	return true
 }
 
-//GetArticleBySpace 
+// GetArticleBySpace
 func (l *ArticlesContributionList) GetArticleBySpace(id uint) error {
 	err := global.Db.Where("uid", id).Preload("Likes").Preload("Classification").Preload("Comments").Order("created_at desc").Find(l).Error
 	if err != nil {
@@ -116,7 +116,7 @@ func (l *ArticlesContributionList) GetArticleBySpace(id uint) error {
 	return nil
 }
 
-//GetArticleManagementList 
+// GetArticleManagementList
 func (l *ArticlesContributionList) GetArticleManagementList(info common.PageInfo, id uint) error {
 	err := global.Db.Where("uid", id).Preload("Likes").Preload("Classification").Preload("Comments").Limit(info.Size).Offset((info.Page - 1) * info.Size).Order("created_at desc").Find(l).Error
 	if err != nil {
@@ -140,7 +140,7 @@ func (vc *ArticlesContribution) Delete(id uint, uid uint) bool {
 	return true
 }
 
-//GetDiscussArticleCommentList 
+// GetDiscussArticleCommentList
 func (l *ArticlesContributionList) GetDiscussArticleCommentList(id uint) error {
 	err := global.Db.Where("uid", id).Preload("Comments").Find(&l).Error
 	return err
