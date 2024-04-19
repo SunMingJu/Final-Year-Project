@@ -14,6 +14,7 @@ import (
 	"simple-video-net/models/contribution/video/barrage"
 	"simple-video-net/models/contribution/video/comments"
 	"simple-video-net/models/contribution/video/like"
+	transcodingTask "simple-video-net/models/sundry/transcoding"
 	"simple-video-net/models/users/attention"
 	"simple-video-net/models/users/collect"
 	"simple-video-net/models/users/favorites"
@@ -21,10 +22,12 @@ import (
 	"simple-video-net/models/users/record"
 	"simple-video-net/utils/calculate"
 	"simple-video-net/utils/conversion"
+	"simple-video-net/utils/oss"
 	"math"
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct, uid uint) (results interface{}, err error) {
@@ -37,38 +40,51 @@ func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct,
 		Src: data.Cover,
 		Tp:  data.CoverUploadType,
 	})
-	width, height, err := calculate.GetVideoResolution(data.Video)
-	if err != nil {
-		global.Logger.Error("Failed to get video resolution")
-		return nil, fmt.Errorf("Failed to get video resolution")
-		return
+	var width, height int
+	if data.VideoUploadType == "local" {
+		//If uploading locally
+		width, height, err = calculate.GetVideoResolution(data.Video)
+		if err != nil {
+			global.Logger.Error("Failed to get video resolution")
+			return nil, fmt.Errorf("Failed to get video resolution")
+		}
+	} else {
+		mediaInfo, err := oss.GetMediaInfo(data.Media)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to obtain video information,try again later")
+		}
+		width, _ = strconv.Atoi(*mediaInfo.Body.MediaInfo.FileInfoList[0].FileBasicInfo.Width)
+		height, _ = strconv.Atoi(*mediaInfo.Body.MediaInfo.FileInfoList[0].FileBasicInfo.Height)
 	}
 	videoContribution := &video.VideosContribution{
-		Uid:        uid,
-		Title:      data.Title,
-		Cover:      coverImg,
-		Reprinted:  conversion.BoolTurnInt8(*data.Reprinted),
-		Timing:     conversion.BoolTurnInt8(*data.Timing),
-		TimingTime: data.TimingTime,
-		Label:      conversion.MapConversionString(data.Label),
-		Introduce:  data.Introduce,
-		Heat:       0,
+		Uid:       uid,
+		Title:     data.Title,
+		Cover:     coverImg,
+		Reprinted: conversion.BoolTurnInt8(*data.Reprinted),
+		Label:     conversion.MapConversionString(data.Label),
+		Introduce: data.Introduce,
+		MediaID:   *data.Media,
+		Heat:      0,
 	}
+	// Define a list of transcoding resolutions
+	resolutions := []int{1080, 720, 480, 360}
 	if height >= 1080 {
+		resolutions = resolutions[1:]
 		videoContribution.Video = videoSrc
 	} else if height >= 720 && height < 1080 {
+		resolutions = resolutions[2:]
 		videoContribution.Video720p = videoSrc
 	} else if height >= 480 && height < 720 {
+		resolutions = resolutions[3:]
 		videoContribution.Video480p = videoSrc
 	} else if height >= 360 && height < 480 {
+		resolutions = resolutions[4:]
 		videoContribution.Video360p = videoSrc
 	} else {
 		global.Logger.Error("The uploaded video resolution is too low")
 		return nil, fmt.Errorf("The uploaded video resolution is too low")
 	}
-	if *data.Timing {
-		//Push related after posting a video (to be developed)
-	}
+
 	if !videoContribution.Create() {
 		return nil, fmt.Errorf("fail to save")
 	}
@@ -76,10 +92,10 @@ func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct,
 	go func(width, height int, video *video.VideosContribution) {
 		//If the uploaded video is local, transcoding will begin.
 		if data.VideoUploadType == "local" {
+			//Local ffmpeg processing
 			inputFile := data.Video
 			sr := strings.Split(inputFile, ".")
-			// Define a list of transcoding resolutions
-			resolutions := []int{1080, 720, 480, 360}
+		
 			for _, r := range resolutions {
 				//Calculating the transcoded width and height requires rounding
 				w := int(math.Ceil(float64(r) / float64(height) * float64(width)))
@@ -113,20 +129,65 @@ func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct,
 					Src: dst,
 					Tp:  "local",
 				})
-				//After successful transcoding
-				if r == 1080 {
+				switch r {
+				case 1080:
 					videoContribution.Video = src
-				} else if r == 720 {
+				case 720:
 					videoContribution.Video720p = src
-				} else if r == 480 {
+				case 480:
 					videoContribution.Video480p = src
-				} else if r == 360 {
+				case 360:
 					videoContribution.Video360p = src
 				}
 				if !videoContribution.Save() {
 					global.Logger.Errorf("video :%s : Transcode%d*%dAfter saving the video to the database failed", inputFile, w, h)
 				}
 				global.Logger.Infof("video :%s : Transcode%d*%D success", inputFile, w, h)
+			}
+			} else {
+			inputFile := data.Video
+			sr := strings.Split(inputFile, ".")
+			//Cloud transcoding processing
+			for _, r := range resolutions {
+				//Get transcoding template
+				var template string
+				dst := sr[0] + fmt.Sprintf("_output_%dp."+sr[1], r)
+				src, _ := json.Marshal(common.Img{
+					Src: dst,
+					Tp:  data.VideoUploadType,
+				})
+				switch r {
+				case 1080:
+					template = global.Config.AliyunOss.TranscodingTemplate1080p
+					videoContribution.Video = src
+				case 720:
+					template = global.Config.AliyunOss.TranscodingTemplate720p
+					videoContribution.Video720p = src
+				case 480:
+					template = global.Config.AliyunOss.TranscodingTemplate480p
+					videoContribution.Video480p = src
+				case 360:
+					template = global.Config.AliyunOss.TranscodingTemplate360p
+					videoContribution.Video360p = src
+				}
+				outputUrl, _ := conversion.SwitchIngStorageFun(data.VideoUploadType, dst)
+				taskName := "Transcode : " + *data.Media + "time :" + time.Now().Format("2006.01.02 15:04:05") + " template : " + template
+				jobInfo, err := oss.SubmitTranscodeJob(taskName, video.MediaID, outputUrl, template)
+				if err != nil {
+					global.Logger.Errorf("Video cloud transcoding : %s fail err : %s", outputUrl, err.Error())
+					continue
+				}
+				task := &transcodingTask.TranscodingTask{
+					TaskID:     *jobInfo.TranscodeParentJob.ParentJobId,
+					VideoID:    video.ID,
+					Resolution: r,
+					Dst:        dst,
+					Status:     0,
+					Type:       transcodingTask.Aliyun,
+				}
+				if !task.AddTask() {
+					global.Logger.Errorf("Video cloud transcoding task name: %s Video tasks later Failed to save to database", taskName)
+				}
 			}
 		}
 	}(width, height, videoContribution)
