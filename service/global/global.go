@@ -21,7 +21,7 @@ func init() {
 
 var (
 	Logger  *logrus.Logger
-	Config  *config.ConfigStruct
+	Config  *config.Info
 	Db      *gorm.DB
 	RedisDb *redis.Client
 )
