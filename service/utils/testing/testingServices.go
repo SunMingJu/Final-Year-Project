@@ -13,9 +13,9 @@ func LiveSeverTesting() {
 	//Get the live service port address
 	var liveConfig = config.Config.LiveConfig
 
-	ipPort := CheckPortsAsLocalHost(liveConfig.IP, []string{"8090", "7001"})
+	ipPort := CheckPortsAsLocalHost(liveConfig.IP, []string{liveConfig.RTMP, liveConfig.FLV, liveConfig.Api, liveConfig.HLS})
 	if len(ipPort) == 0 {
-		global.Logger.Info("开启直播")
+		global.Logger.Info("Start live broadcast")
 		err := live.Start()
 		if err != nil {
 			return
@@ -36,7 +36,7 @@ func CheckPortsAsLocalHost(ip string, Ports []string) []string {
 			global.Logger.Warn(ipPort, "Port not open(fail)!")
 		} else {
 			if conn != nil {
-				global.Logger.Info(ipPort, ipPort, "Port is open(success)!")
+				
 				err := conn.Close()
 				if err != nil {
 					return nil

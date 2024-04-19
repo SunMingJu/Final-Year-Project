@@ -9,7 +9,7 @@ import (
 	"hash"
 	"io"
 	"simple-video-net/global"
-	"simple-video-net/models/config/uploadMethod"
+	"simple-video-net/models/config/upload"
 	"time"
 
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
@@ -58,7 +58,7 @@ type PolicyToken struct {
 }
 
 func GetPolicyToken(_interface string) (results interface{}, err error) {
-	method := new(uploadMethod.UploadMethod)
+	method := new(upload.Upload)
 	if !method.IsExistByField("interface", _interface) {
 		return nil, fmt.Errorf("Upload interface does not exist")
 	}

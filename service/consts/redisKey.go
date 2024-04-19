@@ -15,8 +15,6 @@ const (
 	*/
 	LiveRoomHistoricalBarrage = "liveRoomHistoricalBarrage_"
 
-	//LiveRoom broadcasting room
-	LiveRoom = "liveRoom_"
 	//VideoWatchByID Watch the video
 	VideoWatchByID = "videoWatchBy_"
 )
