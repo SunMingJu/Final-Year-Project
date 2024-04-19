@@ -1,12 +1,13 @@
-package chatByUserSocket
+package chat
 
 import (
 	"encoding/json"
+	"fmt"
 	"simple-video-net/consts"
 	"simple-video-net/global"
 	receive "simple-video-net/interaction/receive/socket"
 	socketResponse "simple-video-net/interaction/response/socket"
-	"simple-video-net/logic/users/chatSocket"
+	userLogic "simple-video-net/logic/users"
 	userModel "simple-video-net/models/users"
 	"simple-video-net/models/users/chat/chatList"
 	"simple-video-net/models/users/notice"
@@ -16,7 +17,6 @@ import (
 )
 
 type Engine struct {
-	//video room
 	UserMapChannel map[uint]*UserChannel
 
 	Register     chan *UserChannel
@@ -31,8 +31,8 @@ type ChanInfo struct {
 // UserChannel
 type UserChannel struct {
 	UserInfo *userModel.User
-	Tid      uint
 	Socket   *websocket.Conn
+	ChatList map[uint]*websocket.Conn
 	MsgList  chan ChanInfo
 }
 
@@ -50,31 +50,26 @@ func (e *Engine) Start() {
 		case registerMsg := <-e.Register:
 			//Add Member
 			e.UserMapChannel[registerMsg.UserInfo.ID] = registerMsg
-			//Clear unread messages
+			//Perform unread message notification
 			cl := new(chatList.ChatsListInfo)
-			err := cl.UnreadEmpty(registerMsg.UserInfo.ID, registerMsg.Tid)
-			//Add Online Record
-			if _, ok := chatSocket.Severe.UserMapChannel[registerMsg.UserInfo.ID]; ok {
-				//Chatting with someone online
-				chatSocket.Severe.UserMapChannel[registerMsg.UserInfo.ID].ChatList[registerMsg.Tid] = registerMsg.Socket
+			unreadNum := cl.GetUnreadNumber(registerMsg.UserInfo.ID)
+			if *unreadNum > 0 {
+				//Unread Messages Direct Push Chat List and Records
+				list, err := userLogic.GetChatList(registerMsg.UserInfo.ID)
+				if err != nil {
+					fmt.Println("enquiry error")
+					return
+				}
+				response.SuccessWs(registerMsg.Socket, consts.ChatOnlineUnreadNotice, list)
 			}
-			if err != nil {
-				global.Logger.Error("uid %d tid %d Failed to clear the number of unread messages", registerMsg.UserInfo.ID, registerMsg.Tid)
-			}
-
 		case cancellationMsg := <-e.Cancellation:
 			//Delete member
 			delete(e.UserMapChannel, cancellationMsg.UserInfo.ID)
-			//Delete Online Record
-			if _, ok := chatSocket.Severe.UserMapChannel[cancellationMsg.UserInfo.ID]; ok {
-				//Chatting with someone online
-				delete(chatSocket.Severe.UserMapChannel[cancellationMsg.UserInfo.ID].ChatList, cancellationMsg.Tid)
-			}
 		}
 	}
 }
 
-func CreateChatByUserSocket(uid uint, tid uint, conn *websocket.Conn) (err error) {
+func CreateChatSocket(uid uint, conn *websocket.Conn) (err error) {
 	//Creating a UserChannel
 	userChannel := new(UserChannel)
 	//Binding ws
@@ -82,14 +77,15 @@ func CreateChatByUserSocket(uid uint, tid uint, conn *websocket.Conn) (err error
 	user := &userModel.User{}
 	user.Find(uid)
 	userChannel.UserInfo = user
-	userChannel.Tid = tid
 	userChannel.MsgList = make(chan ChanInfo, 10)
+	userChannel.ChatList = make(map[uint]*websocket.Conn, 0)
 
 	Severe.Register <- userChannel
 
 	go userChannel.Read()
 	go userChannel.Writer()
 	return nil
+
 }
 
 // Writer Listening for write data
@@ -102,7 +98,7 @@ func (lre *UserChannel) Writer() {
 	}
 }
 
-// Read retrieve data
+// Read
 func (lre *UserChannel) Read() {
 	//Link broken for offline
 	defer func() {
@@ -125,8 +121,7 @@ func (lre *UserChannel) Read() {
 			response.ErrorWs(lre.Socket, "Message formatting error")
 		}
 		switch info.Type {
-		case "sendChatMsgText":
-			sendChatMsgText(lre, lre.UserInfo.ID, lre.Tid, info)
+
 		}
 	}
 }

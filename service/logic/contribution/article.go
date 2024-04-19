@@ -6,12 +6,12 @@ import (
 	"simple-video-net/consts"
 	receive "simple-video-net/interaction/receive/contribution/article"
 	response "simple-video-net/interaction/response/contribution/article"
-	"simple-video-net/logic/users/noticeSocket"
+	"simple-video-net/logic/users/notice"
 	"simple-video-net/models/common"
 	"simple-video-net/models/contribution/article"
 	"simple-video-net/models/contribution/article/classification"
 	"simple-video-net/models/contribution/article/comments"
-	"simple-video-net/models/users/notice"
+	noticeModel "easy-video-net/models/users/notice"
 	"simple-video-net/models/users/record"
 	"simple-video-net/utils/conversion"
 
@@ -86,7 +86,7 @@ func UpdateArticleContribution(data *receive.UpdateArticleContributionReceiveStr
 		"is_comments":       data.Comments,
 		"classification_id": data.ClassificationID,
 	}
-	//进行视频资料更新
+	//Update video data
 	if !articleInfo.Update(updateList) {
 		return nil, fmt.Errorf("Failed to update data")
 	}
@@ -123,7 +123,7 @@ func GetArticleContributionByID(data *receive.GetArticleContributionByIDReceiveS
 		return nil, fmt.Errorf("Enquiry Failure")
 	}
 	if uid > 0 {
-		//添加历史记录
+		//add history
 		rd := new(record.Record)
 		err = rd.AddArticleRecord(uid, data.ArticleID)
 		if err != nil {
@@ -160,9 +160,9 @@ func ArticlePostComment(data *receive.ArticlesPostCommentReceiveStruct, uid uint
 	}
 
 	//Socket push (when online)
-	if _, ok := noticeSocket.Severe.UserMapChannel[articleInfo.UserInfo.ID]; ok {
-		userChannel := noticeSocket.Severe.UserMapChannel[articleInfo.UserInfo.ID]
-		userChannel.NoticeMessage(notice.ArticleComment)
+	if _, ok := notice.Severe.UserMapChannel[articleInfo.UserInfo.ID]; ok {
+		userChannel := notice.Severe.UserMapChannel[articleInfo.UserInfo.ID]
+		userChannel.NoticeMessage(noticeModel.ArticleComment)
 	}
 
 	return "Publish Successfully", nil

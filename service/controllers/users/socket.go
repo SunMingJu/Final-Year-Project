@@ -1,9 +1,9 @@
 package users
 
 import (
-	"simple-video-net/logic/users/chatByUserSocket"
-	"simple-video-net/logic/users/chatSocket"
-	"simple-video-net/logic/users/noticeSocket"
+	"simple-video-net/logic/users/chat"
+	"simple-video-net/logic/users/chatUser"
+	"simple-video-net/logic/users/notice"
 	"simple-video-net/utils/response"
 	"strconv"
 
@@ -11,36 +11,36 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// NoticeSocket
-func (us UserControllers) NoticeSocket(ctx *gin.Context) {
+// notice
+func (us UserControllers) notice(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	conn, _ := ctx.Get("conn")
 	ws := conn.(*websocket.Conn)
-	err := noticeSocket.CreateNoticeSocket(uid, ws)
+	err := notice.Createnotice(uid, ws)
 	if err != nil {
 		response.ErrorWs(ws, "Failed to create notification socket")
 	}
 }
 
-// ChatSocket
-func (us UserControllers) ChatSocket(ctx *gin.Context) {
+// chatUser
+func (us UserControllers) chatUser(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	conn, _ := ctx.Get("conn")
 	ws := conn.(*websocket.Conn)
-	err := chatSocket.CreateChatSocket(uid, ws)
+	err := chatUser.CreatechatUser(uid, ws)
 	if err != nil {
 		response.ErrorWs(ws, "Failed to create chat socket")
 	}
 }
 
-func (us UserControllers) ChatByUserSocket(ctx *gin.Context) {
+func (us UserControllers) chat(ctx *gin.Context) {
 	uid := ctx.GetUint("uid")
 	conn, _ := ctx.Get("conn")
 	//Determine if a video socket room is created
 	tidQuery, _ := strconv.Atoi(ctx.Query("tid"))
 	tid := uint(tidQuery)
 	ws := conn.(*websocket.Conn)
-	err := chatByUserSocket.CreateChatByUserSocket(uid, tid, ws)
+	err := chat.Createchat(uid, tid, ws)
 	if err != nil {
 		response.ErrorWs(ws, "Failed to create user chat socket")
 	}

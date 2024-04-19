@@ -7,8 +7,8 @@ import (
 	"simple-video-net/global"
 	receive "simple-video-net/interaction/receive/contribution/video"
 	response "simple-video-net/interaction/response/contribution/video"
-	"simple-video-net/logic/contribution/videoSocket"
-	"simple-video-net/logic/users/noticeSocket"
+	"simple-video-net/logic/contribution/sokcet"
+	"simple-video-net/logic/users/notice"
 	"simple-video-net/models/common"
 	"simple-video-net/models/contribution/video"
 	"simple-video-net/models/contribution/video/barrage"
@@ -17,7 +17,7 @@ import (
 	"simple-video-net/models/users/attention"
 	"simple-video-net/models/users/collect"
 	"simple-video-net/models/users/favorites"
-	"simple-video-net/models/users/notice"
+	noticeModel "easy-video-net/models/users/notice"
 	"simple-video-net/models/users/record"
 	"simple-video-net/utils/conversion"
 	"strconv"
@@ -166,11 +166,11 @@ func SendVideoBarrage(data *receive.SendVideoBarrageReceiveStruct, uid uint) (re
 		return data, fmt.Errorf("Failed to send pop-up")
 	}
 	//socket message notification
-	res := videoSocket.ChanInfo{
-		Type: consts.VideoSocketTypeResponseBarrageNum,
+	res := sokcet.ChanInfo{
+		Type: consts.sokcetTypeResponseBarrageNum,
 		Data: nil,
 	}
-	for _, v := range videoSocket.Severe.VideoRoom[uint(videoID)] {
+	for _, v := range sokcet.Severe.VideoRoom[uint(videoID)] {
 		v.MsgList <- res
 	}
 
@@ -228,9 +228,9 @@ func VideoPostComment(data *receive.VideosPostCommentReceiveStruct, uid uint) (r
 	}
 
 	//Socket push (when online)
-	if _, ok := noticeSocket.Severe.UserMapChannel[videoInfo.UserInfo.ID]; ok {
-		userChannel := noticeSocket.Severe.UserMapChannel[videoInfo.UserInfo.ID]
-		userChannel.NoticeMessage(notice.VideoComment)
+	if _, ok := notice.Severe.UserMapChannel[videoInfo.UserInfo.ID]; ok {
+		userChannel := notice.Severe.UserMapChannel[videoInfo.UserInfo.ID]
+		userChannel.NoticeMessage(noticeModel.VideoComment)
 	}
 
 	return "Publish Successfully", nil
@@ -272,9 +272,9 @@ func LikeVideo(data *receive.LikeVideoReceiveStruct, uid uint) (results interfac
 	}
 
 	//Socket push (when online)
-	if _, ok := noticeSocket.Severe.UserMapChannel[videoInfo.UserInfo.ID]; ok {
-		userChannel := noticeSocket.Severe.UserMapChannel[videoInfo.UserInfo.ID]
-		userChannel.NoticeMessage(notice.VideoLike)
+	if _, ok := notice.Severe.UserMapChannel[videoInfo.UserInfo.ID]; ok {
+		userChannel := notice.Severe.UserMapChannel[videoInfo.UserInfo.ID]
+		userChannel.NoticeMessage(noticeModel.VideoLike)
 	}
 
 	return "The operation was successful.", nil

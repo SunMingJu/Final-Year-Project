@@ -1,4 +1,4 @@
-package videoSocket
+package socket
 
 import (
 	"encoding/json"

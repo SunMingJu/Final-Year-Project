@@ -8,7 +8,7 @@ import (
 	"simple-video-net/global"
 	receive "simple-video-net/interaction/receive/commonality"
 	response "simple-video-net/interaction/response/commonality"
-	"simple-video-net/models/config/uploadMethod"
+	"simple-video-net/models/config/upload"
 	"simple-video-net/models/contribution/video"
 	"simple-video-net/models/users"
 	"simple-video-net/models/users/attention"
@@ -28,7 +28,8 @@ var (
 func OssSTS() (results interface{}, err error) {
 	info, err := oss.GteStsInfo()
 	if err != nil {
-		return nil, err
+		global.Logger.Errorf("Failed to obtain OssSts key. Error reason :%s", err.Error())
+		return nil, fmt.Errorf("Failed to obtain")
 	}
 	res, err := response.GteStsInfo(info)
 	if err != nil {
@@ -50,14 +51,14 @@ func Upload(file *multipart.FileHeader, ctx *gin.Context) (results interface{}, 
 	var fileInterface string
 	fileInterface = strings.Join(mForm.Value["interface"], fileInterface)
 
-	method := new(uploadMethod.UploadMethod)
+	method := new(upload.upload)
 	if !method.IsExistByField("interface", fileInterface) {
 		return nil, fmt.Errorf("Upload interface does not exist")
 	}
 	if len(method.Path) == 0 {
 		return nil, fmt.Errorf("Please contact the administrator to set the interface save path")
 	}
-	//取出文件
+	//Take out files
 	index := strings.LastIndex(file.Filename, ".")
 	suffix := file.Filename[index:]
 	switch suffix {
@@ -67,13 +68,14 @@ func Upload(file *multipart.FileHeader, ctx *gin.Context) (results interface{}, 
 	}
 	if !location.IsDir(method.Path) {
 		if err = os.MkdirAll(method.Path, 077); err != nil {
+			global.Logger.Errorf("Failed to create file with error path. The creation path is：%s wrong reason : %s", method.Path, err.Error())
 			return nil, fmt.Errorf("Failed to create save path")
 		}
 	}
 	dst := method.Path + "/" + fileName
 	err = ctx.SaveUploadedFile(file, dst)
 	if err != nil {
-		global.Logger.Warn("update headPortrait err")
+		global.Logger.Errorf("Failed to save the file. The save path is：%s ,wrong reason : %s", dst, err.Error())
 		return nil, fmt.Errorf("Upload Failed")
 	} else {
 		return dst, nil
@@ -93,7 +95,7 @@ func UploadSlice(file *multipart.FileHeader, ctx *gin.Context) (results interfac
 	var fileInterface string
 	fileInterface = strings.Join(mForm.Value["interface"], fileInterface)
 
-	method := new(uploadMethod.UploadMethod)
+	method := new(upload.upload)
 	if !method.IsExistByField("interface", fileInterface) {
 		return nil, fmt.Errorf("Upload interface does not exist")
 	}
@@ -102,13 +104,14 @@ func UploadSlice(file *multipart.FileHeader, ctx *gin.Context) (results interfac
 	}
 	if !location.IsDir(Temporary) {
 		if err = os.MkdirAll(Temporary, 077); err != nil {
+			global.Logger.Errorf("Failed to create file with error path. The creation path is：%s", method.Path)
 			return nil, fmt.Errorf("Failed to create save path")
 		}
 	}
 	dst := Temporary + "/" + fileName
 	err = ctx.SaveUploadedFile(file, dst)
 	if err != nil {
-		global.Logger.Warn("Possible cause of the fragment upload failure: ", err)
+		global.Logger.Errorf("Multipart upload failed to save. The save path is：%s ,wrong reason : %s ", dst, err.Error())
 		return nil, fmt.Errorf("Upload Failed")
 	} else {
 		return dst, nil
@@ -116,7 +119,7 @@ func UploadSlice(file *multipart.FileHeader, ctx *gin.Context) (results interfac
 }
 
 func UploadCheck(data *receive.UploadCheckStruct) (results interface{}, err error) {
-	method := new(uploadMethod.UploadMethod)
+	method := new(upload.upload)
 	if !method.IsExistByField("interface", data.Interface) {
 		return nil, fmt.Errorf("Upload method not configured")
 	}
@@ -124,6 +127,7 @@ func UploadCheck(data *receive.UploadCheckStruct) (results interface{}, err erro
 	path := method.Path + "/" + data.FileMd5
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
 		//File already exists
+		global.Logger.Info("upload files %s existed", data.FileMd5)
 		return response.UploadCheckResponse(true, list, path)
 	}
 	//Taking out unuploaded slices
@@ -139,7 +143,7 @@ func UploadCheck(data *receive.UploadCheckStruct) (results interface{}, err erro
 }
 
 func UploadMerge(data *receive.UploadMergeStruct) (results interface{}, err error) {
-	method := new(uploadMethod.UploadMethod)
+	method := new(upload.upload)
 	if !method.IsExistByField("interface", data.Interface) {
 		return nil, fmt.Errorf("Upload method not configured")
 	}
@@ -160,6 +164,7 @@ func UploadMerge(data *receive.UploadMergeStruct) (results interface{}, err erro
 		}
 	}
 	if len(list) > 0 {
+		global.Logger.Warn("upload files %s Not all shards are uploaded", data.FileName)
 		return nil, fmt.Errorf("Segmentation not fully uploaded")
 	}
 	//Perform a merge operation
@@ -178,7 +183,7 @@ func UploadMerge(data *receive.UploadMergeStruct) (results interface{}, err erro
 			global.Logger.Errorf("Closure of resources err : %d", err)
 		}
 	}(fileInfo)
-	//合并操作
+	//merge operation
 	for _, v := range data.SliceList {
 		tmpFile, err := os.OpenFile(Temporary+"/"+v.Hash, os.O_RDONLY, os.ModePerm)
 		if err != nil {
@@ -189,21 +194,21 @@ func UploadMerge(data *receive.UploadMergeStruct) (results interface{}, err erro
 			fmt.Println(err)
 		}
 		if _, err := fileInfo.Write(b); err != nil {
-			global.Logger.Errorf("Merge slice append error err : %d", err)
+			global.Logger.Errorf("Merge shard append error Cause of error : %d", err)
 		}
-		// 关闭分片
+		// Turn off sharding
 		if err := tmpFile.Close(); err != nil {
-			global.Logger.Errorf("Close Split Error err : %d", err)
+			global.Logger.Errorf("Close sharding error Cause of error : %d", err)
 		}
 		if err := os.Remove(tmpFile.Name()); err != nil {
-			global.Logger.Errorf("Merge operation to delete temporary slice failed err : %d", err)
+			global.Logger.Errorf("The merge operation failed to delete temporary shards. Reason for the error. : %d", err)
 		}
 	}
 	return dst, nil
 }
 
 func UploadingMethod(data *receive.UploadingMethodStruct) (results interface{}, err error) {
-	method := new(uploadMethod.UploadMethod)
+	method := new(upload.upload)
 	if method.IsExistByField("interface", data.Method) {
 		return response.UploadingMethodResponse(method.Method), nil
 	} else {
@@ -212,7 +217,7 @@ func UploadingMethod(data *receive.UploadingMethodStruct) (results interface{}, 
 }
 
 func UploadingDir(data *receive.UploadingDirStruct) (results interface{}, err error) {
-	method := new(uploadMethod.UploadMethod)
+	method := new(upload.upload)
 	if method.IsExistByField("interface", data.Interface) {
 		return response.UploadingDirResponse(method.Path), nil
 	} else {
@@ -255,6 +260,7 @@ func Search(data *receive.SearchStruct, uid uint) (results interface{}, err erro
 			al := new(attention.AttentionsList)
 			err = al.GetAttentionList(uid)
 			if err != nil {
+				global.Logger.Errorf("user id %d Failed to obtain the following list, error reason : %s ", uid, err.Error())
 				return nil, fmt.Errorf("Failed to get follow list")
 			}
 			for _, v := range *al {

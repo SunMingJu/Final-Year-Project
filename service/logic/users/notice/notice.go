@@ -1,4 +1,4 @@
-package noticeSocket
+package notice
 
 import (
 	"encoding/json"

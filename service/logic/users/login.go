@@ -172,7 +172,8 @@ func SendEmailVerCode(data *receive.SendEmailVerCodeReceiveStruct) (results inte
 	body := fmt.Sprintf("You are registering with the verification code:%s,5 minutes. Please do not forward to others.", code)
 	err = email.SendMail(mailTo, subject, body)
 	if err != nil {
-		return nil, err
+		global.Logger.Error("send to%dEmail verification code failed", data.Email)
+		return nil, fmt.Errorf("Failed to send")
 	}
 	err = global.RedisDb.Set(fmt.Sprintf("%s%s", consts.RegEmailVerCode, data.Email), code, 5*time.Minute).Err()
 	if err != nil {

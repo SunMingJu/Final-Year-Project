@@ -1,11 +1,11 @@
-package chatByUserSocket
+package chatUser
 
 import (
 	"simple-video-net/consts"
 	"simple-video-net/global"
 	receive "simple-video-net/interaction/receive/socket"
 	"simple-video-net/interaction/response/socket"
-	"simple-video-net/logic/users/chatSocket"
+	"simple-video-net/logic/users/chat"
 	"simple-video-net/models/users/chat/chatList"
 	"simple-video-net/models/users/chat/chatMsg"
 	"simple-video-net/utils/conversion"
@@ -40,11 +40,11 @@ func sendChatMsgText(ler *UserChannel, uid uint, tid uint, info *receive.Receive
 		return
 	}
 
-	if _, ok := chatSocket.Severe.UserMapChannel[tid]; ok {
+	if _, ok := chat.Severe.UserMapChannel[tid]; ok {
 		//Online situation
-		if _, ok := chatSocket.Severe.UserMapChannel[tid].ChatList[uid]; ok {
+		if _, ok := chat.Severe.UserMapChannel[tid].ChatList[uid]; ok {
 			//In the chat window with yourself (direct push)
-			response.SuccessWs(chatSocket.Severe.UserMapChannel[tid].ChatList[uid], consts.ChatSendTextMsg, socket.ChatSendTextMsgStruct{
+			response.SuccessWs(chat.Severe.UserMapChannel[tid].ChatList[uid], consts.ChatSendTextMsg, socket.ChatSendTextMsgStruct{
 				ID:        msgInfo.ID,
 				Uid:       msgInfo.Uid,
 				Username:  msgInfo.UInfo.Username,
@@ -65,7 +65,7 @@ func sendChatMsgText(ler *UserChannel, uid uint, tid uint, info *receive.Receive
 			ci := new(chatList.ChatsListInfo)
 			_ = ci.FindByID(uid, tid)
 			//Push the main socket
-			response.SuccessWs(chatSocket.Severe.UserMapChannel[tid].Socket, consts.ChatUnreadNotice, socket.ChatUnreadNoticeStruct{
+			response.SuccessWs(chat.Severe.UserMapChannel[tid].Socket, consts.ChatUnreadNotice, socket.ChatUnreadNoticeStruct{
 				Uid:         uid,
 				Tid:         tid,
 				LastMessage: ci.LastMessage,
