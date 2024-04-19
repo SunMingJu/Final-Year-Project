@@ -3,8 +3,15 @@ import { useUserStore } from '@/store/main';
 import { FileSliceUpload, FileUpload } from '@/types/idnex';
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ElMessage } from 'element-plus';
+import Swal from "sweetalert2";
 //Interface for data return
 //Define request response parameters, excluding data
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top',
+  showConfirmButton: false,
+  timer: 3000,
+})
 interface Result {
   code: number;
   message: string
@@ -94,7 +101,10 @@ class RequestHttp {
           this.handleCode(response.status)
         }
         if (!window.navigator.onLine) {
-          ElMessage.error('Network connection failed');
+          Toast.fire({
+            icon: 'error',
+            title: 'Network connection failed'
+          })
           //You can jump to the error page or do nothing.
           //return router.replace({
           //path: '/404'
@@ -107,10 +117,16 @@ class RequestHttp {
   handleCode(code: number): void {
     switch (code) {
       case 401:
-        ElMessage.error('Login failed, please log in again');
+        Toast.fire({
+          icon: 'error',
+          title: 'Login failed, please log in again'
+        })
         break;
       default:
-        ElMessage.error('Request failed');
+        Toast.fire({
+          icon: 'error',
+          title: 'Request failed'
+        })
         break;
     }
   }
