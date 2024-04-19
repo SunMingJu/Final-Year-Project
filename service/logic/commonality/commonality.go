@@ -8,7 +8,7 @@ import (
 	"simple-video-net/global"
 	receive "simple-video-net/interaction/receive/commonality"
 	response "simple-video-net/interaction/response/commonality"
-	"simple-video-net/models/config/upload"
+	"simple-video-net/models/sundry/upload"
 	"simple-video-net/models/contribution/video"
 	"simple-video-net/models/users"
 	"simple-video-net/models/users/attention"
@@ -17,7 +17,7 @@ import (
 	"simple-video-net/utils/oss"
 	"simple-video-net/utils/validator"
 	"strings"
-
+	"time"
 	"github.com/gin-gonic/gin"
 )
 
@@ -274,4 +274,14 @@ func Search(data *receive.SearchStruct, uid uint) (results interface{}, err erro
 		return nil, fmt.Errorf("Unmatched types")
 	}
 	return
+}
+
+func RegisterMedia(data *receive.RegisterMediaStruct) (results interface{}, err error) {
+	path, _ := conversion.SwitchIngStorageFun(data.Type, data.Path)
+	//Register media assets
+	registerMediaBody, err := oss.RegisterMediaInfo(path, "video", time.Now().String())
+	if err != nil {
+		return nil, fmt.Errorf("Failed to register media assets")
+	}
+	return registerMediaBody.MediaId, nil
 }
