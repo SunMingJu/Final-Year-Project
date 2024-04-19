@@ -17,10 +17,14 @@ import (
 	"simple-video-net/models/users/attention"
 	"simple-video-net/models/users/collect"
 	"simple-video-net/models/users/favorites"
-	noticeModel "easy-video-net/models/users/notice"
+	noticeModel "simple-video-net/models/users/notice"
 	"simple-video-net/models/users/record"
+	"simple-video-net/utils/calculate"
 	"simple-video-net/utils/conversion"
+	"math"
+	"os/exec"
 	"strconv"
+	"strings"
 )
 
 func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct, uid uint) (results interface{}, err error) {
@@ -33,18 +37,34 @@ func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct,
 		Src: data.Cover,
 		Tp:  data.CoverUploadType,
 	})
-	videoContribution := video.VideosContribution{
-		Uid:           uid,
-		Title:         data.Title,
-		Video:         videoSrc,
-		Cover:         coverImg,
-		VideoDuration: data.VideoDuration,
-		Reprinted:     conversion.BoolTurnInt8(*data.Reprinted),
-		Timing:        conversion.BoolTurnInt8(*data.Timing),
-		TimingTime:    data.TimingTime,
-		Label:         conversion.MapConversionString(data.Label),
-		Introduce:     data.Introduce,
-		Heat:          0,
+	width, height, err := calculate.GetVideoResolution(data.Video)
+	if err != nil {
+		global.Logger.Error("Failed to get video resolution")
+		return nil, fmt.Errorf("Failed to get video resolution")
+		return
+	}
+	videoContribution := &video.VideosContribution{
+		Uid:        uid,
+		Title:      data.Title,
+		Cover:      coverImg,
+		Reprinted:  conversion.BoolTurnInt8(*data.Reprinted),
+		Timing:     conversion.BoolTurnInt8(*data.Timing),
+		TimingTime: data.TimingTime,
+		Label:      conversion.MapConversionString(data.Label),
+		Introduce:  data.Introduce,
+		Heat:       0,
+	}
+	if height >= 1080 {
+		videoContribution.Video = videoSrc
+	} else if height >= 720 && height < 1080 {
+		videoContribution.Video720p = videoSrc
+	} else if height >= 480 && height < 720 {
+		videoContribution.Video480p = videoSrc
+	} else if height >= 360 && height < 480 {
+		videoContribution.Video360p = videoSrc
+	} else {
+		global.Logger.Error("The uploaded video resolution is too low")
+		return nil, fmt.Errorf("The uploaded video resolution is too low")
 	}
 	if *data.Timing {
 		//Push related after posting a video (to be developed)
@@ -52,6 +72,64 @@ func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct,
 	if !videoContribution.Create() {
 		return nil, fmt.Errorf("fail to save")
 	}
+	//Transcode video
+	go func(width, height int, video *video.VideosContribution) {
+		//If the uploaded video is local, transcoding will begin.
+		if data.VideoUploadType == "local" {
+			inputFile := data.Video
+			sr := strings.Split(inputFile, ".")
+			// Define a list of transcoding resolutions
+			resolutions := []int{1080, 720, 480, 360}
+			for _, r := range resolutions {
+				//Calculating the transcoded width and height requires rounding
+				w := int(math.Ceil(float64(r) / float64(height) * float64(width)))
+				h := int(math.Ceil(float64(r)))
+				if h >= height {
+					continue
+				}
+				dst := sr[0] + fmt.Sprintf("_output_%dp."+sr[1], r)
+				// TODO: Call the transcoding interface and save the transcoded video to the specified directory
+				cmd := exec.Command("ffmpeg",
+					"-i",
+					inputFile,
+					"-vf",
+					fmt.Sprintf("scale=%d:%d", w, h),
+					"-c:a",
+					"copy",
+					"-c:v",
+					"libx264",
+					"-preset",
+					"medium",
+					"-crf",
+					"23",
+					"-y",
+					dst)
+				err = cmd.Run()
+				if err != nil {
+					global.Logger.Errorf("video :%s :Transcode%d*%D failed cmd : %s ,err :%s", inputFile, w, h, cmd, err)
+					continue
+				}
+				src, _ := json.Marshal(common.Img{
+					Src: dst,
+					Tp:  "local",
+				})
+				//After successful transcoding
+				if r == 1080 {
+					videoContribution.Video = src
+				} else if r == 720 {
+					videoContribution.Video720p = src
+				} else if r == 480 {
+					videoContribution.Video480p = src
+				} else if r == 360 {
+					videoContribution.Video360p = src
+				}
+				if !videoContribution.Save() {
+					global.Logger.Errorf("video :%s : Transcode%d*%dAfter saving the video to the database failed", inputFile, w, h)
+				}
+				global.Logger.Infof("video :%s : Transcode%d*%D success", inputFile, w, h)
+			}
+		}
+	}(width, height, videoContribution)
 	return "Save Successful", nil
 }
 
@@ -76,7 +154,7 @@ func UpdateVideoContribution(data *receive.UpdateVideoContributionReceiveStruct,
 		"reprinted": conversion.BoolTurnInt8(*data.Reprinted),
 		"introduce": data.Introduce,
 	}
-	//进行视频资料更新
+	//Update video data
 	if !videoInfo.Update(updateList) {
 		return nil, fmt.Errorf("Failed to update data")
 	}
@@ -107,7 +185,7 @@ func GetVideoContributionByID(data *receive.GetVideoContributionByIDReceiveStruc
 			//No recent broadcasts
 			global.RedisDb.SAdd(consts.VideoWatchByID+strconv.Itoa(int(data.VideoID)), uid)
 			if videoInfo.Watch(data.VideoID) != nil {
-				global.Logger.Error("Add playback error", videoInfo.Watch(data.VideoID))
+				global.Logger.Error("Add playback volume error video video_id:", videoInfo.Watch(data.VideoID))videoInfo.Watch(data.VideoID))
 			}
 		}
 		//Get attention or not

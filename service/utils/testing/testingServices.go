@@ -33,7 +33,7 @@ func CheckPortsAsLocalHost(ip string, Ports []string) []string {
 		conn, err := net.DialTimeout("tcp", ipPort, 3*time.Second)
 		if err != nil {
 			untenablePort = append(untenablePort, ipPort)
-			global.Logger.Warn(ipPort, "Port not open(fail)!")
+			global.Logger.Warnf(ipPort, "Live broadcast service port:%d Unopened(fail)!", ipPort)
 		} else {
 			if conn != nil {
 				
@@ -42,7 +42,7 @@ func CheckPortsAsLocalHost(ip string, Ports []string) []string {
 					return nil
 				}
 			} else {
-				global.Logger.Warn(ipPort, "Port not open(fail)!")
+				global.Logger.Warnf(ipPort, "Live broadcast service port:%d Unopened(fail)!", ipPort)
 			}
 		}
 	}

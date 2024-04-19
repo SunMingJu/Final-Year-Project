@@ -21,7 +21,6 @@ func init() {
 func Start() error {
 	path := location.GetCurrentAbPath()
 	path = path + `\Config\live\`
-	global.Logger.Info(path)
 	cmd := exec.Command("cmd.exe", "/c", "start "+path+"live-go.exe")
 	//Get the output object from which you can read the output results
 	if stdio, err := cmd.StdoutPipe(); err != nil {

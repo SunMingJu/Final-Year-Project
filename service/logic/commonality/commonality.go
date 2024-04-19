@@ -15,6 +15,7 @@ import (
 	"simple-video-net/utils/conversion"
 	"simple-video-net/utils/location"
 	"simple-video-net/utils/oss"
+	"simple-video-net/utils/validator"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -59,11 +60,10 @@ func Upload(file *multipart.FileHeader, ctx *gin.Context) (results interface{}, 
 		return nil, fmt.Errorf("Please contact the administrator to set the interface save path")
 	}
 	//Take out files
-	index := strings.LastIndex(file.Filename, ".")
-	suffix := file.Filename[index:]
-	switch suffix {
-	case ".jpg", ".jpeg", ".png", ".ico", ".gif", ".wbmp", ".bmp", ".svg", ".webp", ".mp4":
-	default:
+	index := strings.LastIndex(fileName, ".")
+	suffix := fileName[index:]
+	err = validator.CheckVideoSuffix(suffix)
+	if err != nil {
 		return nil, fmt.Errorf("Illegal suffixes!")
 	}
 	if !location.IsDir(method.Path) {
@@ -127,7 +127,7 @@ func UploadCheck(data *receive.UploadCheckStruct) (results interface{}, err erro
 	path := method.Path + "/" + data.FileMd5
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
 		//File already exists
-		global.Logger.Info("upload files %s existed", data.FileMd5)
+		global.Logger.Infof("upload files %s existed", data.FileMd5)
 		return response.UploadCheckResponse(true, list, path)
 	}
 	//Taking out unuploaded slices
@@ -164,7 +164,7 @@ func UploadMerge(data *receive.UploadMergeStruct) (results interface{}, err erro
 		}
 	}
 	if len(list) > 0 {
-		global.Logger.Warn("upload files %s Not all shards are uploaded", data.FileName)
+		global.Logger.Warnf("upload files %s Not all shards are uploaded", data.FileName)
 		return nil, fmt.Errorf("Segmentation not fully uploaded")
 	}
 	//Perform a merge operation
@@ -217,9 +217,9 @@ func UploadingMethod(data *receive.UploadingMethodStruct) (results interface{}, 
 }
 
 func UploadingDir(data *receive.UploadingDirStruct) (results interface{}, err error) {
-	method := new(upload.upload)
+	method := new(upload.Upload)
 	if method.IsExistByField("interface", data.Interface) {
-		return response.UploadingDirResponse(method.Path), nil
+		return response.UploadingDirResponse(method.Path, method.Quality), nil
 	} else {
 		return nil, fmt.Errorf("Upload method not configured")
 	}

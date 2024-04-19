@@ -2,11 +2,10 @@ package validator
 
 //gin > 1.4.0
 
-//将验证器错误翻译成中文
-
 import (
 	"regexp"
 	"simple-video-net/utils/response"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/locales/en"
@@ -48,4 +47,13 @@ func VerifyMobileFormat(mobileNum string) bool {
 	regular := "^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$"
 	reg := regexp.MustCompile(regular)
 	return reg.MatchString(mobileNum)
+}
+
+func CheckVideoSuffix(suffix string) error {
+	switch suffix {
+	case ".jpg", ".jpeg", ".png", ".ico", ".gif", ".wbmp", ".bmp", ".svg", ".webp", ".mp4":
+		return nil
+	default:
+		return fmt.Errorf("Illegal suffix!")
+	}
 }
