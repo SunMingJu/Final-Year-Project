@@ -1,4 +1,4 @@
-import { getuploadingDir, gteossSTS } from "@/apis/commonality"
+import { gteossSTS } from "@/apis/commonality"
 import { useGlobalStore } from "@/store/main"
 import { GetuploadingDirReq } from "@/types/commonality/commonality"
 import { FileUpload, OssSTSInfo } from "@/types/idnex"
@@ -54,15 +54,11 @@ export const initOssSTS = async (_interface: string): Promise<OssSTSInfo> => {
  * @param file File object
  * @returns {Promise<{name:string,host:string}>}
  */
-export const ossUpload = (file: File, uploadConfig: FileUpload, fragment: boolean): Promise<{ path: string }> => {
+export const ossUpload = (file: File, uploadConfig: FileUpload, dir: string, fragment: boolean): Promise<{ path: string }> => {
     return new Promise((resolve, reject) => {
         initOssSTS(uploadConfig.interface)
             .then(async (ossSts) => {
-                //Get save path
-                const response = await getuploadingDir(<GetuploadingDirReq>{
-                    interface: uploadConfig.interface
-                })
-                let dir = response.data?.path
+                //Get the name and its initialization
                 const name = await fileHash(file) + fileSuffix(file.name)
                 const key = `${dir}${name}`
                 // Initialize Alibaba Cloud oss ​​client
@@ -73,15 +69,14 @@ export const ossUpload = (file: File, uploadConfig: FileUpload, fragment: boolea
                     stsToken: ossSts.stsToken,
                     bucket: ossSts.bucket,
                 });
-                console.log(fragment)
                 if (!fragment) {
-                    console.log("普通上传")
+                    console.log("Normal upload")
                     //In order to be able to display the progress bar, multi-part uploading is also performed.
                     var checkpoint = getCheckpoint(name);
                     const options = {
                         checkpoint: checkpoint,
                         progress: (p: any, cpt: any) => {
-                            console.log("上传进度", p)
+                            console.log("Upload progress", p)
                             uploadConfig.progress = Math.round(p * 100)
                             saveCheckpoint(name, cpt);
                         },
