@@ -12,7 +12,7 @@ import { ElInput, FormInstance, UploadProps, UploadRawFile, UploadRequestOptions
 import hljs from 'highlight.js';
 import { QuillOptionsStatic } from 'quill';
 import Swal from 'sweetalert2';
-import { nextTick, reactive, Ref, ref, toRaw, UnwrapNestedRefs } from "vue";
+import { Ref, UnwrapNestedRefs, nextTick, reactive, ref, toRaw } from "vue";
 import { Router, useRouter } from 'vue-router';
 
 export const useArticleContributionProp = () => {
@@ -196,7 +196,7 @@ export const useHandleFileMethod = (uploadFileformation: uploadFileformation, fo
         } catch (err) {
             console.log(err)
             Swal.fire({
-                title: "Failed to obtain upload node",
+                title: "Failed to upload image",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
@@ -285,7 +285,7 @@ export const useHandleCoverMethod = (uploadCoveration: uploadFileformation) => {
         } catch (err) {
             console.log(err)
             Swal.fire({
-                title: "Failed to obtain upload node",
+                title: "Failed to upload cover",
                 heightAuto: false,
                 confirmButtonColor: globalScss.colorButtonTheme,
                 icon: "error",
