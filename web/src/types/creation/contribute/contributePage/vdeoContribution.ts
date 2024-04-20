@@ -1,8 +1,7 @@
 import { FileUpload } from "@/types/idnex"
-import { Ref } from "vue"
 //form form structure
 export interface vdeoContributionForm {
-    id : number | undefined,
+    id: number | undefined,
     isShow: boolean,
     title: string,
     type: boolean,
@@ -12,35 +11,34 @@ export interface vdeoContributionForm {
     labelText: string,
     label: Array<string>,
     introduce: string,
-    videoDuration : number
+    videoDuration: number
 }
 //upload
 export interface uploadFileformation extends FileUpload {
-
+    media?: string
 }
 
 //api createVideoContribution need structure
 export interface CreateVideoContributionReq {
-    id : number,
+    id: number,
     video: string,
     videoUploadType: string,
     cover: string,
     coverUploadType: string,
     title: string,
     reprinted: boolean,
-    timing: boolean,
-    timingTime?: string,
-    label:  Array<string>,
+    label: Array<string>,
     introduce: string,
-    videoDuration : number
+    videoDuration: number,
+    media: string
 }
 
-export interface UpdateVideoContributionReq{
-    id : number,
+export interface UpdateVideoContributionReq {
+    id: number,
     cover: string,
     coverUploadType: string,
     title: string,
     reprinted: boolean,
-    label:  Array<string>,
+    label: Array<string>,
     introduce: string,
 }
