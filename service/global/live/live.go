@@ -11,9 +11,12 @@ import (
 
 func init() {
 	go func() {
-		err := Start()
-		if err != nil {
-			global.Logger.Error("Failed to turn on live service")
+		if !global.Config.ProjectConfig.ProjectStates {
+			//Test environment to quickly turn on the live service
+			err := Start()
+			if err != nil {
+				global.Logger.Error("Failed to start live streaming service")
+			}
 		}
 	}()
 }
