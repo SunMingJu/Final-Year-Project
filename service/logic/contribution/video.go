@@ -249,8 +249,9 @@ func GetVideoContributionByID(data *receive.GetVideoContributionByIDReceiveStruc
 			//No recent broadcasts
 			global.RedisDb.SAdd(consts.VideoWatchByID+strconv.Itoa(int(data.VideoID)), uid)
 			if videoInfo.Watch(data.VideoID) != nil {
-				global.Logger.Error("Add playback volume error video video_id:", videoInfo.Watch(data.VideoID))videoInfo.Watch(data.VideoID))
+				global.Logger.Error("Add playback volume error video video_id:", videoInfo.Watch(data.VideoID))videoInfo.Watch(data.VideoID));
 			}
+			videoInfo.Heat++
 		}
 		//Get attention or not
 		at := new(attention.Attention)

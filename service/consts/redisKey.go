@@ -16,5 +16,6 @@ const (
 	LiveRoomHistoricalBarrage = "liveRoomHistoricalBarrage_"
 
 	//VideoWatchByID Watch the video
-	VideoWatchByID = "videoWatchBy_"
+	VideoWatchByID   = "videoWatchBy_"
+	ArticleWatchByID = "articleWatchBy_"
 )
