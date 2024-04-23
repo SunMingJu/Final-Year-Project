@@ -7,8 +7,6 @@ import (
 	"simple-video-net/models/contribution/article/comments"
 	"simple-video-net/models/contribution/article/like"
 	"simple-video-net/models/users"
-	"time"
-
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
@@ -20,8 +18,6 @@ type ArticlesContribution struct {
 	Title              string         `json:"title" gorm:"column:title"`
 	Cover              datatypes.JSON `json:"cover" gorm:"column:cover"`
 	Timing             int8           `json:"timing" gorm:"column:timing"`
-	TimingTime         time.Time      `json:"timingTime"  gorm:"column:timing_Time"`
-	Label              string         `json:"label" gorm:"column:label"`
 	Content            string         `json:"content" gorm:"column:content"`
 	ContentStorageType string         `json:"content_Storage_Type" gorm:"column:content_storage_type"`
 	IsComments         int8           `json:"is_comments" gorm:"column:is_comments"`
@@ -48,6 +44,11 @@ func (vc *ArticlesContribution) Create() bool {
 		return false
 	}
 	return true
+}
+
+//Watch add play
+func (vc *ArticlesContribution) Watch(id uint) error {
+	return global.Db.Model(vc).Where("id", id).Updates(map[string]interface{}{"heat": gorm.Expr("Heat  + ?", 1)}).Error
 }
 
 // GetList Query Data Type
