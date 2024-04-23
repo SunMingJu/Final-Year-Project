@@ -4,7 +4,9 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"os"
 	"os/exec"
+	"runtime"
 	"simple-video-net/global"
 	"simple-video-net/utils/location"
 )
@@ -13,22 +15,30 @@ func init() {
 	go func() {
 		if !global.Config.ProjectConfig.ProjectStates {
 			//Test environment to quickly turn on the live service
-			err := Start()
-			if err != nil {
-				global.Logger.Error("Failed to start live streaming service")
+			if runtime.GOOS == "windows" {
+				err := Start()
+				if err != nil {
+					global.Logger.Error("Failed to start live streaming service")
 			}
 		}
 	}()
 }
 
 func Start() error {
-	path := location.GetCurrentAbPath()
-	path = path + `\Config\live\`
-	cmd := exec.Command("cmd.exe", "/c", "start "+path+"live-go.exe")
-	//Get the output object from which you can read the output results
+	dir, err := location.GetCurrentAbPath()
+	if err != nil {
+		global.Logger.Errorf("Failed to quickly start livego service in test environment,Failed to obtain current executable file directory")
+		return err
+	}
+	path := dir + `\Config\live\live-go.exe`
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		global.Logger.Errorf("Failed to quickly start livego service in test environment document %s does not exist", path)
+		return err
+	}
+	cmd := exec.Command("cmd.exe", "/c", "start "+path)
 	if stdio, err := cmd.StdoutPipe(); err != nil {
 		return err
-		log.Fatal(err)
+		
 	} else {
 		// Guaranteed shutdown of output streams
 		defer func(stdio io.ReadCloser) {
@@ -39,7 +49,7 @@ func Start() error {
 		}(stdio)
 		// Run command
 		if err := cmd.Start(); err != nil {
-			log.Fatal(err)
+			
 		}
 		if _, err := ioutil.ReadAll(stdio); err != nil {
 			// Read the output

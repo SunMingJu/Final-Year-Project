@@ -11,7 +11,7 @@ import (
 	"simple-video-net/models/contribution/article"
 	"simple-video-net/models/contribution/article/classification"
 	"simple-video-net/models/contribution/article/comments"
-	noticeModel "easy-video-net/models/users/notice"
+	noticeModel "simple-video-net/models/users/notice"
 	"simple-video-net/models/users/record"
 	"simple-video-net/utils/conversion"
 
