@@ -29,7 +29,7 @@ export const useArticleShowProp = () => {
 }
 export const useInit = async (articleID: Ref<number>, articleInfo: Ref<GetArticleContributionByIDRes>, route: RouteLocationNormalizedLoaded, router: Router) => {
     try {
-        if (!route.query.articleID) {
+       if (!route.params.id) {
             router.back()
             Swal.fire({
                 title: "Missing article id",
@@ -40,7 +40,7 @@ export const useInit = async (articleID: Ref<number>, articleInfo: Ref<GetArticl
             router.back()
             return
         }
-        articleID.value = Number(route.query.articleID)
+        articleID.value = Number(route.params.id)
         window.onresize = function () {
             const canvasSnow = document.getElementById('canvas_sakura') as HTMLEmbedElement;
             if (!canvasSnow) return false

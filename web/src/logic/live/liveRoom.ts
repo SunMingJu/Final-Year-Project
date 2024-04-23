@@ -1,15 +1,15 @@
-
-import DPlayer, { DPlayerDanmaku } from "dplayer";
-import Swal from 'sweetalert2'
-import globalScss from "@/assets/styles/global/export.module.scss"
-import { nextTick, reactive, Ref, ref, UnwrapNestedRefs } from "vue";
-import flvJs from "flv.js";
-import { decodeMessage } from "@/proto/pb/live"
-import { webClientBarrageDeal, webClientEnterLiveRoomDeal, webClientHistoricalBarrageRes, webError } from "@/logic/live/socketFun"
-import { useRoute, RouteLocationNormalizedLoaded, useRouter, Router } from "vue-router"
-import { useUserStore } from "@/store/main";
 import { getLiveRoomInfo } from "@/apis/live";
+import globalScss from "@/assets/styles/global/export.module.scss";
+import { webClientBarrageDeal, webClientEnterLiveRoomDeal, webClientHistoricalBarrageRes, webError } from "@/logic/live/socketFun";
+import { decodeMessage } from "@/proto/pb/live";
+import { useUserStore } from "@/store/main";
 import { GetLiveRoomInfoReq, GetLiveRoomInfoRes } from "@/types/live/liveRoom";
+import DPlayer, { DPlayerDanmaku } from "dplayer";
+import flvJs from "flv.js";
+import Swal from 'sweetalert2';
+import { nextTick, reactive, Ref, ref, UnwrapNestedRefs } from "vue";
+import { RouteLocationNormalizedLoaded, Router, useRoute, useRouter } from "vue-router";
+
 export const useLiveRoomProp = () => {
   const route = useRoute()
   const router = useRouter()
@@ -101,7 +101,7 @@ export const useWebSocket = (dp: DPlayer, userStore: any, sideRef: Ref<any>, roo
 export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoaded, Router: Router, roomID: Ref<Number>,liveInfo : UnwrapNestedRefs<GetLiveRoomInfoRes>) => {
   try {
     //Bind room
-    if (!route.query.roomID) {
+    if (!route.params.id) {
       Router.back()
       Swal.fire({
         title: "Failed to access room",
@@ -112,7 +112,7 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
       Router.back()
       return
     }
-    roomID.value = Number(route.query.roomID)
+    roomID.value = Number(route.params.id)
 
     //Get live broadcast information
 
