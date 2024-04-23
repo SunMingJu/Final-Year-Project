@@ -48,9 +48,9 @@ type LiveConfigStruct struct {
 }
 
 type ProjectConfigStruct struct {
-	UrlStates bool   `ini:"url_states"`
-	Url       string `ini:"url"`
-	UrlTest   string `ini:"url_test"`
+	ProjectStates bool   `ini:"project_states"`
+	Url           string `ini:"url"`
+	UrlTest       string `ini:"url_test"`
 }
 
 type AliyunOss struct {
@@ -64,6 +64,7 @@ type AliyunOss struct {
 	RoleArn                  string `ini:"roleArn"`
 	RoleSessionName          string `ini:"roleSessionName"`
 	DurationSeconds          int    `ini:"durationSeconds"`
+	IsOpenTranscoding bool `ini:"isOpenTranscoding"`
 	TranscodingTemplate360p  string `ini:"transcodingTemplate360p"`
 	TranscodingTemplate480p  string `ini:"transcodingTemplate480p"`
 	TranscodingTemplate720p  string `ini:"transcodingTemplate720p"`
@@ -111,7 +112,7 @@ func ReturnsInstance() *Info {
 	}
 
 	//Determining whether it is a formal environment
-	if Config.ProjectConfig.UrlStates {
+	if Config.ProjectConfig.ProjectStates {
 		Config.ProjectUrl = Config.ProjectConfig.Url
 	} else {
 		Config.ProjectUrl = Config.ProjectConfig.UrlTest

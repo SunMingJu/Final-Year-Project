@@ -57,14 +57,17 @@ func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct,
 		height, _ = strconv.Atoi(*mediaInfo.Body.MediaInfo.FileInfoList[0].FileBasicInfo.Height)
 	}
 	videoContribution := &video.VideosContribution{
-		Uid:       uid,
-		Title:     data.Title,
-		Cover:     coverImg,
-		Reprinted: conversion.BoolTurnInt8(*data.Reprinted),
-		Label:     conversion.MapConversionString(data.Label),
-		Introduce: data.Introduce,
-		MediaID:   *data.Media,
-		Heat:      0,
+		Uid:           uid,
+		Title:         data.Title,
+		Cover:         coverImg,
+		Reprinted:     conversion.BoolTurnInt8(*data.Reprinted),
+		Label:         conversion.MapConversionString(data.Label),
+		VideoDuration: data.VideoDuration,
+		Introduce:     data.Introduce,
+		Heat:          0,
+	}
+	if data.Media != nil {
+		videoContribution.MediaID = *data.Media
 	}
 	// Define a list of transcoding resolutions
 	resolutions := []int{1080, 720, 480, 360}
@@ -144,7 +147,7 @@ func CreateVideoContribution(data *receive.CreateVideoContributionReceiveStruct,
 				}
 				global.Logger.Infof("video :%s : Transcode%d*%D success", inputFile, w, h)
 			}
-			} else {
+			} else if data.VideoUploadType == "aliyunOss" && global.Config.AliyunOss.IsOpenTranscoding {
 			inputFile := data.Video
 			sr := strings.Split(inputFile, ".")
 			//Cloud transcoding processing

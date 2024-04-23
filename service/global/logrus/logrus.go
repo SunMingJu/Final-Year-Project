@@ -5,8 +5,7 @@ import (
 	rotateLogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
-	"os"
-	"syscall"
+	"io/ioutil"
 	"time"
 )
 
@@ -55,7 +54,7 @@ func ReturnsInstance() *logrus.Logger {
 	//Print caller information
 	Logger.SetReportCaller(true)
 	//define to empty output
-	Logger.SetOutput(os.NewFile(uintptr(syscall.Stdin), "/dev/null"))
+	Logger.SetOutput(ioutil.Discard)
 
 	// Set rotate logs to achieve file splitting
 	logInfoWriter, _ := rotateLogs.New(
