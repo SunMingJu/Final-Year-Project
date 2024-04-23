@@ -23,7 +23,7 @@ import (
 
 var (
 	//Temporary Location of document files
-	Temporary = "assets/tmp/"
+	Temporary = "assets/tmp"
 )
 
 func OssSTS() (results interface{}, err error) {
@@ -66,7 +66,7 @@ func Upload(file *multipart.FileHeader, ctx *gin.Context) (results interface{}, 
 	if err != nil {
 		return nil, fmt.Errorf("Illegal suffixes!")
 	}
-	if !location.IsDir(method.Path) {
+	if err = os.MkdirAll(method.Path, 0775); err != nil {
 		if err = os.MkdirAll(method.Path, 077); err != nil {
 			global.Logger.Errorf("Failed to create file with error path. The creation path is：%s wrong reason : %s", method.Path, err.Error())
 			return nil, fmt.Errorf("Failed to create save path")
@@ -102,7 +102,7 @@ func UploadSlice(file *multipart.FileHeader, ctx *gin.Context) (results interfac
 	if len(method.Path) == 0 {
 		return nil, fmt.Errorf("Please contact the administrator to set the interface save path")
 	}
-	if !location.IsDir(Temporary) {
+	if err = os.MkdirAll(Temporary, 0775); err != nil {
 		if err = os.MkdirAll(Temporary, 077); err != nil {
 			global.Logger.Errorf("Failed to create file with error path. The creation path is：%s", method.Path)
 			return nil, fmt.Errorf("Failed to create save path")

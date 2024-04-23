@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"simple-video-net/consts"
+	"simple-video-net/global"
 	receive "simple-video-net/interaction/receive/contribution/article"
 	response "simple-video-net/interaction/response/contribution/article"
 	"simple-video-net/logic/users/notice"
@@ -14,7 +15,7 @@ import (
 	noticeModel "simple-video-net/models/users/notice"
 	"simple-video-net/models/users/record"
 	"simple-video-net/utils/conversion"
-
+	"strconv"
 	"github.com/dlclark/regexp2"
 )
 
@@ -47,18 +48,12 @@ func CreateArticleContribution(data *receive.CreateArticleContributionReceiveStr
 		ClassificationID:   data.ClassificationID,
 		Title:              data.Title,
 		Cover:              coverImg,
-		Timing:             conversion.BoolTurnInt8(*data.Timing),
-		TimingTime:         data.TimingTime,
-		Label:              conversion.MapConversionString(data.Label),
 		Content:            data.Content,
 		ContentStorageType: data.ArticleContributionUploadType,
 		IsComments:         conversion.BoolTurnInt8(*data.Comments),
 		Heat:               0,
 	}
 
-	if *data.Timing {
-		//Push related after posting a video (to be developed)
-	}
 	if !articlesContribution.Create() {
 		return nil, fmt.Errorf("fail to save")
 	}
@@ -128,6 +123,15 @@ func GetArticleContributionByID(data *receive.GetArticleContributionByIDReceiveS
 		err = rd.AddArticleRecord(uid, data.ArticleID)
 		if err != nil {
 			return nil, fmt.Errorf("Failed to add history")
+		}
+		//Increase article popularity
+		if !global.RedisDb.SIsMember(consts.ArticleWatchByID+strconv.Itoa(int(data.ArticleID)), uid).Val() {
+			//No recent plays
+			global.RedisDb.SAdd(consts.ArticleWatchByID+strconv.Itoa(int(data.ArticleID)), uid)
+			if articlesContribution.Watch(data.ArticleID) != nil {
+				global.Logger.Error("Add popularity error article id:", articlesContribution.Watch(data.ArticleID))
+			}
+			articlesContribution.Heat++
 		}
 	}
 	return response.GetArticleContributionByIDResponse(articlesContribution), nil
