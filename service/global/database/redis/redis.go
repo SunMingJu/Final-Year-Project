@@ -5,6 +5,7 @@ import (
 	"simple-video-net/global/config"
 
 	"github.com/go-redis/redis"
+	"log"
 )
 
 func ReturnsInstance() *redis.Client {
@@ -19,7 +20,7 @@ func ReturnsInstance() *redis.Client {
 	})
 	_, err = Db.Ping().Result()
 	if err != nil {
-		fmt.Printf("redis connection failed.%v \n", err)
+		log.Fatalf("redis connection failed:%v \n", err)
 	}
 	return Db
 
