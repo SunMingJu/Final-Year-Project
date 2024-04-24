@@ -101,7 +101,7 @@ const loadSocket = () => {
         return
     } else {
         // Instantiate socket
-        socket = new WebSocket(import.meta.env.VITE_SOCKET_URL + "/ws/chatByUserSocket?token=" + userStore.userInfoData.token + "&tid=" + tid.value)
+        socket = new WebSocket(import.meta.env.VITE_SOCKET_URL + "/ws/chatUserSocket?token=" + userStore.userInfoData.token + "&tid=" + tid.value)
         // Listen for socket connections
         socket.onopen = open
         // Listen for socket error messages

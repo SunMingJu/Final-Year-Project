@@ -1,6 +1,7 @@
 
 import { Router, useRouter, useRoute, RouteLocationNormalizedLoaded } from 'vue-router';
 import { getArticleComment, getArticleContributionByID } from "@/apis/contribution"
+import { useGlobalStore } from "@/store/main";
 import { GetArticleCommentReq, GetArticleContributionByIDReq, GetArticleContributionByIDRes } from "@/types/show/article/article"
 import { Ref, reactive, ref } from "vue"
 import globalScss from "@/assets/styles/global/export.module.scss"
@@ -9,6 +10,7 @@ import { Size } from 'tsparticles-engine';
 
 export const useArticleShowProp = () => {
     const articleID = ref(0)
+    const global = useGlobalStore()
     const articleInfo = ref(<GetArticleContributionByIDRes>{})
     const router = useRouter()
     const route = useRoute()
@@ -27,7 +29,7 @@ export const useArticleShowProp = () => {
         replyCommentsDialog,
     }
 }
-export const useInit = async (articleID: Ref<number>, articleInfo: Ref<GetArticleContributionByIDRes>, route: RouteLocationNormalizedLoaded, router: Router) => {
+export const useInit = async (articleID: Ref<number>, articleInfo: Ref<GetArticleContributionByIDRes>, route: RouteLocationNormalizedLoaded, router: Router, global: any) => {
     try {
        if (!route.params.id) {
             router.back()
@@ -41,6 +43,7 @@ export const useInit = async (articleID: Ref<number>, articleInfo: Ref<GetArticl
             return
         }
         articleID.value = Number(route.params.id)
+        global.globalData.loading.loading = true
         window.onresize = function () {
             const canvasSnow = document.getElementById('canvas_sakura') as HTMLEmbedElement;
             if (!canvasSnow) return false
@@ -55,8 +58,10 @@ export const useInit = async (articleID: Ref<number>, articleInfo: Ref<GetArticl
         if (!response.data) throw "The article content is empty"
         articleInfo.value = response.data
         articleInfo.value.comments = response.data?.comments
+        global.globalData.loading.loading = false
 
     } catch (err) {
+        global.globalData.loading.loading = false
         console.log(err)
     }
 }

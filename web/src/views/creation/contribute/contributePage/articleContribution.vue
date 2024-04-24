@@ -23,14 +23,6 @@
                     <el-button v-removeFocus size="small" type="primary" :icon="Edit" round
                         @click="form.isShow = false">edit</el-button>
                 </el-form-item>
-                <el-form-item label="Release regularly" v-show="props.type != 'edit'">
-                    <el-switch v-model="form.timing" />
-                </el-form-item>
-                <el-form-item label="selection period" v-show="form.timing" class="animate__animated animate__fadeIn">
-                    <el-col :span="7">
-                        <el-date-picker v-model="form.date1time" type="datetime" placeholder="Please select a scheduled release time" />
-                    </el-col>
-                </el-form-item>
                 <el-form-item label="Enable comments">
                     <el-switch v-model="form.comments" />
                 </el-form-item>

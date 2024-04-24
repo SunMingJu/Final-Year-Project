@@ -1,6 +1,6 @@
 import { danmakuApi, getVideoBarrageList, getVideoContributionByID, likeVideo, sendVideoBarrage } from "@/apis/contribution";
 import globalScss from "@/assets/styles/global/export.module.scss";
-import { useUserStore } from "@/store/main";
+import { useGlobalStore, useUserStore } from "@/store/main";
 import { GetVideoBarrageListReq, GetVideoContributionByIDReq, LikeVideoReq, SendVideoBarrageReq, VideoInfo } from "@/types/show/video/video";
 import DPlayer, { DPlayerDanmakuItem, DPlayerVideoQuality } from "dplayer";
 import Swal from 'sweetalert2';
@@ -12,6 +12,7 @@ import { numberOfViewers, responseBarrageNum } from './socketFun';
 export const useVideoProp = () => {
   const route = useRoute()
   const router = useRouter()
+  const global = useGlobalStore()
   const userStore = useUserStore()
   const videoRef = ref()
   const videoID = ref<number>(0)
@@ -37,7 +38,8 @@ export const useVideoProp = () => {
     barrageListShow,
     liveNumber,
     replyCommentsDialog,
-    videoBarrage
+    videoBarrage,
+    global
   }
 }
 
@@ -95,8 +97,7 @@ export const useLikeVideo = async (videoInfo: UnwrapNestedRefs<VideoInfo>) => {
     })
   }
 }
-
-export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoaded, Router: Router, videoID: Ref<Number>, videoInfo: UnwrapNestedRefs<VideoInfo>) => {
+export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoaded, Router: Router, videoID: Ref<Number>, videoInfo: UnwrapNestedRefs<VideoInfo>, global: any) => {
   try {
     //Bind video id
     if (!route.params.id) {
@@ -110,6 +111,7 @@ export const useInit = async (videoRef: Ref, route: RouteLocationNormalizedLoade
       Router.back()
       return
     }
+    global.globalData.loading.loading = true
     videoID.value = Number(route.params.id)
    //Get video information
     const vinfo = await getVideoContributionByID(<GetVideoContributionByIDReq>{
@@ -174,9 +176,10 @@ const userStore = useUserStore()
         pic: videoInfo.videoInfo.cover
       },
     });
-
+    global.globalData.loading.loading = false
     return dp
   } catch (err) {
+    global.globalData.loading.loading = false
     console.log(err)
   }
 }
