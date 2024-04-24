@@ -4,7 +4,7 @@ __Name:__ MingJu Sun
 
 __Student ID:__ 20104599
 
-__Video demonstration:__ https://youtu.be/-7rEICh9D0s
+__Video demonstration:__ [https://youtu.be/-7rEICh9D0s](https://youtu.be/sWTfmddAOzE)
 
 ## Dependencies
 golang
