@@ -18,6 +18,8 @@ func FormattingJsonSrc(str []byte) (url string, err error) {
 	err = json.Unmarshal(str, data)
 	if err != nil {
 		return "", fmt.Errorf("json format error")
+	if data.Src == "" {
+		return "", nil
 	}
 	path, err := SwitchIngStorageFun(data.Tp, data.Src)
 	if err != nil {

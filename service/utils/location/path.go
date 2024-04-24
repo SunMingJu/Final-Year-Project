@@ -2,50 +2,28 @@ package location
 
 import (
 	"log"
+	"fmt"
 	"os"
-	"path"
+	
 	"path/filepath"
 	"runtime"
-	"strings"
+	
 )
 
 //GetCurrentAbPath 
-func GetCurrentAbPath() string {
-	dir := getCurrentAbPathByExecutable()
-	if strings.Contains(dir, getTmpDir()) {
-		return getCurrentAbPathByCaller()
-	}
-	return dir
-}
-
-// Get a temporary system directory, compatible with go run
-func getTmpDir() string {
-	dir := os.Getenv("TEMP")
-	if dir == "" {
-		dir = os.Getenv("TMP")
-	}
-	res, _ := filepath.EvalSymlinks(dir)
-	return res
-}
-
-// Get the absolute path of the current executable file
-func getCurrentAbPathByExecutable() string {
-	exePath, err := os.Executable()
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, _ := filepath.EvalSymlinks(filepath.Dir(exePath))
-	return res
-}
-
-// Get the absolute path to the current executable (go run)
-func getCurrentAbPathByCaller() string {
-	var abPath string
+func GetCurrentAbPath() (dir string, err error) {
 	_, filename, _, ok := runtime.Caller(0)
-	if ok {
-		abPath = path.Dir(filename)
+	if !ok {
+		return "", fmt.Errorf("Failed to get directory")
 	}
-	return abPath
+	dir = filepath.Dir(filename)
+	rootDir := filepath.Join(dir, "..", "..")
+	absRootDir, err := filepath.Abs(rootDir)
+	if err != nil {
+		panic(err)
+		return "", fmt.Errorf("Failed to get directory")
+	}
+	return absRootDir, nil
 }
 
 // IsDir 

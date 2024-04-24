@@ -31,13 +31,6 @@ func MapConversionString(m []string) string {
 }
 
 // StringImgConversionMap 
-func StringImgConversionMap(s string) []string {
-	list := strings.Split(s, ",")
-	for k, v := range list {
-		list[k] = FormattingSrc(v)
-	}
-	return list
-}
 
 //BoolTurnInt8 
 func BoolTurnInt8(is bool) int8 {
