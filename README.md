@@ -14,9 +14,9 @@ ffmpeg
 node
 ALibaba Cloud
 
-##How to run
+## How to run
 
-##Bcak-end
+## Bcak-end
 1. Configure the file, filling in the relevant information[./service/config/config.ini](./service/config/config.ini)
 2. `cd service`
 3. `go mod tidy`
@@ -24,7 +24,7 @@ ALibaba Cloud
 5. `./simple-video-net.exe`
 
 
-##Front-end
+## Front-end
 1. `cd web`
 2. `npm install`
 3. `npm run dev`
