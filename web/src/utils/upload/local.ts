@@ -66,14 +66,16 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, dir: str
                     return item
                 })
                 console.log("So the slices that need to be uploaded", sliceArr)
-                console.log("Unuploaded slices", notUploadSlice)
+                    console.log("Unuploaded slices", notUploadSlice)
+                    
+                    let promiseArr = []
 
                 for (let i = 0; i < notUploadSlice.length; i++) {
                     const formData = new FormData()
                     formData.append('interface', uploadConfig.interface)
                     formData.append('name', notUploadSlice[i].hash)
                     formData.append('file', notUploadSlice[i].file)
-                    try {
+                    const p = new Promise<void>(async (resolve, reject) => {
                         const slice = ref(<FileSliceUpload>{
                             index: i,
                             progress: 0, //Upload progress
@@ -90,19 +92,20 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, dir: str
                             })
                             if (slice.value.progress === 100) {
                                 w()
+                                resolve()
                                 return
                             }
                         }, { deep: true })
                         await UploadSliceFile(formData, slice.value)
-                        notUploadSlice.reverse()
-                    } catch (err) {
-                        console.log(err)
-                        //If failed wait 3 seconds to try again
-                        setTimeout(() => { uploadCheckFun() }, 3000)
-                        break
-                    }
+                        .catch((error) => {
+                            reject(error)
+                        })
+                    })
+                    promiseArr.push(p)
                 }
-                try {
+                    try {
+                    await Promise.all(promiseArr)
+                    console.log('All parts upload completed')
                     //All shards were successfully uploaded and merged
                     const uploadMergeResponse = await uploadMerge(<UploadMergeReq>{
                         file_name: name,
@@ -110,12 +113,11 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, dir: str
                         slice_list: sliceArr
                     })
                     uploadConfig.progress = 100
-                    return new Promise((resolve, _) => {
-                        resolve({ path: uploadMergeResponse.data })
-                    })
+                    return resolve({ path: uploadMergeResponse.data })
                 } catch (err) {
                     return new Promise((_, reject) => {
-                        reject({ msg: "upload failed" })
+                        console.log('There are unuploaded fragments')
+                    uploadCheckFun()
                     })
                 }
 
@@ -135,7 +137,7 @@ export const localUpload = async (file: File, uploadConfig: FileUpload, dir: str
             return uploadCheckFun()
         }
 
-    })
+    });
 
 
 } 
