@@ -1,6 +1,6 @@
 <template>
     <div class="video-page">
-       <!--Topic content -->
+        <!--Topic content -->
         <div class="video-content">
             <!--Left part -->
             <div class="content-left">
@@ -12,21 +12,22 @@
                         <div class="video-data-list">
                             <span class="data-item">
                                 <SvgIcon name="video" class="icon" color="#9499A0"></SvgIcon> {{
-                                    videoInfo?.videoInfo?.heat
+                                videoInfo?.videoInfo?.heat
                                 }}
                             </span>
                             <span class="data-item">
                                 <SvgIcon name="barrageNumber" class="icon" color="#9499A0"></SvgIcon> {{
-                                    videoInfo?.videoInfo?.barrageNumber
+                                videoInfo?.videoInfo?.barrageNumber
                                 }}
                             </span>
                             <span class="data-item">
                                 <SvgIcon name="time" class="icon" color="#9499A0"></SvgIcon> {{
-                                    rFC3339ToTime(videoInfo?.videoInfo?.created_at)
+                                rFC3339ToTime(videoInfo?.videoInfo?.created_at)
                                 }}
                             </span>
                             <span class="data-item">
-                                <SvgIcon name="forbid" class="forbid-icon" color="#9499A0"></SvgIcon>Reprinting without authorization from the author is prohibited
+                                <SvgIcon name="forbid" class="forbid-icon" color="#9499A0"></SvgIcon>Reprinting without
+                                authorization from the author is prohibited
                             </span>
 
                             <div class="info-right">
@@ -36,32 +37,37 @@
                                 </el-button>
                                 <el-button :type="videoInfo?.videoInfo?.is_collect ? 'primary' : 'info'"
                                     @click="favoriteVideoShow = true" v-removeFocus :icon="Star" circle />
-                                <el-button type="info" v-removeFocus :icon="Position" circle />
+                                <el-button type="info" @click="notOpen" v-removeFocus :icon="Position" circle />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="video-box">
-                    <div ref="videoRef" :class="{ 'player': true, 'dplayer-comment-show': !userStore.userInfoData.token }"
-                        id="dplay" />
+                    <div ref="videoRef"
+                        :class="{ 'player': true, 'dplayer-comment-show': !userStore.userInfoData.token }" id="dplay" />
                     <div class="video-sending">
                         <div class="live-info">
-                            <span>{{ liveNumber }} People are watching</span>, <span> has been loaded {{ videoInfo?.videoInfo?.barrageNumber }}
+                            <span>{{ liveNumber }} People are watching</span>, <span> has been loaded {{
+                                videoInfo?.videoInfo?.barrageNumber }}
                                 barrages </span>
                         </div>
                         <div class="barrage-set" @click="videoBarrage = !videoBarrage">
-                            <SvgIcon :name="videoBarrage ? 'barrageOn' : 'barrageOff'" class="barrage-icon" color="#61666D">
+                            <SvgIcon :name="videoBarrage ? 'barrageOn' : 'barrageOff'" class="barrage-icon"
+                                color="#61666D">
                             </SvgIcon>
                             <div class="barrage-input" v-show="userStore.userInfoData.token">
-                                <el-input v-model="barrageInput" placeholder="Send a friendly comment to witness the moment">
+                                <el-input v-model="barrageInput"
+                                    placeholder="Send a friendly comment to witness the moment">
                                     <template #append>
-                                        <div><el-button type="primary" @click="sendBarrageEvent()">send</el-button></div>
+                                        <div><el-button type="primary" @click="sendBarrageEvent()">send</el-button>
+                                        </div>
                                     </template>
                                 </el-input>
                             </div>
 
                             <div class="barrage-input" v-show="!userStore.userInfoData.token">
-                                <el-input v-model="barrageInput" placeholder="Please log in or register before coming again" readonly>
+                                <el-input v-model="barrageInput"
+                                    placeholder="Please log in or register before coming again" readonly>
                                     <template #append>
                                         <div><el-button @click="router.push({ name: 'Login' })"
                                                 type="primary">login</el-button></div>
@@ -85,8 +91,8 @@
 
                     <div class="comments-show">
                         <div class="comments-show-titel"><span>Comments | </span> <span>{{
-                            videoInfo?.videoInfo?.comments.length
-                        }} comments</span>
+                                videoInfo?.videoInfo?.comments.length
+                                }} comments</span>
                         </div>
                         <div class="comments-show-info">
                             <div class="comment-info-detail-box" v-for="commentsItem in videoInfo?.videoInfo?.comments"
@@ -98,7 +104,7 @@
                                             <div> <span class="comment-info-username">{{ commentsItem.username }}</span>
                                                 <span class="comment-info-other">{{
                                                     dayjs(commentsItem.created_at).format('YYYY.MM.DD.hh.mm')
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                             <div class="commentInfo-reply">
                                                 <el-button type="primary" v-removeFocus round size="small"
@@ -116,10 +122,10 @@
                                             <div class="comment-info-content">
                                                 <div class="content-head">
                                                     <div> <span class="comment-info-username">{{
-                                                        lowerComments.username
-                                                    }}</span> <span class="comment-info-other">{{
-    dayjs(lowerComments.created_at).format('YYYY.MM.DD.hh.mm')
-}}</span>
+                                                            lowerComments.username
+                                                            }}</span> <span class="comment-info-other">{{
+                                                            dayjs(lowerComments.created_at).format('YYYY.MM.DD.hh.mm')
+                                                            }}</span>
                                                     </div>
                                                     <div class="commentInfo-reply">
                                                         <el-tag effect="dark" round v-removeFocus
@@ -128,11 +134,11 @@
                                                         </el-tag>
                                                     </div>
                                                 </div>
-                                               <!--Comment content part -->
+                                                <!--Comment content part -->
                                                 <div class="content-info">
                                                     <span v-if="lowerComments.comment_user_id != commentsItem.uid"><span
                                                             class="at-user">@{{
-                                                                lowerComments.comment_user_name
+                                                            lowerComments.comment_user_name
                                                             }} </span> : </span> {{ lowerComments.context }}
                                                 </div>
                                             </div>
@@ -180,8 +186,8 @@
                             <el-button v-removeFocus type="primary" size="small" round :icon="House"
                                 @click="jumpSpace()">Home page</el-button>
                             <el-button class="attention" v-if="!videoInfo?.videoInfo?.creatorInfo?.is_attention"
-                                v-removeFocus type="primary" size="small" round :icon="Plus"
-                                @click="attention()">focus on</el-button>
+                                v-removeFocus type="primary" size="small" round :icon="Plus" @click="attention()">focus
+                                on</el-button>
                             <el-button class="attention" v-if="videoInfo?.videoInfo?.creatorInfo?.is_attention"
                                 v-removeFocus type="primary" size="small" round :icon="MoreFilled" color="#F1F2F3"
                                 @click="attention()">Already following</el-button>
@@ -223,7 +229,8 @@
                         </el-table>
                     </div>
                     <div class="recommend-lsit">
-                        <div class="video-item" v-for="recommendItem in videoInfo?.recommendList" :key="recommendItem.id">
+                        <div class="video-item" v-for="recommendItem in videoInfo?.recommendList"
+                            :key="recommendItem.id">
                             <Card :id="recommendItem.id" :title="recommendItem.title" :username="recommendItem.username"
                                 :video_duration="recommendItem.video_duration"
                                 v-bind:barrage-number="recommendItem.barrageNumber" :heat="recommendItem.heat"
@@ -238,8 +245,9 @@
         <!--Collection video -->
         <div class="dialog-list">
             <div class="dialog">
-                <el-dialog v-model="favoriteVideoShow" title="Favorite video" width="24%" center :close-on-click-modal="true"
-                    :append-to-body="true" :before-close="favoriteVideoShowClose" align-center>
+                <el-dialog v-model="favoriteVideoShow" title="Favorite video" width="24%" center
+                    :close-on-click-modal="true" :append-to-body="true" :before-close="favoriteVideoShowClose"
+                    align-center>
                     <FavoriteVideo @shutDown="shutDown" @success="videoInfo.videoInfo.is_collect = true" :id="videoID">
                     </FavoriteVideo>
                 </el-dialog>
@@ -251,6 +259,7 @@
 </template>
 
 <script lang="ts" setup>
+import globalScss from "@/assets/styles/global/export.module.scss";
 import commentPosting from "@/components/commentPosting/videoCommentPosting.vue";
 import FavoriteVideo from "@/components/favoriteVideo/favoriteVideo.vue";
 import topNavigation from "@/components/topNavigation/topNavigation.vue";
@@ -265,6 +274,7 @@ import { vRemoveFocus } from "@/utils/customInstruction/focus";
 import { House, MoreFilled, Plus, Position, Star } from '@element-plus/icons-vue';
 import dayjs from 'dayjs';
 import DPlayer from "dplayer";
+import Swal from "sweetalert2";
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { VueEllipsis3 } from 'vue-ellipsis-3';
 
@@ -280,7 +290,7 @@ components: {
 
 var dp = ref(<DPlayer>{})  //Player configuration object
 var socket: WebSocket //socket
-const { videoRef, route, router, userStore, videoID, videoInfo, barrageInput, barrageListShow, liveNumber, replyCommentsDialog, videoBarrage } = useVideoProp()
+const { videoRef, route, router, userStore, videoID, videoInfo, barrageInput, barrageListShow, liveNumber, replyCommentsDialog, videoBarrage, global } = useVideoProp()
 
 const sendBarrageEvent = () => {
     useSendBarrage(barrageInput, dp.value, userStore, videoInfo, socket)
@@ -330,7 +340,7 @@ const watchPath = watch(() => route.path, async () => {
         return false
     }
     console.log(videoID)
-    dp.value = await useInit(videoRef, route, router, videoID, videoInfo) as DPlayer
+    dp.value = await useInit(videoRef, route, router, videoID, videoInfo, global) as DPlayer
     if (userStore.userInfoData.token) {
         let socketLer = useWebSocket(userStore, videoInfo, router, liveNumber)
         socketLer ? socket = socketLer : ""
@@ -347,6 +357,14 @@ const watchDanmaku = watch(videoBarrage, (newVal, oldVal) => {
 
 })
 
+const notOpen = () => {
+    Swal.fire({
+        title: "Stay tuned",
+        heightAuto: false,
+        confirmButtonColor: globalScss.colorButtonTheme,
+        icon: "info",
+    })
+}
 
 onMounted(async () => {
 

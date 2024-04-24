@@ -1,11 +1,13 @@
 <template>
     <div class="overall">
         <pageHeader title="我的收藏" icon-nmae="collection"></pageHeader>
-        <div class="collect-list" ref="scrollRef" :style="{ height: scrollHeight + 'px', overflow: isLoading ?  'scroll' : 'hidden'  }"
+        <div class="collect-list" ref="scrollRef"
+            :style="{ height: scrollHeight + 'px', overflow: isLoading ? 'scroll' : 'hidden' }"
             v-show="isLoading == false || favoritesList.length > 0">
             <div class="collect-item" v-for="item in favoritesList.length > 0 ? favoritesList : quickCreationArr(7)">
                 <!--Skeleton screen -->
-                <el-skeleton style="width: 100%; height: 7.4rem;  margin:  6px 20px 20px 0px;" :loading="!item.id" animated>
+                <el-skeleton style="width: 100%; height: 7.4rem;  margin:  6px 20px 20px 0px;" :loading="!item.id"
+                    animated>
                     <template #template>
                         <el-skeleton-item variant="text" style="width: 100%; height: 100%;" />
                         <div style="text-align: start; margin-top: 0.6rem;">
@@ -21,7 +23,8 @@
                             <div class="title">{{ item.title }}</div>
                             <div class="creator">creator : {{ item.userInfo.username }} Views : 0</div>
                             <div class="btn">
-                                <el-button type="primary" round size="small" @click="viewContent(item.id)"> View content </el-button>
+                                <el-button type="primary" round size="small" @click="viewContent(item.id)"> View content
+                                </el-button>
                             </div>
                         </div>
                         <div class="function">
@@ -48,8 +51,9 @@
             <el-empty description="No favorites created yet~" />
         </div>
         <div class="dialog">
-            <el-dialog v-model="createCollectDialogShow" title="Create favorites" width="50%" center :close-on-click-modal="true"
-                :append-to-body="true" :before-close="createCollectDialogShowClose" align-center>
+            <el-dialog v-model="createCollectDialogShow" title="Create favorites" width="50%" center
+                :close-on-click-modal="true" :append-to-body="true" :before-close="createCollectDialogShowClose"
+                align-center>
                 <CreateFavorites :info="updataInfo" :type="false" @shutDown="shutDown"></CreateFavorites>
             </el-dialog>
         </div>
@@ -110,18 +114,14 @@ const shutDown = () => {
     //Close is for data update
     favoritesList.value = []
     isLoading.value = false
-    setTimeout(() => {
-        useInit(favoritesList, isLoading)
-    }, 3000)
+    useInit(favoritesList, isLoading)
 }
 
 
 watch(() => route.path, async () => {
     favoritesList.value = []
     isLoading.value = false
-    setTimeout(() => {
-        useInit(favoritesList, isLoading)
-    }, 3000)
+    useInit(favoritesList, isLoading)
 }, { immediate: true, deep: true })
 
 </script>

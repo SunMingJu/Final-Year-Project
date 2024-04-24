@@ -72,9 +72,6 @@ const fetchData = () => {
 const initTyped = (input: string) => {
     // @ts-ignore The last two parameters are not required
     const typed = new EasyTyper(obj, input, () => {
-        setTimeout(() => {
-            fetchData()
-        }, 3000)
     })
 }
 

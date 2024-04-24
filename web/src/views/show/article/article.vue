@@ -131,7 +131,7 @@ components: {
   commentPosting
 }
 
-const { articleID, articleInfo, router, route, replyCommentsDialog } = useArticleShowProp()
+const { articleID, articleInfo, router, route, replyCommentsDialog, global } = useArticleShowProp()
 //Update comment data
 const updateArticleInfo = (commentsList: GetArticleCommentRes) => {
   articleInfo.value.comments = commentsList.comments
@@ -149,7 +149,7 @@ const { startSakura, stopp } = blossom()
 
 onMounted(async () => {
   startSakura()
-  await useInit(articleID, articleInfo, route, router)
+  await useInit(articleID, articleInfo, route, router, global)
 })
 
 onUnmounted(() => {

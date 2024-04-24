@@ -84,9 +84,7 @@ const scrollBottom = async () => {
 watch(() => route.path, async () => {
     recordList.value = []
     isLoading.value = true
-    setTimeout(() => {
-        useLoadData(recordList, isLoading, pageInfo, isTheEnd)
-    }, 2000)
+    useLoadData(recordList, isLoading, pageInfo, isTheEnd)
 }, { immediate: true, deep: true })
 
 </script>
