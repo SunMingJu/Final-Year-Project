@@ -9,6 +9,7 @@ import (
 type Info struct {
 	SqlConfig     *SqlConfigStruct
 	RConfig       *RConfigStruct
+	EmailConfig *EmailConfigStruct
 	ProjectConfig *ProjectConfigStruct
 	LiveConfig    *LiveConfigStruct
 	AliyunOss     *AliyunOss
@@ -45,6 +46,13 @@ type LiveConfigStruct struct {
 	FLV       string `ini:"flv"`
 	HLS       string `ini:"hls"`
 	Api       string `ini:"api"`
+}
+
+type EmailConfigStruct struct {
+	User string `ini:"user"`
+	Pass string `ini:"pass"`
+	Host string `ini:"host"`
+	Port string `ini:"port"`
 }
 
 type ProjectConfigStruct struct {
@@ -101,6 +109,13 @@ func ReturnsInstance() *Info {
 	err = cfg.Section("live").MapTo(Config.LiveConfig)
 	if err != nil {
 		fmt.Printf("Live read configuration file error. %v \n", err)
+		os.Exit(1)
+	}
+
+	Config.EmailConfig = &EmailConfigStruct{}
+	err = cfg.Section("email").MapTo(Config.EmailConfig)
+	if err != nil {
+		fmt.Printf("Email reading configuration file error: %v \n", err)
 		os.Exit(1)
 	}
 
